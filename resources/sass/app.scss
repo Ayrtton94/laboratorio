@@ -1,0 +1,38 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+.fs-vue-feather-14{
+	width: 14px;
+	height: 14px;
+}
+
+.fs-vue-feather-18{
+	width: 18px;
+	height: 18px;
+}
+
+.nav-title-bar{
+	background-color: #070D19;
+}
+
+//Personaliar sweetalert
+.swal2-container.swal2-center>.swal2-popup {
+    background: #dbdbdb !important;
+}
+
+.swal2-popup {
+    width: 28em !important;
+    font-size: .9rem !important;
+}
+
+.swal2-popup .swal2-title {
+    font-size: 22px !important;
+    font-weight: 400 !important;
+    color: #616466 !important;
+}
