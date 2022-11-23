@@ -179,7 +179,9 @@
                         @endverifypermissions
 						<li class="nav-item"><a class="nav-link" href="">Cliente</a></li>
 						<li class="nav-item"><a class="nav-link" href="">Tipo de Órden</a></li>
-						<li class="nav-item"><a class="nav-link" href="">Presentación</a></li>
+						<li class="nav-item">
+							<a href="{{route('presentaciones')}}" class="nav-link {{ Route::is('presentaciones')?'active':''}}">Presentación</a>
+						</li>
 						<li class="nav-item"><a class="nav-link" href="">Especie</a></li>
 						<li class="nav-item"><a class="nav-link" href="">Sub Especie</a></li>
 						<li class="nav-item"><a class="nav-link" href="">Matríz</a></li>
