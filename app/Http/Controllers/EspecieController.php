@@ -3,14 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Especie;
-use App\Models\Presentacion;
 use App\Http\Requests\EspecieRequest;
 use Illuminate\Database\QueryException;
 use App\Http\Resources\EspecieCollection;
-use App\Http\Requests\PresentacionRequest;
-use App\Http\Resources\PresentacionCollection;
 
-class EspeciesController extends Controller
+class EspecieController extends Controller
 {
 
 	public function index()
@@ -24,7 +21,7 @@ class EspeciesController extends Controller
             'description' => 'Descripción'
         ];
     }
-    public function records(PresentacionRequest $request)
+    public function records(EspecieRequest $request)
     {
         $records = Especie::where(function ($query) use($request) {
 				if($request->column) return $query->where($request->column, 'like', "%{$request->value}%");

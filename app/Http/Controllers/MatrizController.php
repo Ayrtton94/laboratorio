@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Matriz;
 use App\Models\Presentacion;
+use App\Http\Requests\MatrizRequest;
 use Illuminate\Database\QueryException;
+use App\Http\Resources\MatrizCollection;
 use App\Http\Requests\PresentacionRequest;
 use App\Http\Resources\PresentacionCollection;
 
-class PresentacionController extends Controller
+class MatrizController extends Controller
 {
 
 	public function index()
 	{
-		return view('presentaciones.index');
+		return view('matrices.index');
 	}
 
 	public function columns()
@@ -21,26 +24,26 @@ class PresentacionController extends Controller
             'description' => 'Descripción'
         ];
     }
-    public function records(PresentacionRequest $request)
+    public function records(MatrizRequest $request)
     {
-        $records = Presentacion::where(function ($query) use($request) {
+        $records = Matriz::where(function ($query) use($request) {
 				if($request->column) return $query->where($request->column, 'like', "%{$request->value}%");
 			})->latest();
-        return new PresentacionCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
+        return new MatrizCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
 	}
 
 	public function record($id)
     {
-        $record = Presentacion::findOrFail($id)->toArray();
+        $record = Matriz::findOrFail($id)->toArray();
         return ['data' => $record];
     }
 
-	public function store(PresentacionRequest $request)
+	public function store(MatrizRequest $request)
 	{
 		try {
 
             $id = $request->input('id');
-            $presentacion = Presentacion::firstOrNew(['id' => $id]);
+            $presentacion = Matriz::firstOrNew(['id' => $id]);
             $presentacion->fill($request->all());
             $presentacion->save();
 
@@ -63,7 +66,7 @@ class PresentacionController extends Controller
 
 	public function destroy($id)
     {
-        $record = Presentacion::findOrFail($id);
+        $record = Matriz::findOrFail($id);
         $record->update([
 			'estado' => 0
 		]);

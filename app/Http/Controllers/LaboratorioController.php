@@ -3,22 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Especie;
-use App\Models\SubEspecie;
-use App\Models\Presentacion;
+use App\Models\Laboratorio;
 use App\Http\Requests\EspecieRequest;
 use Illuminate\Database\QueryException;
-use App\Http\Requests\SubEspecieRequest;
+use App\Http\Requests\LaboratorioRequest;
 use App\Http\Resources\EspecieCollection;
-use App\Http\Requests\PresentacionRequest;
-use App\Http\Resources\SubEspecieCollection;
-use App\Http\Resources\PresentacionCollection;
+use App\Http\Resources\LaboratorioCollection;
 
-class SubEspecieController extends Controller
+class LaboratorioController extends Controller
 {
 
 	public function index()
 	{
-		return view('subespecies.index');
+		return view('laboratorios.index');
 	}
 
 	public function columns()
@@ -27,38 +24,26 @@ class SubEspecieController extends Controller
             'description' => 'Descripción'
         ];
     }
-    public function records(SubEspecieRequest $request)
+    public function records(LaboratorioRequest $request)
     {
-        $records = SubEspecie::where(function ($query) use($request) {
+        $records = Laboratorio::where(function ($query) use($request) {
 				if($request->column) return $query->where($request->column, 'like', "%{$request->value}%");
 			})->latest();
-        return new SubEspecieCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
+        return new LaboratorioCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
 	}
 
 	public function record($id)
     {
-        $record = SubEspecie::findOrFail($id)->toArray();
+        $record = Laboratorio::findOrFail($id)->toArray();
         return ['data' => $record];
     }
 
-	public function tables()
-    {
-        $especies = Especie::orderBy('description')->get();
-
-        return compact('especies');
-    }
-
-	public function store(SubEspecieRequest $request)
+	public function store(LaboratorioRequest $request)
 	{
 		try {
-			if ($request->especie_id == null) {
-                return [
-                    'success' => false,
-                    'message' => 'Seleccione una Especie'
-                ];
-            }
+
             $id = $request->input('id');
-            $especie = SubEspecie::firstOrNew(['id' => $id]);
+            $especie = Laboratorio::firstOrNew(['id' => $id]);
             $especie->fill($request->all());
             $especie->save();
 
@@ -81,7 +66,7 @@ class SubEspecieController extends Controller
 
 	public function destroy($id)
     {
-        $record = SubEspecie::findOrFail($id);
+        $record = Laboratorio::findOrFail($id);
         $record->update([
 			'estado' => 0
 		]);
@@ -94,7 +79,7 @@ class SubEspecieController extends Controller
 
 	public function restore($id)
     {
-        $record = SubEspecie::findOrFail($id);
+        $record = Laboratorio::findOrFail($id);
         $record->update([
 			'estado' => 1
 		]);

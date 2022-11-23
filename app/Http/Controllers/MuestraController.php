@@ -2,23 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Especie;
-use App\Models\SubEspecie;
+use App\Models\Matriz;
+use App\Models\Muestra;
 use App\Models\Presentacion;
-use App\Http\Requests\EspecieRequest;
+use App\Http\Requests\MatrizRequest;
+use App\Http\Requests\MuestraRequest;
 use Illuminate\Database\QueryException;
-use App\Http\Requests\SubEspecieRequest;
-use App\Http\Resources\EspecieCollection;
+use App\Http\Resources\MatrizCollection;
 use App\Http\Requests\PresentacionRequest;
-use App\Http\Resources\SubEspecieCollection;
 use App\Http\Resources\PresentacionCollection;
 
-class SubEspecieController extends Controller
+class MuestraController extends Controller
 {
 
 	public function index()
 	{
-		return view('subespecies.index');
+		return view('muestras.index');
 	}
 
 	public function columns()
@@ -27,40 +26,28 @@ class SubEspecieController extends Controller
             'description' => 'Descripción'
         ];
     }
-    public function records(SubEspecieRequest $request)
+    public function records(MuestraRequest $request)
     {
-        $records = SubEspecie::where(function ($query) use($request) {
+        $records = Muestra::where(function ($query) use($request) {
 				if($request->column) return $query->where($request->column, 'like', "%{$request->value}%");
 			})->latest();
-        return new SubEspecieCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
+        return new MMuestraCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
 	}
 
 	public function record($id)
     {
-        $record = SubEspecie::findOrFail($id)->toArray();
+        $record = Muestra::findOrFail($id)->toArray();
         return ['data' => $record];
     }
 
-	public function tables()
-    {
-        $especies = Especie::orderBy('description')->get();
-
-        return compact('especies');
-    }
-
-	public function store(SubEspecieRequest $request)
+	public function store(MatrizRequest $request)
 	{
 		try {
-			if ($request->especie_id == null) {
-                return [
-                    'success' => false,
-                    'message' => 'Seleccione una Especie'
-                ];
-            }
+
             $id = $request->input('id');
-            $especie = SubEspecie::firstOrNew(['id' => $id]);
-            $especie->fill($request->all());
-            $especie->save();
+            $presentacion = Muestra::firstOrNew(['id' => $id]);
+            $presentacion->fill($request->all());
+            $presentacion->save();
 
             return [
                 'success' => true,
@@ -81,7 +68,7 @@ class SubEspecieController extends Controller
 
 	public function destroy($id)
     {
-        $record = SubEspecie::findOrFail($id);
+        $record = Muestra::findOrFail($id);
         $record->update([
 			'estado' => 0
 		]);
@@ -94,7 +81,7 @@ class SubEspecieController extends Controller
 
 	public function restore($id)
     {
-        $record = SubEspecie::findOrFail($id);
+        $record = Muestra::findOrFail($id);
         $record->update([
 			'estado' => 1
 		]);
