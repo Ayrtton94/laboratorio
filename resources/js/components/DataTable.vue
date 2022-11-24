@@ -117,10 +117,9 @@
 </template>
 
 <script>
-
-    import moment from 'moment'
-    import queryString from 'query-string'
-	import CustomerSearch from './CustomerSearch'
+	import moment from 'moment'
+	import queryString from 'query-string'
+	// import CustomerSearch from './CustomerSearch'
     export default {
         props: {
             resource: String,
@@ -158,7 +157,7 @@
 			}
 
 		},
-		components: { CustomerSearch},
+		// components: { CustomerSearch},
         data () {
             return {
                 search: {
@@ -183,29 +182,26 @@
         computed: {
         },
         created() {
-            this.$eventHub.$on('reloadData', () => {
+            this.emitter.on('reloadData', () => {
                 this.getRecords()
-
-                this.getTotals()
+				this.getTotals()
             })
         },
         async mounted () {
 			let column_resource = _.split(this.resource, '/')
 
-            await this.$http.get(`/${_.head(column_resource)}/columns`).then((response) => {
+            await axios.get(`/${_.head(column_resource)}/columns`).then((response) => {
                 this.columns = response.data
                 this.search.column = _.head(Object.keys(this.columns))
             });
 			await this.getRecords()
-
-            await this.getTotals()
         },
         methods: {
             customIndex(index) {
                 return (this.pagination.per_page * (this.pagination.current_page - 1)) + index + 1
             },
             getRecords() {
-                return this.$http.get(`/${this.resource}/records?${this.getQueryParameters()}`).then((response) => {
+                return axios.get(`/${this.resource}/records?${this.getQueryParameters()}`).then((response) => {
                     this.records = response.data.data
                     this.pagination = response.data.meta
 					this.pagination.per_page = parseInt(response.data.meta.per_page)
@@ -216,7 +212,7 @@
 			{
 				window.open(`/${this.resource}/records/excel?${this.getQueryParameters()}`,'_blank');
 			},
-            getTotals(){
+			getTotals(){
                 if(this.showTotals){
                     return this.$http.get(`/${this.resource}/totals?${this.getQueryParameters()}`).then((response) => {
                         this.totals = response.data.data
@@ -234,31 +230,16 @@
             },
             getRecords2(){
                 this.getRecords()
-                this.getTotals()
+				this.getTotals()
             },
             changeClearInput(){
                 this.search.value = ''
                 this.getRecords()
-                this.getTotals()
+				this.getTotals()
 			},
 			getUsuarios(){
-				this.$http.get(`/users/records`).then(({data}) => {
+				axios.get(`/users/records`).then(({data}) => {
 					this.users = data.data;
-				});
-			},
-			getSucursales(){
-				this.$http.get(`/sucursales/records`).then(({data}) => {
-					this.sucursales = data.data;
-				});
-			},
-			getFamilias(){
-				this.$http.get(`/familias/todos`).then(({data}) => {
-					this.familias = data.data;
-				});
-			},
-			getAlmacenes(){
-				this.$http.get(`/warehouses/todos`).then(({data}) => {
-					this.almacenes = data.data;
 				});
 			}
 		},
@@ -268,22 +249,9 @@
 				if(this.search.column == 'usuario_id' || this.search.column == 'user_id'){
 					this.getUsuarios();
 				}
-				else if(this.search.column == 'sucursal_id' || this.search.column == 'establishment_id'){
-					this.getSucursales();
-				}
-				else if(this.search.column == 'familia_id' ){
-					this.getFamilias();
-				}
-				else if(this.search.column == 'linea_id' ){
-					this.getLineas();
-				}
-				else if(this.search.column == 'warehouse_id' || this.search.column =='almacen'  || this.search.column=='warehouse_destination_id'){
-					this.getAlmacenes();
-				}
 			},
 			'search.value': function(){
 				this.getRecords();
-				this.getTotals()
 			}
 		}
     }

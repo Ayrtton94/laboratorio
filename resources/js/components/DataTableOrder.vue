@@ -34,7 +34,7 @@
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-4 col-sm-12 pb-2">
-						<template v-else-if="search.column=='usuario_id'|| search.column=='user_id'">
+						<!-- <template v-else-if="search.column=='usuario_id'|| search.column=='user_id'">
                             <el-select v-model="search.value" filterable clearable>
 								<el-option v-for="option in users" :key="option.id" :value="option.id" :label="option.name"></el-option>
 							</el-select>
@@ -62,7 +62,7 @@
 								clearable
                                 @input="getRecords2">
                             </el-input>
-                        </template>
+                        </template> -->
                     </div>
 					<div class="col-lg-3 col-sm-12 pb-2" v-if="showAtendidos || showEliminados || showAnulados || showStatusPaid " >
 						<div class="form-group col-12" v-if="showAtendidos">
@@ -114,7 +114,7 @@
 							@current-change="getRecords2"
 							layout="total, prev, pager, next"
 							:total="pagination.total"
-							:current-page.sync="pagination.current_page"
+							:current-page="pagination.current_page"
 							:page-size="pagination.per_page">
 						</el-pagination>
 					</div>

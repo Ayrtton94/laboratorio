@@ -11,6 +11,7 @@ use App\Http\Controllers\MuestraController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\EspecieController;
 use App\Http\Controllers\SubEspecieController;
 use App\Http\Controllers\LaboratorioController;
 use App\Http\Controllers\SpecialtiesController;
@@ -92,7 +93,7 @@ Route::controller(PatientController::class)->prefix('patients')->group(function(
 		Route::get('/record/{id}', 'record');
 		Route::post('', 'store');
 		Route::get('/todos', 'todos');
-		Route::delete('/{id}', 'destroy');
+		Route::post('/eliminar/{id}', 'destroy');
 	});
 
 	// SUB-ESPECIE

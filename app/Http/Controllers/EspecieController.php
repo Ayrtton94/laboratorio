@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Especie;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\EspecieRequest;
 use Illuminate\Database\QueryException;
 use App\Http\Resources\EspecieCollection;
@@ -21,12 +22,12 @@ class EspecieController extends Controller
             'description' => 'Descripción'
         ];
     }
-    public function records(EspecieRequest $request)
+    public function records()
     {
-        $records = Especie::where(function ($query) use($request) {
-				if($request->column) return $query->where($request->column, 'like', "%{$request->value}%");
-			})->latest();
-        return new EspecieCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
+		$especies = Especie::all();
+		return response()->json([
+			'especies' => $especies
+		]);
 	}
 
 	public function record($id)
@@ -63,11 +64,12 @@ class EspecieController extends Controller
 
 	public function destroy($id)
     {
-        $record = Especie::findOrFail($id);
-        $record->update([
-			'estado' => 0
-		]);
-
+        // $record = Especie::findOrFail($id);
+        // $record->update([
+		// 	'estado' => 0
+		// ]);
+		DB::table('especies')->where('id', $id)->delete();
+			
         return [
             'success' => true,
             'message' => 'Eliminada con éxito'

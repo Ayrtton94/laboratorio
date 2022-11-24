@@ -14,7 +14,7 @@
         <div class="card mb-0 w-100 mt-3">
 			<div class="card-body">
 				<data-table :resource="resource" :showTotals="false">
-                    <tr slot="heading">
+                    <!-- <tr slot="heading">
                         <th width="5%">#</th>
                         <th width="40%">Nombre Presentació</th>
                         <th width="30%" class="">Acciones</th>
@@ -27,7 +27,7 @@
                             <button type="button" class="btn waves-effect waves-light btn-sm btn-danger ml-2"  @click.prevent="clickDelete(row.id)" v-if="row.estado == 1">Eliminar</button>
 							<button type="button" class="btn waves-effect waves-light btn-sm btn-success ml-2"  @click.prevent="clickRestore(row.id)" v-if="row.estado == 0">Restaurar</button>
                         </td>               
-                    </tr>
+                    </tr> -->
                 </data-table>
 			</div>
          
@@ -43,10 +43,8 @@
 
 
     import PresentacionForm from './form.vue'
-    import {deletable} from '../../../mixins/deletable'
- 	import DataTable from '../../../components/DataTable.vue'
+	import DataTable from '../../components/DataTable.vue'
     export default {
-        mixins: [deletable],
         components: { PresentacionForm, DataTable },
         data() {
             return {
