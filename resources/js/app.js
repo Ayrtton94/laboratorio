@@ -1,9 +1,9 @@
 require('./bootstrap');
 
 import { createApp } from 'vue'
-import { axios } from 'axios'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import { axios } from 'axios'
 
 import dashboard from './views/Dashboard/DashboardComponent.vue'
 // SweetAlert2
@@ -14,11 +14,9 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import VueFeather from 'vue-feather'
 
 import mitt from 'mitt';
-
 import Permissions from './mixins/Permissions.js';
 // USUARIOS
 import usuarios from './views/Usuarios/index.vue'
-import search from './views/Usuarios/search.vue'
 import usuariosform from './views/Usuarios/form.vue'
 import usuarioseditar from './views/Usuarios/edit.vue'
 //ROLES
@@ -28,6 +26,7 @@ import permisos from './views/Permissions/index.vue'
 //PACIENTES
 import patiends from './views/Patients/index.vue'
 import patiendsform from './views/Patients/form.vue'
+import areas from './views/Area/index.vue'
 
 //PRESENTACIONES
 import presentaciones from './views/presentaciones/index.vue'
@@ -55,17 +54,17 @@ const emitter = mitt()
 const app = createApp({})
 app.config.globalProperties.emitter = emitter
 app.mixin(Permissions);
-
+app.use(ElementPlus, { size: 'mini', zIndex: 3000 })
+// app.use(ElementPlus);
 app.use(VueSweetalert2);
 app.use(axios);
-app.use(ElementPlus);
+
 
 app.component(VueFeather.name, VueFeather);
 app.component('dashboard', dashboard)
 
 //USUARIOS
 app.component('usuarios', usuarios)
-app.component('usuarios-search', search)
 app.component('usuarios-create', usuariosform)
 app.component('usuarios-editar', usuarioseditar)
 
@@ -108,5 +107,7 @@ app.component('laboratorios-create', laboratoriosform)
 app.component('metodos', metodos)
 app.component('metodos-create', metodosform)
 
+//AREA
+app.component('areas', areas)
 
 app.mount('#app')

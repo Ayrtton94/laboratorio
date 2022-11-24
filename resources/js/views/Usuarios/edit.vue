@@ -42,12 +42,6 @@
 											<label class="form-label">Fecha nacimiento:</label>
 											<input class="form-control mb-4 mb-md-0" v-model="form.birth_date" name="birth_date" data-inputmask-inputformat="dd/mm/yyyy"/>
 										</div>
-										<div class="mb-3">                            
-											<select class="form-select" name="specialty_id" id="specialty_id" v-model="form.specialty_id">
-												<option selected value="0">Seleccionar Especialidad</option>
-												<option v-for="option in specialties" :key="option.id" :value="option.id" :label="option.name"></option>
-											</select>
-										</div>
 									</div>
 								</div>
 								<div class="col-md-6">
@@ -98,15 +92,12 @@
 				records: [],
 				errors: {},
 				form: {},
-				roles: [],
-				specialties: []
+				roles: []
 			}
 		},
         created(){
 			this.initForm()
 			this.getRoles()
-			this.getSpecialties()
-			// console.log(this.usuarios.roles[0].id);
 		},
 		methods: {
 			initForm(){
@@ -129,12 +120,6 @@
 				axios.get(`/roles/records`)
 				.then(response => {
 					this.roles = response.data.roles
-				})
-			},
-			getSpecialties(){
-				axios.get(`/specialties/specialtiesrecords`)
-				.then(response => {
-					this.specialties = response.data.specialties
 				})
 			},
 			submit(){

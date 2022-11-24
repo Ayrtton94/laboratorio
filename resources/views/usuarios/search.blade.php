@@ -2,6 +2,6 @@
 
 @section('content')
 
-<usuarios-search :roles="{{$roles}}" :specialties="{{$specialties}}"/>
+<usuarios-search :roles="{{$roles}}"/>
 
 @endsection

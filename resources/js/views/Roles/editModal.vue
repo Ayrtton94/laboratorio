@@ -53,13 +53,12 @@
 				titleDialog: 'Actualizar Perfil',
                 records: [],
 				form: {},
-				// permissionsAll: [],
 				permissionId: []
 			}
 		},
 		created(){
-			this.allpermissions()
 			this.getDatRoles();
+			this.allpermissions();
 			this.initForm()
 		},
 		methods:{
@@ -82,7 +81,11 @@
 			getDatRoles(){
 				axios.get(`/${this.resource}/editroles/${this.modalId}`)
 				.then(res => {
-					this.form = res.data.roledata;
+					
+					this.form.id = res.data.roledata.id
+					this.form.name = res.data.roledata.name
+					this.form.description = res.data.roledata.description
+					// this.form = res.data.roledata;
 				})
 			},
 			allpermissions(){

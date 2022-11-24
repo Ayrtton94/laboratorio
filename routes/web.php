@@ -14,8 +14,8 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\EspecieController;
 use App\Http\Controllers\SubEspecieController;
 use App\Http\Controllers\LaboratorioController;
-use App\Http\Controllers\SpecialtiesController;
 use App\Http\Controllers\PresentacionController;
+use App\Http\Controllers\AreaController;
 
 Route::get('/', function () {
 	return view('auth.login');
@@ -29,7 +29,6 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 // USUARIOS
-// Route::middleware('auth:web')->group(function () {
 Route::controller(UsuarioController::class)->middleware(['middleware' => 'auth'])->group( function () {
 	Route::get('/usuarios', 'index')->name('usuarios');
 	Route::post('/usuarios', 'store');
@@ -42,8 +41,6 @@ Route::controller(UsuarioController::class)->middleware(['middleware' => 'auth']
 	Route::put('/usuarios/update', 'update');
 });
 
-//ESPECIALIDADES
-Route::get('/specialties/specialtiesrecords', [SpecialtiesController::class, 'records'])->name('records');
 //ROLES
 Route::get('/roles', [RoleController::class, 'index'])->name('roles');
 Route::get('/roles/create', [RoleController::class, 'create'])->name('rolescreate');
@@ -54,6 +51,14 @@ Route::delete('/roles/eliminar/{id}', [RoleController::class, 'destroy']);
 Route::get('/roles/editroles/{id}', [RoleController::class, 'editroles']);
 Route::put('/roles/update', [RoleController::class, 'update']);
 Route::get('/roles/hasroles/{id}', [RoleController::class, 'querypermisos']);
+
+//AREA
+Route::controller(AreaController::class)->prefix('areas')->group(function(){
+	Route::get('', 'index')->name('areas');
+	Route::post('', 'store');
+	Route::get('/records', 'records');
+	Route::delete('/{id}', 'destroy');
+});
 
 //PERMISOS
 Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions');
@@ -69,8 +74,6 @@ Route::controller(PatientController::class)->prefix('patients')->group(function(
     Route::post('/search', 'search');
     Route::get('/means', 'means');
 });
-
-
 
 	// PRESENTACION
 	Route::controller(PresentacionController::class)->prefix('presentaciones')->group(function(){
