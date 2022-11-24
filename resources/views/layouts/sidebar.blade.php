@@ -36,7 +36,9 @@
                         <li class="nav-item">
                             <a href="{{route('roles')}}" class="nav-link">Perfil</a>
                         </li>
-						<li class="nav-item"><a class="nav-link" href="">Área</a></li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ route('areas') }}">Área</a>
+						</li>
 						<li class="nav-item "><a class="nav-link" href="">Personal</a></li>
 						@verifypermissions('ver-user')
                         <li class="nav-item">

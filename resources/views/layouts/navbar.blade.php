@@ -28,9 +28,9 @@
 							<li class="dropdown-item py-2">
 								<form method="POST" action="{{ route('logout') }}">
 									@csrf
-									<a onclick="event.preventDefault(); this.closest('form').submit();" class="text-body ms-0" style="cursor: pointer;">
-										<i class="me-2 icon-md" data-feather="log-out"></i>
-										<span>Cerrar Sesión</span>
+									<a onclick="event.preventDefault(); this.closest('form').submit();" class="text-body ms-0" style="cursor: pointer; text-decoration: none;">
+										<vue-feather type="log-out" class="fs-vue-feather-14" style="vertical-align: text-bottom !important;"></vue-feather>
+										<span class="ml-2"> Cerrar Sesión</span>
 									</a>
 								</form>
 							</li>
@@ -39,7 +39,7 @@
 				</li>
 			</ul>
 			<button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="horizontal-menu-toggle">
-				<i data-feather="menu"></i>					
+				<vue-feather type="menu"></vue-feather>					
 			</button>
 		</div>
 	</div>

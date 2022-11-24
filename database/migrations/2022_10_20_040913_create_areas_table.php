@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSpecialtiesTable extends Migration
+class CreateAreasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,17 +14,13 @@ class CreateSpecialtiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('specialties', function (Blueprint $table) {
+        Schema::create('areas', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('description')->nullable();
+			$table->tinyInteger('estado')->default(1);
             $table->timestamps();
         });
-
-		DB::table('specialties')->insert([
-			['id' => '1', 'name' => 'Especialidad 1', 'description' => '', 'created_at' => DB::raw('NOW()'), 'updated_at' => DB::raw('NOW()')],
-			['id' => '2', 'name' => 'Especialidad 2', 'description' => '', 'created_at' => DB::raw('NOW()'), 'updated_at' => DB::raw('NOW()')]
-		]);
     }
 
     /**
@@ -34,6 +30,6 @@ class CreateSpecialtiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('specialties');
+        Schema::dropIfExists('areas');
     }
 }

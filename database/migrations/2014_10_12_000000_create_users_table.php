@@ -20,7 +20,6 @@ class CreateUsersTable extends Migration
 			$table->date('birth_date')->nullable();
 			$table->string('address')->nullable();
 			$table->string('phone')->nullable();
-			$table->unsignedBigInteger('specialty_id')->nullable();
 			$table->boolean('status')->default(true);
             $table->rememberToken();
             $table->timestamps();

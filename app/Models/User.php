@@ -18,7 +18,6 @@ class User extends Authenticatable
         'last_name',
         'document',
 		'phone',
-        'specialty_id',
         'birth_date',
 		'address',
 		'status'
@@ -32,10 +31,4 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-
-	public function specialties()
-	{
-		return $this->hasMany(specialties::class,'id');
-	}
 }
