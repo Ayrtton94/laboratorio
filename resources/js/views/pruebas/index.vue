@@ -14,7 +14,7 @@
         <div class="card mb-0 w-100 mt-3">
 			<div class="card-body">
 				<data-table :resource="resource" :showTotals="false">
-                    <tr slot="heading">
+                    <!-- <tr slot="heading">
                         <th width="5%">#</th>
 						<th width="20%">Matriz</th>
                         <th width="20%">Muestra</th>
@@ -43,7 +43,7 @@
 							<button type="button" class="btn waves-effect waves-light btn-sm btn-success ml-2"  @click.prevent="clickRestore(row.id)" v-if="row.estado == 0">Restaurar</button>
                         </td>
                
-                    </tr>
+                    </tr> -->
                 </data-table>
 			</div>
          
@@ -59,10 +59,8 @@
 
 
     import PruebaForm from './form.vue'
-    import {deletable} from '../../../mixins/deletable'
- 	import DataTable from '../../../components/DataTable.vue'
+	import DataTable from '../../components/DataTable.vue'
     export default {
-        mixins: [deletable],
         components: { PruebaForm, DataTable },
         data() {
             return {

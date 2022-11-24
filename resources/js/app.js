@@ -23,8 +23,6 @@ import usuariosform from './views/Usuarios/form.vue'
 import usuarioseditar from './views/Usuarios/edit.vue'
 //ROLES
 import roles from './views/Roles/index.vue'
-import rolesform from './views/Roles/form.vue'
-import roleseditar from './views/Roles/edit.vue'
 //PERMISOS
 import permisos from './views/Permissions/index.vue'
 //PACIENTES
@@ -34,6 +32,24 @@ import patiendsform from './views/Patients/form.vue'
 //PRESENTACIONES
 import presentaciones from './views/presentaciones/index.vue'
 import presentacionesform from './views/presentaciones/form.vue'
+
+import especies from './views/especies/index.vue'
+import especiesform from './views/especies/form.vue'
+
+import subespecies from './views/subespecies/index.vue'
+import subespeciesform from './views/subespecies/form.vue'
+
+import matrices from './views/matrices/index.vue'
+import matricesform from './views/matrices/form.vue'
+
+import muestras from './views/muestras/index.vue'
+import muestrasform from './views/muestras/form.vue'
+
+import laboratorios from './views/laboratorios/index.vue'
+import laboratoriosform from './views/laboratorios/form.vue'
+
+import metodos from './views/metodos/index.vue'
+import metodosform from './views/metodos/form.vue'
 
 const emitter = mitt()
 const app = createApp({})
@@ -55,8 +71,6 @@ app.component('usuarios-editar', usuarioseditar)
 
 //ROLES
 app.component('roles', roles)
-app.component('roles-create', rolesform)
-app.component('roles-editar', roleseditar)
 
 //PERMISOS
 app.component('permissions', permisos)
