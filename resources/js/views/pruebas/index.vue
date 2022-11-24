@@ -25,7 +25,7 @@
 						<th width="20%">Condicion</th>
 						<th width="20%">Tiempo Entrega</th>
                         <th width="30%" class="">Acciones</th>
-                    <tr>
+                    </tr>
                     <tr slot-scope="{ index, row }" slot="tbody" :class="row.estado == 1 ? '' : 'table-danger' ">
                         <td>{{ index }}</td>
 						<td>{{ row.matriz }}</td>

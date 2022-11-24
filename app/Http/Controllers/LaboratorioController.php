@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Especie;
 use App\Models\Laboratorio;
-use App\Http\Requests\EspecieRequest;
 use Illuminate\Database\QueryException;
 use App\Http\Requests\LaboratorioRequest;
-use App\Http\Resources\EspecieCollection;
 use App\Http\Resources\LaboratorioCollection;
 
 class LaboratorioController extends Controller

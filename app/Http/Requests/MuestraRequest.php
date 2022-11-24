@@ -15,6 +15,7 @@ class MuestraRequest extends FormRequest
     public function rules()
     {
         return [
+			'matriz_id' => 'required',
             'description' => 'required'
         ];
     }

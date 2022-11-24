@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Matriz;
 use App\Models\Muestra;
-use App\Models\Presentacion;
 use App\Http\Requests\MatrizRequest;
 use App\Http\Requests\MuestraRequest;
 use Illuminate\Database\QueryException;
-use App\Http\Resources\MatrizCollection;
-use App\Http\Requests\PresentacionRequest;
-use App\Http\Resources\PresentacionCollection;
+use App\Http\Resources\MuestraCollection;
 
 class MuestraController extends Controller
 {
@@ -31,7 +29,7 @@ class MuestraController extends Controller
         $records = Muestra::where(function ($query) use($request) {
 				if($request->column) return $query->where($request->column, 'like', "%{$request->value}%");
 			})->latest();
-        return new MMuestraCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
+        return new MuestraCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
 	}
 
 	public function record($id)
@@ -40,14 +38,20 @@ class MuestraController extends Controller
         return ['data' => $record];
     }
 
-	public function store(MatrizRequest $request)
+	public function tables()
+    {
+        $matrices = Matriz::orderBy('description')->get();
+        return compact('matrices');
+    }
+
+	public function store(MuestraRequest $request)
 	{
 		try {
 
             $id = $request->input('id');
-            $presentacion = Muestra::firstOrNew(['id' => $id]);
-            $presentacion->fill($request->all());
-            $presentacion->save();
+            $muestra = Muestra::firstOrNew(['id' => $id]);
+            $muestra->fill($request->all());
+            $muestra->save();
 
             return [
                 'success' => true,

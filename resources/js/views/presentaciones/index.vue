@@ -18,7 +18,7 @@
                         <th width="5%">#</th>
                         <th width="40%">Nombre Presentació</th>
                         <th width="30%" class="">Acciones</th>
-                    <tr>
+                    </tr>
                     <tr slot-scope="{ index, row }" slot="tbody" :class="row.estado == 1 ? '' : 'table-danger' ">
                         <td>{{ index }}</td>
                         <td>{{ row.description }}</td>
@@ -26,8 +26,7 @@
                             <button type="button" class="btn waves-effect waves-light btn-sm btn-primary " @click.prevent="clickCreate(row.id)" v-if="row.estado == 1">Editar</button>
                             <button type="button" class="btn waves-effect waves-light btn-sm btn-danger ml-2"  @click.prevent="clickDelete(row.id)" v-if="row.estado == 1">Eliminar</button>
 							<button type="button" class="btn waves-effect waves-light btn-sm btn-success ml-2"  @click.prevent="clickRestore(row.id)" v-if="row.estado == 0">Restaurar</button>
-                        </td>
-               
+                        </td>               
                     </tr>
                 </data-table>
 			</div>

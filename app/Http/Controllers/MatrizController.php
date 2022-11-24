@@ -3,12 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Matriz;
-use App\Models\Presentacion;
 use App\Http\Requests\MatrizRequest;
 use Illuminate\Database\QueryException;
 use App\Http\Resources\MatrizCollection;
-use App\Http\Requests\PresentacionRequest;
-use App\Http\Resources\PresentacionCollection;
 
 class MatrizController extends Controller
 {
@@ -43,9 +40,9 @@ class MatrizController extends Controller
 		try {
 
             $id = $request->input('id');
-            $presentacion = Matriz::firstOrNew(['id' => $id]);
-            $presentacion->fill($request->all());
-            $presentacion->save();
+            $matriz = Matriz::firstOrNew(['id' => $id]);
+            $matriz->fill($request->all());
+            $matriz->save();
 
             return [
                 'success' => true,
@@ -79,7 +76,7 @@ class MatrizController extends Controller
 
 	public function restore($id)
     {
-        $record = Presentacion::findOrFail($id);
+        $record = Matriz::findOrFail($id);
         $record->update([
 			'estado' => 1
 		]);

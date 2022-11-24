@@ -18,7 +18,7 @@
                         <th width="5%">#</th>
                         <th width="40%">Nombre Metodo</th>
                         <th width="30%" class="">Acciones</th>
-                    <tr>
+                    </tr>
                     <tr slot-scope="{ index, row }" slot="tbody" :class="row.estado == 1 ? '' : 'table-danger' ">
                         <td>{{ index }}</td>
                         <td>{{ row.description }}</td>

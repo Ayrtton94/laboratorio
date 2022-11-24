@@ -14,7 +14,7 @@ class MatrizRequest extends FormRequest
 
     public function rules()
     {
-        return [
+        return [			
             'description' => 'required'
         ];
     }

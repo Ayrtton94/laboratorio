@@ -3,12 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Metodo;
-use App\Models\Especie;
 use App\Http\Requests\MetodoRequest;
-use App\Http\Requests\EspecieRequest;
 use Illuminate\Database\QueryException;
 use App\Http\Resources\MetodoCollection;
-use App\Http\Resources\EspecieCollection;
 
 class MetodoController extends Controller
 {
@@ -43,9 +40,9 @@ class MetodoController extends Controller
 		try {
 
             $id = $request->input('id');
-            $especie = Metodo::firstOrNew(['id' => $id]);
-            $especie->fill($request->all());
-            $especie->save();
+            $metodo = Metodo::firstOrNew(['id' => $id]);
+            $metodo->fill($request->all());
+            $metodo->save();
 
             return [
                 'success' => true,
@@ -66,7 +63,7 @@ class MetodoController extends Controller
 
 	public function destroy($id)
     {
-        $record = Especie::findOrFail($id);
+        $record = Metodo::findOrFail($id);
         $record->update([
 			'estado' => 0
 		]);
@@ -79,7 +76,7 @@ class MetodoController extends Controller
 
 	public function restore($id)
     {
-        $record = Especie::findOrFail($id);
+        $record = Metodo::findOrFail($id);
         $record->update([
 			'estado' => 1
 		]);

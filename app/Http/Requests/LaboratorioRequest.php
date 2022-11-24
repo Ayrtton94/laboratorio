@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MuestraRequest extends FormRequest
+class LaboratorioRequest extends FormRequest
 {
 
     public function authorize()
@@ -15,6 +15,7 @@ class MuestraRequest extends FormRequest
     public function rules()
     {
         return [
+			'name' => 'required',
             'description' => 'required'
         ];
     }
