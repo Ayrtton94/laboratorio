@@ -51,10 +51,12 @@
 							<a href="{{route('presentaciones')}}" class="nav-link {{ Route::is('presentaciones')?'active':''}}">Presentación</a>
 						</li>
 						<li class="nav-item"><a class="nav-link" href="{{route('especies')}}">Especie</a></li>
-						<li class="nav-item"><a class="nav-link" href="">Sub Especie</a></li>
-						<li class="nav-item"><a class="nav-link" href="">Matríz</a></li>
-						<li class="nav-item"><a class="nav-link" href="">Muestra</a></li>
-						<li class="nav-item"><a class="nav-link" href="">Prueba</a></li>
+						<li class="nav-item"><a class="nav-link" href="{{route('subespecies')}}">Sub Especie</a></li>
+						<li class="nav-item"><a class="nav-link" href="{{route('matrices')}}">Matríz</a></li>
+						<li class="nav-item"><a class="nav-link" href="{{route('muestras')}}">Muestra</a></li>
+						<li class="nav-item"><a class="nav-link" href="{{route('laboratorios')}}">Laboratorio</a></li>
+						<li class="nav-item"><a class="nav-link" href="{{route('metodos')}}">Metodo</a></li>
+						<li class="nav-item"><a class="nav-link" href="{{route('pruebas')}}">Prueba</a></li>
 						<li class="category-heading">Empresas y Proveedores<li>
 						<li class="nav-item"><a class="nav-link" href="gestion-empresas-acopiadoras.php">Empresas acopiadoras de leche</a></li>
 						<li class="nav-item"><a class="nav-link" href="gestion-clientes.php">Clientes</a></li>

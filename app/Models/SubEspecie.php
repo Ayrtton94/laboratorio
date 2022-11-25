@@ -14,4 +14,8 @@ class SubEspecie extends Model
 		'description'
 	];
 
+	public function especie(){
+		return $this->belongsTo(Especie::class,'especie_id');
+	}
+
 }

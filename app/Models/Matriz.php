@@ -13,4 +13,14 @@ class Matriz extends Model
 		'description'
 	];
 
+	public function muestras()
+    {
+        return $this->hasMany(Muestra::class);
+    }
+
+	public function prueba()
+    {
+        return $this->hasMany(Prueba::class);
+    }
+
 }

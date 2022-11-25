@@ -21,12 +21,12 @@ class PresentacionController extends Controller
             'description' => 'Descripción'
         ];
     }
-    public function records(PresentacionRequest $request)
+    public function records()
     {
-        $records = Presentacion::where(function ($query) use($request) {
-				if($request->column) return $query->where($request->column, 'like', "%{$request->value}%");
-			})->latest();
-        return new PresentacionCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
+		$presentaciones = Presentacion::all();
+		return response()->json([
+			'presentaciones' => $presentaciones
+		]);
 	}
 
 	public function record($id)

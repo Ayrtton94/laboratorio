@@ -50,6 +50,9 @@ import laboratoriosform from './views/laboratorios/form.vue'
 import metodos from './views/metodos/index.vue'
 import metodosform from './views/metodos/form.vue'
 
+import pruebas from './views/pruebas/index.vue'
+import pruebasform from './views/pruebas/form.vue'
+
 const emitter = mitt()
 const app = createApp({})
 app.config.globalProperties.emitter = emitter
@@ -107,7 +110,24 @@ app.component('laboratorios-create', laboratoriosform)
 app.component('metodos', metodos)
 app.component('metodos-create', metodosform)
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 //AREA
 app.component('areas', areas)
+=======
+=======
+>>>>>>> 381b539 (areas)
+//PRUEBA
+app.component('pruebas', pruebas)
+app.component('pruebas-create', pruebasform)
+
+<<<<<<< HEAD
+>>>>>>> 6097d70 (ajuste de crud vuejs)
+=======
+=======
+//AREA
+app.component('areas', areas)
+>>>>>>> 26557ae (areas)
+>>>>>>> 381b539 (areas)
 
 app.mount('#app')

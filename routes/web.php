@@ -104,6 +104,7 @@ Route::controller(PatientController::class)->prefix('patients')->group(function(
 		Route::get('restore//{id}', 'restore');
 		Route::get('', 'index')->name('subespecies');
 		Route::get('/records', 'records');
+		Route::get('/tables', 'tables');
 		Route::get('/columns', 'columns');
 		Route::get('/record/{id}', 'record');
 		Route::post('', 'store');
@@ -128,6 +129,7 @@ Route::controller(PatientController::class)->prefix('patients')->group(function(
 		Route::get('restore//{id}', 'restore');
 		Route::get('', 'index')->name('muestras');
 		Route::get('/records', 'records');
+		Route::get('/tables', 'tables');
 		Route::get('/columns', 'columns');
 		Route::get('/record/{id}', 'record');
 		Route::post('', 'store');
@@ -164,6 +166,7 @@ Route::controller(PatientController::class)->prefix('patients')->group(function(
 		Route::get('restore//{id}', 'restore');
 		Route::get('', 'index')->name('pruebas');
 		Route::get('/records', 'records');
+		Route::get('/tables', 'tables');
 		Route::get('/columns', 'columns');
 		Route::get('/record/{id}', 'record');
 		Route::post('', 'store');

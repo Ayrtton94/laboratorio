@@ -24,12 +24,12 @@ class MuestraController extends Controller
             'description' => 'Descripción'
         ];
     }
-    public function records(MuestraRequest $request)
+    public function records()
     {
-        $records = Muestra::where(function ($query) use($request) {
-				if($request->column) return $query->where($request->column, 'like', "%{$request->value}%");
-			})->latest();
-        return new MuestraCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
+		$muestras = Muestra::with('matriz')->get();
+		return response()->json([
+			'muestras' => $muestras
+		]);
 	}
 
 	public function record($id)

@@ -1,101 +1,60 @@
 <template>
-    <el-dialog :title="titleDialog" :visible="showDialog" @close="close" @open="create" append-to-body  
-		:close-on-modal="false"
-		:show-close="false"
-		:close-on-click-modal="false">
-        <form autocomplete="off" @submit.prevent="submit">
-            <div class="form-body">
-                <div class="row">
-                    <div class="col-md-9">
-                        <div class="form-group" :class="{'has-danger': errors.name}">
-                            <label class="control-label">Nombre</label>
-                            <el-input v-model="form.name" ref="name"></el-input>
-                        </div>
-                    </div> 
-                </div>
-                <div class="row">
-                    <div class="col-md-9">
-                        <div class="form-group" :class="{'has-danger': errors.description}">
-                            <label class="control-label">Descripcion Laboratorio</label>
-                            <el-input v-model="form.description" ref="description"></el-input>
-                            <small class="form-control-feedback" v-if="errors.description" v-text="errors.description[0]"></small>
-                        </div>
-                    </div> 
-                </div>
-
-            </div>
-            <div class="form-actions text-right mt-4">
-                <el-button @click.prevent="close()">Cancelar</el-button>
-                <el-button type="primary" native-type="submit" :loading="loading_submit">Guardar</el-button>
-            </div>
-        </form>
-    </el-dialog>
-
+	<div class="modal fade show" tabindex="-1" role="dialog" aria-hidden="true" style="background-color: rgba(0,0,0,0.7); display: block;">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header mr-3 ml-3">
+					<h4 class="modal-title">
+						<span v-if="!form.id">Nuevo Laboratorio</span>
+						<span v-else>Actualizar Registro</span>
+					</h4>
+					<button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" @click.prevent="closeModal">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form id="signupForm" autocomplete="off" @submit.prevent="submit">
+						<div class="form-group">
+							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Nombre</label>
+							<div class="col-md-12 col-sm-12 col-xs-12">
+								<input id="name" v-model="form.name" class="form-control" name="name" type="text" placeholder="Nombre">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Descripción</label>
+							<div class="col-md-12 col-sm-12 col-xs-12">
+								<input id="name" v-model="form.description" class="form-control" name="description" type="text" placeholder="Descripción">
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button @click.prevent="closeModal" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+							<button @click.prevent="store(form)" type="submit" class="btn btn-sm btn-success">
+								<span v-if="!form.id">Registrar</span>
+								<span v-else>Actualizar</span>
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
-
-    export default {
-        props: ['showDialog', 'recordId'],
-        data() {
-            return {
-                loading_submit: false,
-                titleDialog: null,
-                resource: 'laboratorios',
-                errors: {},
-                form: {},
-                options: [],
-            }
-        },
-        created() {
-            this.initForm()
-        },
-        methods: {
-            initForm() {
-                this.errors = {}
-                this.form = {
-                    id: null, 
-                    description : null
-                }
-            },
-            create() {
-            
-                this.titleDialog = (this.recordId)? 'Editar Registro de Laboratorios':'Nuevo Registro de Laboratorios';
-
-                if (this.recordId) {
-                    this.$http.get(`/${this.resource}/record/${this.recordId}`)
-                        .then(response => {
-                            this.form = response.data.data 
-                        })                        
-                } 
-            },
-            submit() {
-                this.loading_submit = true                  
-                this.$http.post(`/${this.resource}`, this.form)
-                    .then(response => {
-                        if (response.data.success) {
-                            this.$message.success(response.data.message)
-                            this.$eventHub.$emit('reloadData')
-                            this.close()
-                        } else {
-                            this.$message.error(response.data.message)
-                        }
-                    })
-                    .catch(error => {
-                        if (error.response.status === 422) {
-                            this.errors = error.response.data 
-                        } else {
-                            console.log(error)
-                        }
-                    })
-                    .then(() => {
-                        this.loading_submit = false
-                    })
-            },
-            close() {
-                this.$emit('update:showDialog', false)
-                this.initForm()
-            },
-        }
-    }
+	export default {
+		props: {
+			form: {
+				type: Object,
+				default: ()=>{}
+			},
+		},
+		methods:{
+			store(form){
+				this.$emit('saveAppt', form);
+			},
+			closeModal(){
+				this.$emit('closeModal');
+			}
+		}
+		
+	}
 </script>

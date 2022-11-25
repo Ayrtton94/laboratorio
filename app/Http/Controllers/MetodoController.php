@@ -21,12 +21,12 @@ class MetodoController extends Controller
             'description' => 'Descripción'
         ];
     }
-    public function records(MetodoRequest $request)
+    public function records()
     {
-        $records = Metodo::where(function ($query) use($request) {
-				if($request->column) return $query->where($request->column, 'like', "%{$request->value}%");
-			})->latest();
-        return new MetodoCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
+		$metodos = Metodo::all();
+		return response()->json([
+			'metodos' => $metodos
+		]);
 	}
 
 	public function record($id)
