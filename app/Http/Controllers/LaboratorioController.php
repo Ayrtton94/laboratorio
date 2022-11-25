@@ -21,12 +21,12 @@ class LaboratorioController extends Controller
             'description' => 'Descripción'
         ];
     }
-    public function records(LaboratorioRequest $request)
-    {
-        $records = Laboratorio::where(function ($query) use($request) {
-				if($request->column) return $query->where($request->column, 'like', "%{$request->value}%");
-			})->latest();
-        return new LaboratorioCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
+    public function records()
+    {        
+		$laboratorios = Laboratorio::all();
+		return response()->json([
+			'laboratorios' => $laboratorios
+		]);
 	}
 
 	public function record($id)
@@ -40,9 +40,9 @@ class LaboratorioController extends Controller
 		try {
 
             $id = $request->input('id');
-            $especie = Laboratorio::firstOrNew(['id' => $id]);
-            $especie->fill($request->all());
-            $especie->save();
+            $laboratorio = Laboratorio::firstOrNew(['id' => $id]);
+            $laboratorio->fill($request->all());
+            $laboratorio->save();
 
             return [
                 'success' => true,

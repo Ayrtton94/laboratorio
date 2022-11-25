@@ -27,12 +27,12 @@ class SubEspecieController extends Controller
             'description' => 'Descripción'
         ];
     }
-    public function records(SubEspecieRequest $request)
+    public function records()
     {
-        $records = SubEspecie::where(function ($query) use($request) {
-				if($request->column) return $query->where($request->column, 'like', "%{$request->value}%");
-			})->latest();
-        return new SubEspecieCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
+		$subespecies = SubEspecie::with('especie')->get();
+		return response()->json([
+			'subespecies' => $subespecies
+		]);
 	}
 
 	public function record($id)
@@ -44,7 +44,6 @@ class SubEspecieController extends Controller
 	public function tables()
     {
         $especies = Especie::orderBy('description')->get();
-
         return compact('especies');
     }
 

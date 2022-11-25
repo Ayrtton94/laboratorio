@@ -26,12 +26,13 @@ class PruebaController extends Controller
 			'condicion' => 'Condicion',
         ];
     }
-    public function records(PruebaRequest $request)
+    public function records()
     {
-        $records = Prueba::where(function ($query) use($request) {
-				if($request->column) return $query->where($request->column, 'like', "%{$request->value}%");
-			})->latest();
-        return new PruebaCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
+		$pruebas = Prueba::with('muestra','matriz','laboratorio','metodo')->get();
+		return response()->json([
+			'pruebas' => $pruebas
+		]);
+        
 	}
 
 	public function record($id)
@@ -42,8 +43,8 @@ class PruebaController extends Controller
 
 	public function tables()
     {
-        $muestras = Muestra::orderBy('description')->get();
 		$matrices = Matriz::orderBy('description')->get();
+        $muestras = Muestra::orderBy('description')->get();
 		$laboratorios = Laboratorio::orderBy('name')->get();
 		$metodos = Metodo::orderBy('name')->get();
         return compact('muestras','matrices','laboratorios','metodos');

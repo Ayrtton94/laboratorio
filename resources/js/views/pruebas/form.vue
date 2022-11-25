@@ -1,179 +1,125 @@
 <template>
-    <el-dialog :title="titleDialog" :visible="showDialog" @close="close" @open="create" append-to-body  
-		:close-on-modal="false"
-		:show-close="false"
-		:close-on-click-modal="false">
-        <form autocomplete="off" @submit.prevent="submit">
-            <div class="form-body">
-				<div class="row">
-                    <div class="col-md-12">
-                        <div :class="{'has-danger': errors.matriz_id}" class="form-group">
-                            <label class="control-label d-block">Matrices</label>
-                            <el-select v-model="form.matriz_id" class="w-100" dusk="matriz_id" filterable>
-                                <el-option v-for="option in matrices" :key="option.id" :label="option.description"  :value="option.id"></el-option>
-                            </el-select>
-                        </div>
-                    </div>
-                </div>
-				<div class="row">
-                    <div class="col-md-12">
-                        <div :class="{'has-danger': errors.muestra_id}" class="form-group">
-                            <label class="control-label d-block">Muestras</label>
-                            <el-select v-model="form.muestra_id" class="w-100" dusk="muestra_id" filterable>
-                                <el-option v-for="option in muestras" :key="option.id" :label="option.description"  :value="option.id"></el-option>
-                            </el-select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-9">
-                        <div class="form-group" :class="{'has-danger': errors.name}">
-                            <label class="control-label">Nombre</label>
-                            <el-input v-model="form.name" ref="name"></el-input>
-                            <small class="form-control-feedback" v-if="errors.name" v-text="errors.name[0]"></small>
-                        </div>
-                    </div> 
-                </div>
-				<div class="row">
-                    <div class="col-md-9">
-                        <div class="form-group" :class="{'has-danger': errors.price}">
-                            <label class="control-label">Precio</label>
-                            <el-input v-model="form.price" ref="price"></el-input>
-                            <small class="form-control-feedback" v-if="errors.price" v-text="errors.price[0]"></small>
-                        </div>
-                    </div> 
-                </div>
-				<div class="row">
-                    <div class="col-md-12">
-                        <div :class="{'has-danger': errors.laboratorio_id}" class="form-group">
-                            <label class="control-label d-block">Laboratorio</label>
-                            <el-select v-model="form.laboratorio_id" class="w-100" dusk="laboratorio_id" filterable>
-                                <el-option v-for="option in laboratorios" :key="option.id" :label="option.description"  :value="option.id"></el-option>
-                            </el-select>
-                        </div>
-                    </div>
-                </div>
-				<div class="row">
-                    <div class="col-md-12">
-                        <div :class="{'has-danger': errors.metodo_id}" class="form-group">
-                            <label class="control-label d-block">Metodo</label>
-                            <el-select v-model="form.metodo_id" class="w-100" dusk="metodo_id" filterable>
-                                <el-option v-for="option in metodos" :key="option.id" :label="option.description"  :value="option.id"></el-option>
-                            </el-select>
-                        </div>
-                    </div>
-                </div>
-				<div class="row">
-                    <div class="col-md-9">
-                        <div class="form-group" :class="{'has-danger': errors.condicion}">
-                            <label class="control-label">Condicion</label>
-                            <el-input v-model="form.condicion" ref="condicion"></el-input>
-                            <small class="form-control-feedback" v-if="errors.condicion" v-text="errors.condicion[0]"></small>
-                        </div>
-                    </div> 
-                </div>
-				<div class="row">
-                    <div class="col-md-9">
-                        <div class="form-group" :class="{'has-danger': errors.time_entrega}">
-                            <label class="control-label">Tiempo de Entrega</label>
-                            <el-input v-model="form.time_entrega" ref="time_entrega"></el-input>
-                            <small class="form-control-feedback" v-if="errors.time_entrega" v-text="errors.time_entrega[0]"></small>
-                        </div>
-                    </div> 
-                </div>
-            </div>
-            <div class="form-actions text-right mt-4">
-                <el-button @click.prevent="close()">Cancelar</el-button>
-                <el-button type="primary" native-type="submit" :loading="loading_submit">Guardar</el-button>
-            </div>
-        </form>
-    </el-dialog>
-
+	<div class="modal fade show" tabindex="-1" role="dialog" aria-hidden="true" style="background-color: rgba(0,0,0,0.7); display: block;">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header mr-3 ml-3">
+					<h4 class="modal-title">
+						<span v-if="!form.id">Nueva Prueba</span>
+						<span v-else>Actualizar Registro</span>
+					</h4>
+					<button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" @click.prevent="closeModal">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form id="signupForm" autocomplete="off" @submit.prevent="submit">
+						<div class="form-group">
+							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Matrices</label>
+							<div class="col-md-12 col-sm-12 col-xs-12">
+								<el-select v-model="form.matriz_id" class="w-100" dusk="matriz_id" filterable>
+									<el-option v-for="option in matrices" :key="option.id" :label="option.description"  :value="option.id"></el-option>
+								</el-select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Muestras</label>
+							<div class="col-md-12 col-sm-12 col-xs-12">
+								<el-select v-model="form.muestra_id" class="w-100" dusk="muestra_id" filterable>
+									<el-option v-for="option in muestras" :key="option.id" :label="option.description"  :value="option.id"></el-option>
+								</el-select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Nombre</label>
+							<div class="col-md-12 col-sm-12 col-xs-12">
+								<input id="name" v-model="form.name" class="form-control" name="name" type="text" placeholder="Descripción">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Precio</label>
+							<div class="col-md-12 col-sm-12 col-xs-12">
+								<input id="name" v-model="form.price" class="form-control" name="price" type="text" placeholder="Descripción">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Laboratorios</label>
+							<div class="col-md-12 col-sm-12 col-xs-12">
+								<el-select v-model="form.laboratorio_id" class="w-100" dusk="laboratorio_id" filterable>
+									<el-option v-for="option in laboratorios" :key="option.id" :label="option.name"  :value="option.id"></el-option>
+								</el-select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Metodos</label>
+							<div class="col-md-12 col-sm-12 col-xs-12">
+								<el-select v-model="form.metodo_id" class="w-100" dusk="metodo_id" filterable>
+									<el-option v-for="option in metodos" :key="option.id" :label="option.name"  :value="option.id"></el-option>
+								</el-select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Condición</label>
+							<div class="col-md-12 col-sm-12 col-xs-12">
+								<input id="name" v-model="form.condicion" class="form-control" name="condicion" type="text" placeholder="Descripción">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Tiempo de Entrega</label>
+							<div class="col-md-12 col-sm-12 col-xs-12">
+								<input id="name" v-model="form.time_entrega" class="form-control" name="time_entrega" type="text" placeholder="Descripción">
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button @click.prevent="closeModal" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+							<button @click.prevent="store(form)" type="submit" class="btn btn-sm btn-success">
+								<span v-if="!form.id">Registrar</span>
+								<span v-else>Actualizar</span>
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
-
-    export default {
-        props: ['showDialog', 'recordId'],
-        data() {
-            return {
-                loading_submit: false,
-                titleDialog: null,
-                resource: 'pruebas',
-                errors: {},
-                form: {},
-                options: [],
+	export default {
+		props: {
+			form: {
+				type: Object,
+				default: ()=>{}
+			},
+		},
+		data(){
+			return {
+				resource: 'pruebas',
 				matrices: [],
 				muestras: [],
 				laboratorios: [],
 				metodos: []
-            }
-        },
-        created() {
-            this.initForm()
-        },
-        methods: {
-            initForm() {
-                this.errors = {}
-                this.form = {
-                    id: null, 
-					matriz_id: null,
-					muestra_id: null,
-					laboratorio_id: null,
-					metodo_id: null,
-                    name: null,
-					price: 0,
-					condicion: null,
-					time_entrega: null
-                }
-            },
-            create() {
-            
-                this.titleDialog = (this.recordId)? 'Editar Registro de Pruebas':'Nuevo Registro de Pruebas';
-
-                if (this.recordId) {
-                    this.$http.get(`/${this.resource}/record/${this.recordId}`)
-                        .then(response => {
-                            this.form = response.data.data 
-                        })                        
-                } 
-            },
-			tables() {
-				this.$http.get(`/${this.resource}/tables`)
-					.then(response => {
-						this.matrices = response.data.matrices
-						this.muestras = response.data.muestras
-						this.labortorios = response.data.labortorios
-						this.metodos = response.data.metodos
-					})
+			}
+		},
+		created(){
+			this.tables();
+		},
+		methods:{
+			store(form){
+				this.$emit('saveAppt', form);
 			},
-            submit() {
-                this.loading_submit = true                  
-                this.$http.post(`/${this.resource}`, this.form)
-                    .then(response => {
-                        if (response.data.success) {
-                            this.$message.success(response.data.message)
-                            this.$eventHub.$emit('reloadData')
-                            this.close()
-                        } else {
-                            this.$message.error(response.data.message)
-                        }
-                    })
-                    .catch(error => {
-                        if (error.response.status === 422) {
-                            this.errors = error.response.data 
-                        } else {
-                            console.log(error)
-                        }
-                    })
-                    .then(() => {
-                        this.loading_submit = false
-                    })
-            },
-            close() {
-                this.$emit('update:showDialog', false)
-                this.initForm()
-            },
-        }
-    }
+			closeModal(){
+				this.$emit('closeModal');
+			},
+			tables(){
+				axios.get(`/${this.resource}/tables`)
+				.then(res => {
+					this.matrices = res.data.matrices
+					this.muestras = res.data.muestras
+					this.laboratorios = res.data.laboratorios
+					this.metodos = res.data.metodos
+				})
+			},
+		}
+		
+	}
 </script>

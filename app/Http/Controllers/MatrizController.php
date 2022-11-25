@@ -21,12 +21,12 @@ class MatrizController extends Controller
             'description' => 'Descripción'
         ];
     }
-    public function records(MatrizRequest $request)
+    public function records()
     {
-        $records = Matriz::where(function ($query) use($request) {
-				if($request->column) return $query->where($request->column, 'like', "%{$request->value}%");
-			})->latest();
-        return new MatrizCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
+		$matrices = Matriz::all();
+		return response()->json([
+			'matrices' => $matrices
+		]);
 	}
 
 	public function record($id)

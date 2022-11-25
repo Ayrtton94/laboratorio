@@ -14,4 +14,13 @@ class Muestra extends Model
 		'description'
 	];
 
+	public function matriz(){
+		return $this->belongsTo(Matriz::class,'matriz_id');
+	}
+
+	public function prueba()
+    {
+        return $this->hasMany(Prueba::class);
+    }
+
 }

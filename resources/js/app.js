@@ -51,6 +51,9 @@ import laboratoriosform from './views/laboratorios/form.vue'
 import metodos from './views/metodos/index.vue'
 import metodosform from './views/metodos/form.vue'
 
+import pruebas from './views/pruebas/index.vue'
+import pruebasform from './views/pruebas/form.vue'
+
 const emitter = mitt()
 const app = createApp({})
 app.config.globalProperties.emitter = emitter
@@ -107,6 +110,10 @@ app.component('laboratorios-create', laboratoriosform)
 //METODOS
 app.component('metodos', metodos)
 app.component('metodos-create', metodosform)
+
+//PRUEBA
+app.component('pruebas', pruebas)
+app.component('pruebas-create', pruebasform)
 
 
 app.mount('#app')

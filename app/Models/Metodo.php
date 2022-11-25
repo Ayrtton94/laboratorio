@@ -14,4 +14,9 @@ class Metodo extends Model
 		'description'
 	];
 
+	public function prueba()
+    {
+        return $this->hasMany(Prueba::class);
+    }
+
 }

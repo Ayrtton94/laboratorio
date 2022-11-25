@@ -10,8 +10,8 @@ class Prueba extends Model
 	use HasFactory;
 	protected $table = "pruebas";
 	protected $fillable = [
-		'muestra_id',
 		'matriz_id',
+		'muestra_id',
 		'name',
 		'price',
 		'laboratorio_id',
@@ -19,5 +19,25 @@ class Prueba extends Model
 		'condicion',
 		'time_entrega'
 	];
+
+	public function matriz()
+    {
+        return $this->belongsTo(Matriz::class,'matriz_id');
+    }
+
+	public function muestra()
+    {
+        return $this->belongsTo(Muestra::class,'muestra_id');
+    }
+
+	public function laboratorio()
+    {
+        return $this->belongsTo(Laboratorio::class,'laboratorio_id');
+    }
+
+	public function metodo()
+    {
+        return $this->belongsTo(Metodo::class,'metodo_id');
+    }
 
 }

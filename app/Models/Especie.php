@@ -13,4 +13,10 @@ class Especie extends Model
 		'description'
 	];
 
+
+	public function subespecies()
+    {
+        return $this->hasMany(SubEspecie::class);
+    }
+
 }

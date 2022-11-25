@@ -1,103 +1,165 @@
 <template>
-    <div >
-       <div class="page-header d-flex bd-highlight">
-			<div class="ml-4 mt-2 p-2 flex-grow-1">
-				<h4 >Pruebas</h4>
-			</div>
-            <div class="mr-3">
-                <button type="button" class="btn btn-custom btn-sm  mt-2 mr-2" @click.prevent="clickCreate()"><i class="fa fa-plus-circle"></i> Nueva</button>
-                <a href="#" class="card-action card-action-toggle text-white" data-card-toggle=""></a>
-            </div>
-        </div>
-
-		
-        <div class="card mb-0 w-100 mt-3">
-			<div class="card-body">
-				<data-table :resource="resource" :showTotals="false">
-                    <!-- <tr slot="heading">
-                        <th width="5%">#</th>
-						<th width="20%">Matriz</th>
-                        <th width="20%">Muestra</th>
-						<th width="20%">Nombre</th>
-						<th width="20%">Precio</th>
-						<th width="20%">Laboratorio</th>
-						<th width="20%">Metodo</th>
-						<th width="20%">Condicion</th>
-						<th width="20%">Tiempo Entrega</th>
-                        <th width="30%" class="">Acciones</th>
+	<div class="row">
+        <div class="col-lg-12 col-xl-12 stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-baseline mb-4">
+                <h6 class="card-title mb-0">GESTIÓN DE PRUEBAS</h6>
+                  <div class="dropdown">
+					<button @click.prevent="clickCreate()" type="button" class="btn btn-sm btn-success btn-icon-text text-light mx-1">Nueva </button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12"></div>
+              </div>  
+              <div class="table-responsive">
+              	<table class="table table-striped dt-responsive nowrap" cellspacing="0" width="100%">
+                  <thead>
+                    <tr>
+						<th class="pt-0">#</th>
+						<th class="pt-0"> Matriz</th>
+						<th class="pt-0"> Muestra</th>
+						<th class="pt-0"> Nombre</th>
+						<th class="pt-0"> Precio</th>
+						<th class="pt-0"> Laboratorio</th>
+						<th class="pt-0"> Metodo</th>
+					  	<th class="pt-0"> Condicion</th>
+						<th class="pt-0"> Tiempo Entrega</th>
+                      	<th class="pt-0">Opciones</th>
                     </tr>
-                    <tr slot-scope="{ index, row }" slot="tbody" :class="row.estado == 1 ? '' : 'table-danger' ">
-                        <td>{{ index }}</td>
-						<td>{{ row.matriz }}</td>
-                        <td>{{ row.muestra }}</td>
+                  </thead>
+                  <tbody>
+					<tr v-for="(row, index) in records" :key="index">
+						<td>{{ index + 1 }}</td>
+						<td>{{ row.matriz.description }}</td>
+						<td>{{ row.muestra.description }}</td>
 						<td>{{ row.name }}</td>
 						<td>{{ row.price }}</td>
-						<td>{{ row.laboratorio }}</td>
-						<td>{{ row.metodo }}</td>
-						<td>{{ row.metodo }}</td>
+						<td>{{ row.laboratorio.name }}</td>
+						<td>{{ row.metodo.name }}</td>
 						<td>{{ row.condicion }}</td>
 						<td>{{ row.time_entrega }}</td>
-                        <td class="d-flex">
-                            <button type="button" class="btn waves-effect waves-light btn-sm btn-primary " @click.prevent="clickCreate(row.id)" v-if="row.estado == 1">Editar</button>
-                            <button type="button" class="btn waves-effect waves-light btn-sm btn-danger ml-2"  @click.prevent="clickDelete(row.id)" v-if="row.estado == 1">Eliminar</button>
-							<button type="button" class="btn waves-effect waves-light btn-sm btn-success ml-2"  @click.prevent="clickRestore(row.id)" v-if="row.estado == 0">Restaurar</button>
-                        </td>
-               
-                    </tr> -->
-                </data-table>
-			</div>
-         
+						<td>
+							<a class="btn text-danger" @click="Delete(row.id)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Eliminar" aria-label="Eliminar">
+								<vue-feather type="delete" class="fs-vue-feather-18"></vue-feather>
+							</a>
+							<a @click.prevent="clickUpdate(row)" class="btn text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Editar" aria-label="Editar">
+								<vue-feather type="edit" class="fs-vue-feather-18"></vue-feather>
+							</a>
+						</td>
+					</tr>
+                  </tbody>
+                </table>
+              </div>
+            </div> 
+          </div>
         </div>
-
-        <prueba-form 
-			:showDialog.sync="showDialog" 
-			:recordId="recordId"></prueba-form>
-
     </div>
+	<prueba-modal v-if="showDialog" :form="form" @closeModal="closeModal" @saveAppt="saveAppt"/>
 </template>
 <script>
-
-
-    import PruebaForm from './form.vue'
-	import DataTable from '../../components/DataTable.vue'
-    export default {
-        components: { PruebaForm, DataTable },
-        data() {
-            return {
-
-                showDialog: false,
-                resource: 'pruebas',
-                recordId: null,
-                records: [],
-            }
-        },
-        created() {
-            this.$eventHub.$on('reloadData', () => {
-                this.getData()
-            });
-            this.getData();
-        },
-        methods: {
-            getData() {
-                this.$http.get(`/${this.resource}/records`)
-                    .then(response => {
-                        this.records = response.data.data;
-                    })
-            },
-            clickCreate(recordId = null) {
-                this.recordId = recordId;
-                this.showDialog = true
-            },
-            clickDelete(id) {
-                this.destroy(`/${this.resource}/${id}`).then(() =>
-                    this.$eventHub.$emit('reloadData')
-                )
-			},
-			clickRestore(id) {
-                this.restore(`/restore/${this.resource}/${id}`).then(() =>
-                    this.$eventHub.$emit('reloadData')
-                )
+	import PruebaModal from "../pruebas/form.vue"
+	export default {
+		components: {
+			PruebaModal
+		},
+		data(){
+			return {
+				resource: 'pruebas',
+				records: [],
+				showDialog: false,
+				form: {}
 			}
-        }
+		},
+        created() {
+            this.emitter.on('reloadData', () => {
+				this.getData();
+			});
+			this.getData();
+        },
+		methods: {
+			initForm(){
+				this.form = {
+					id: '',
+					matriz_id:null,
+					muestra_id: null,
+					name: null,
+					price: null,
+					laboratorio_id: null,
+					metodo_id: null,
+					condicion: null,
+					time_entrega: null
+				}
+			},
+			getData(){
+				axios.get(`/${this.resource}/records`)
+				.then(res => {
+					this.records = res.data.pruebas
+				})
+			},
+			clickCreate(){
+				this.showDialog = true;
+			},
+			clickUpdate(info){
+				this.showDialog = true;
+				this.getDataMoal(info);
+			},
+			getDataMoal(info){
+				this.form.id = info.id
+				this.form.matriz_id = info.matriz_id
+				this.form.muestra_id = info.muestra_id
+				this.form.name = info.name
+				this.form.price = info.price
+				this.form.laboratorio_id = info.laboratorio_id
+				this.form.metodo_id = info.metodo_id
+				this.form.condicion = info.condicion
+				this.form.time_entrega = info.time_entrega
+			},
+			closeModal(){
+				this.showDialog = false;
+				this.initForm();
+			},
+			saveAppt(form){
+				axios.post(`/${this.resource}`, form)
+				.then(res => {
+					if(res.status == 200) {
+						this.$swal({
+							icon: 'success',
+							title: res.data.message,
+							showConfirmButton: false,
+							timer: 1500
+						})
+						this.emitter.emit('reloadData');
+						this.closeModal();
+					}
+				})
+			},
+			Delete(id){
+				this.$swal.fire({
+					title: '¿Eliminar registro?',
+					text: "Eliminando Perfil Seleccionado!",
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Si!',
+					cancelButtonText: 'No!',
+					reverseButtons: true
+				}).then((result) => {
+					if (result.isConfirmed) {
+						axios.post(`/${this.resource}/eliminar/${id}`)
+						.then(res => {
+							if(res.status) {
+								this.$swal({
+									icon: 'success',
+									title: res.data.message,
+									showConfirmButton: false,
+									timer: 1500
+								})					
+								this.emitter.emit('reloadData');
+							}
+						})
+					}				
+				})
+			}
+		}
     }
 </script>
