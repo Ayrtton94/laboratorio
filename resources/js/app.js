@@ -27,6 +27,8 @@ import permisos from './views/Permissions/index.vue'
 import patiends from './views/Patients/index.vue'
 import patiendsform from './views/Patients/form.vue'
 import areas from './views/Area/index.vue'
+import tipodeorden from './views/Tipodeorden/index.vue'
+
 
 //PRESENTACIONES
 import presentaciones from './views/presentaciones/index.vue'
@@ -52,6 +54,7 @@ import metodosform from './views/metodos/form.vue'
 
 import pruebas from './views/pruebas/index.vue'
 import pruebasform from './views/pruebas/form.vue'
+import persons from './views/Persons/index.vue'
 
 const emitter = mitt()
 const app = createApp({})
@@ -116,5 +119,11 @@ app.component('pruebas-create', pruebasform)
 
 //AREA
 app.component('areas', areas)
+
+//TIPO DE ORDEN
+app.component('tipodeorden', tipodeorden)
+
+//PERSONAS
+app.component('persons', persons);
 
 app.mount('#app')

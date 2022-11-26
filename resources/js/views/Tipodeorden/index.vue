@@ -4,9 +4,9 @@
           <div class="card">
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-baseline mb-4">
-                <h6 class="card-title mb-0">GESTIÓN DE AREAS</h6>
+                <h6 class="card-title mb-0">Tipo de Orden</h6>
                   <div class="dropdown">
-					<button @click.prevent="clickCreate()" type="button" class="btn btn-sm btn-success btn-icon-text text-light mx-1">Nueva Area</button>
+					<button @click.prevent="clickCreate()" type="button" class="btn btn-sm btn-success btn-icon-text text-light mx-1">Registrar</button>
                 </div>
               </div>
               <div class="row">
@@ -18,49 +18,52 @@
                     <tr>
 					<th class="pt-0">#</th>
                       <th class="pt-0">Nombre</th>
-					  <th class="pt-0">Descripción</th>
+					  <th class="pt-0">Estado</th>
 					  <th class="pt-0">Registro</th>
                       <th class="pt-0">Opciones</th>
                     </tr>
                   </thead>
                   <tbody>
-					<tr v-for="(row, index) in records.data" :key="index">
+					<tr v-for="(row, index) in records" :key="index">
 						<td>{{ row.id }}</td>
 						<td>{{ row.name }}</td>
-						<td>{{ row.description }}</td>
+						<td>
+							<span class="badge bg-success" v-if="row.estado==1">Activo</span>
+							<span class="badge bg-danger" v-else>Eliminado</span>
+						</td>
 						<td>{{ (row.created_at).split('T')[0] }}</td>
 						<td>
-							<a class="btn text-danger" @click="clickDelete(row.id)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Eliminar" aria-label="Eliminar">
+							<a v-if="row.estado!=0" class="btn text-danger" @click="clickDelete(row.id)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Eliminar" aria-label="Eliminar">
 								<vue-feather type="delete" class="fs-vue-feather-18"></vue-feather>
 							</a>
-							<a @click.prevent="clickUpdate(row)" class="btn text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Editar" aria-label="Editar">
+							<a v-if="row.estado!=0" @click.prevent="clickUpdate(row)" class="btn text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Editar" aria-label="Editar">
 								<vue-feather type="edit" class="fs-vue-feather-18"></vue-feather>
+							</a>
+							<a class="btn text-success" v-if="row.estado==0" @click="clickRestore(row.id)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Restaurar" aria-label="Restaurar">
+								<vue-feather type="rotate-cw" class="fs-vue-feather-18"></vue-feather>
 							</a>
 						</td>
 					</tr>
                   </tbody>
                 </table>
               </div>
-			  <Pagination class="my-2" :data="records" @pagination-change-page="getAreas" />
             </div> 
           </div>
         </div>
     </div>
-	<area-modal v-if="showDialog" :form="form" :errors="errors" @closeModal="closeModal" @saveAppt="saveAppt"/>
+	<tipo-modal v-if="showDialog" :form="form" :errors="errors" @closeModal="closeModal" @saveAppt="saveAppt"/>
 </template>
 <script>
 	import { deletable } from "../../mixins/deletable"
-	import AreaModal from "../Area/form.vue"
-	import LaravelVuePagination from 'laravel-vue-pagination'
+	import TipoModal from "../Tipodeorden/form.vue"
 	export default {
 		mixins: [deletable],
 		components: {
-			AreaModal,
-			'Pagination': LaravelVuePagination
+			TipoModal
 		},
 		data(){
 			return {
-				resource: 'areas',
+				resource: 'tipodeorden',
 				records: [],
 				showDialog: false,
 				form: {},
@@ -85,17 +88,8 @@
 			getData(){
 				axios.get(`/${this.resource}/records`)
 				.then(res => {
-					this.records = res.data.areas
+					this.records = res.data.tipoorden
 				})
-			},
-			getAreas(page = 1){
-				axios.get(`/${this.resource}/records?page=` + page)
-				.then(response =>{
-					if (response.status === 200) {
-						this.records = response.data.areas
-					}
-				})
-				.catch(error => console.log(error))
 			},
 			clickCreate(){
 				this.showDialog = true;
@@ -140,6 +134,11 @@
                     this.emitter.emit('reloadData')
                 )
 			},
+			clickRestore(id) {
+                this.restore(`/${this.resource}/restore/${id}`).then(() =>
+					this.emitter.emit('reloadData')
+                )
+            }
 		}
     }
 </script>
