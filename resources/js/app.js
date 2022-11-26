@@ -110,24 +110,11 @@ app.component('laboratorios-create', laboratoriosform)
 app.component('metodos', metodos)
 app.component('metodos-create', metodosform)
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-//AREA
-app.component('areas', areas)
-=======
-=======
->>>>>>> 381b539 (areas)
 //PRUEBA
 app.component('pruebas', pruebas)
 app.component('pruebas-create', pruebasform)
 
-<<<<<<< HEAD
->>>>>>> 6097d70 (ajuste de crud vuejs)
-=======
-=======
 //AREA
 app.component('areas', areas)
->>>>>>> 26557ae (areas)
->>>>>>> 381b539 (areas)
 
 app.mount('#app')
