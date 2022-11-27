@@ -23,9 +23,6 @@ import usuarioseditar from './views/Usuarios/edit.vue'
 import roles from './views/Roles/index.vue'
 //PERMISOS
 import permisos from './views/Permissions/index.vue'
-//PACIENTES
-import patiends from './views/Patients/index.vue'
-import patiendsform from './views/Patients/form.vue'
 import areas from './views/Area/index.vue'
 import tipodeorden from './views/Tipodeorden/index.vue'
 
@@ -79,11 +76,6 @@ app.component('roles', roles)
 
 //PERMISOS
 app.component('permissions', permisos)
-
-//PACIENTES
-app.component('patiends', patiends)
-app.component('patients-create', patiendsform)
-
 
 //PRESENTACIONES
 app.component('presentaciones', presentaciones)

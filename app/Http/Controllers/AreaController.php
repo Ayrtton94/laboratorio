@@ -24,6 +24,7 @@ class AreaController extends Controller
 
 	public function store(AreaRequest $request)
 	{
+		
 		try {
 			$id = $request->input('id');
 			$Area = Area::firstOrNew(['id' => $id]);

@@ -8,7 +8,6 @@ use App\Http\Controllers\MatrizController;
 use App\Http\Controllers\MetodoController;
 use App\Http\Controllers\PruebaController;
 use App\Http\Controllers\MuestraController;
-use App\Http\Controllers\PatientController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\EspecieController;
@@ -65,17 +64,6 @@ Route::controller(AreaController::class)->prefix('areas')->group(function(){
 //PERMISOS
 Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions');
 Route::get('/permissions/records', [PermissionController::class, 'records'])->name('records');
-
-
-// PACIENTES
-Route::controller(PatientController::class)->prefix('patients')->group(function(){
-    Route::get('', 'index')->name('patients');
-    Route::get('/create', 'create')->name('patients-create');
-    Route::get('/records', 'records')->name('patients-records');
-    Route::post('', 'store');
-    Route::post('/search', 'search');
-    Route::get('/means', 'means');
-});
 
 	// PRESENTACION
 	Route::controller(PresentacionController::class)->prefix('presentaciones')->group(function(){

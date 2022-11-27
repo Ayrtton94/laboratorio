@@ -18,7 +18,6 @@ class User extends Authenticatable
         'last_name',
         'document',
 		'phone',
-        'birth_date',
 		'address',
 		'status',
 		'staff_id'
