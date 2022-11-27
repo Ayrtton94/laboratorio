@@ -10,7 +10,8 @@ class Matriz extends Model
 	use HasFactory;
 	protected $table = "matrices";
 	protected $fillable = [
-		'description'
+		'description',
+		'estado'
 	];
 
 	public function muestras()

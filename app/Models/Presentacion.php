@@ -10,7 +10,8 @@ class presentacion extends Model
 	use HasFactory;
 	protected $table = "presentaciones";
 	protected $fillable = [
-		'description'
+		'description',
+		'estado'
 	];
 
 }

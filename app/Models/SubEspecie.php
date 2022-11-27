@@ -11,7 +11,8 @@ class SubEspecie extends Model
 	protected $table = "subespecies";
 	protected $fillable = [
 		'especie_id',
-		'description'
+		'description',
+		'estado'
 	];
 
 	public function especie(){

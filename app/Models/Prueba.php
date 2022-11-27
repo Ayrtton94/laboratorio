@@ -17,7 +17,8 @@ class Prueba extends Model
 		'laboratorio_id',
 		'metodo_id',
 		'condicion',
-		'time_entrega'
+		'time_entrega',
+		'estado'
 	];
 
 	public function matriz()

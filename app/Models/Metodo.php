@@ -11,7 +11,8 @@ class Metodo extends Model
 	protected $table = "metodos";
 	protected $fillable = [
 		'name',
-		'description'
+		'description',
+		'estado'
 	];
 
 	public function prueba()

@@ -51,7 +51,7 @@
 		},
 		data(){
 			return {
-				resource: 'subespecies',
+				resource: 'subespecie',
 				especies: []
 			}
 		},

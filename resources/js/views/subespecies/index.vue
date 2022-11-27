@@ -28,11 +28,14 @@
 						<td>{{ row.especie.description }}</td>
 						<td>{{ row.description }}</td>
 						<td>
-							<a class="btn text-danger" @click="Delete(row.id)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Eliminar" aria-label="Eliminar">
+							<a v-if="row.estado!=0" class="btn text-danger" @click="clickDelete(row.id)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Eliminar" aria-label="Eliminar">
 								<vue-feather type="delete" class="fs-vue-feather-18"></vue-feather>
 							</a>
-							<a @click.prevent="clickUpdate(row)" class="btn text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Editar" aria-label="Editar">
+							<a v-if="row.estado!=0" @click.prevent="clickUpdate(row)" class="btn text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Editar" aria-label="Editar">
 								<vue-feather type="edit" class="fs-vue-feather-18"></vue-feather>
+							</a>
+							<a class="btn text-success" v-if="row.estado==0" @click="clickRestore(row.id)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Restaurar" aria-label="Restaurar">
+								<vue-feather type="rotate-cw" class="fs-vue-feather-18"></vue-feather>
 							</a>
 						</td>
 					</tr>
@@ -46,14 +49,16 @@
 	<subespecie-modal v-if="showDialog" :form="form" @closeModal="closeModal" @saveAppt="saveAppt"/>
 </template>
 <script>
+	import { deletable } from "../../mixins/deletable"
 	import SubespecieModal from "../subespecies/form.vue"
 	export default {
+		mixins: [deletable],
 		components: {
 			SubespecieModal
 		},
 		data(){
 			return {
-				resource: 'subespecies',
+				resource: 'subespecie',
 				records: [],
 				showDialog: false,
 				form: {}
@@ -110,32 +115,16 @@
 					}
 				})
 			},
-			Delete(id){
-				this.$swal.fire({
-					title: '¿Eliminar registro?',
-					text: "Eliminando Perfil Seleccionado!",
-					icon: 'warning',
-					showCancelButton: true,
-					confirmButtonText: 'Si!',
-					cancelButtonText: 'No!',
-					reverseButtons: true
-				}).then((result) => {
-					if (result.isConfirmed) {
-						axios.post(`/${this.resource}/eliminar/${id}`)
-						.then(res => {
-							if(res.status) {
-								this.$swal({
-									icon: 'success',
-									title: res.data.message,
-									showConfirmButton: false,
-									timer: 1500
-								})					
-								this.emitter.emit('reloadData');
-							}
-						})
-					}				
-				})
-			}
+			clickDelete(id) {
+                this.destroy(`/${this.resource}/${id}`).then(() =>
+				this.emitter.emit('reloadData')
+                )
+            },
+			clickRestore(id) {
+                this.restore(`/${this.resource}/restore/${id}`).then(() =>
+					this.emitter.emit('reloadData')
+                )
+            },
 		}
     }
 </script>
