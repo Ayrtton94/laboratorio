@@ -79,7 +79,7 @@ Route::controller(PatientController::class)->prefix('patients')->group(function(
 
 	// PRESENTACION
 	Route::controller(PresentacionController::class)->prefix('presentaciones')->group(function(){
-		Route::get('restore//{id}', 'restore');
+		Route::get('restore/{id}', 'restore');
 		Route::get('', 'index')->name('presentaciones');
 		Route::get('/records', 'records');
 		Route::get('/columns', 'columns');
@@ -91,20 +91,20 @@ Route::controller(PatientController::class)->prefix('patients')->group(function(
 
 	// ESPECIE
 	Route::controller(EspecieController::class)->prefix('especies')->group(function(){
-		Route::get('restore//{id}', 'restore');
-		Route::get('', 'index')->name('especies');
+		Route::get('restore/{id}', 'restore');
+		Route::get('', 'index')->name('especies.index');
 		Route::get('/records', 'records');
 		Route::get('/columns', 'columns');
 		Route::get('/record/{id}', 'record');
 		Route::post('', 'store');
 		Route::get('/todos', 'todos');
-		Route::post('/eliminar/{id}', 'destroy');
+		Route::delete('/{id}', 'destroy');
 	});
 
 	// SUB-ESPECIE
-	Route::controller(SubEspecieController::class)->prefix('subespecies')->group(function(){
-		Route::get('restore//{id}', 'restore');
-		Route::get('', 'index')->name('subespecies');
+	Route::controller(SubEspecieController::class)->prefix('subespecie')->group(function(){
+		Route::get('restore/{id}', 'restore');
+		Route::get('', 'index')->name('subespecie.index');
 		Route::get('/records', 'records');
 		Route::get('/tables', 'tables');
 		Route::get('/columns', 'columns');
@@ -116,7 +116,7 @@ Route::controller(PatientController::class)->prefix('patients')->group(function(
 
 	// MATRIZ
 	Route::controller(MatrizController::class)->prefix('matrices')->group(function(){
-		Route::get('restore//{id}', 'restore');
+		Route::get('restore/{id}', 'restore');
 		Route::get('', 'index')->name('matrices');
 		Route::get('/records', 'records');
 		Route::get('/columns', 'columns');
@@ -128,7 +128,7 @@ Route::controller(PatientController::class)->prefix('patients')->group(function(
 
 	// MATRIZ-MUESTRA
 	Route::controller(MuestraController::class)->prefix('muestras')->group(function(){
-		Route::get('restore//{id}', 'restore');
+		Route::get('restore/{id}', 'restore');
 		Route::get('', 'index')->name('muestras');
 		Route::get('/records', 'records');
 		Route::get('/tables', 'tables');
@@ -141,7 +141,7 @@ Route::controller(PatientController::class)->prefix('patients')->group(function(
 
 	// LABORATORIOS
 	Route::controller(LaboratorioController::class)->prefix('laboratorios')->group(function(){
-		Route::get('restore//{id}', 'restore');
+		Route::get('restore/{id}', 'restore');
 		Route::get('', 'index')->name('laboratorios');
 		Route::get('/records', 'records');
 		Route::get('/columns', 'columns');
@@ -153,7 +153,7 @@ Route::controller(PatientController::class)->prefix('patients')->group(function(
 
 	// METODOS
 	Route::controller(MetodoController::class)->prefix('metodos')->group(function(){
-		Route::get('restore//{id}', 'restore');
+		Route::get('restore/{id}', 'restore');
 		Route::get('', 'index')->name('metodos');
 		Route::get('/records', 'records');
 		Route::get('/columns', 'columns');
@@ -165,7 +165,7 @@ Route::controller(PatientController::class)->prefix('patients')->group(function(
 
 	// PRUEBA
 	Route::controller(PruebaController::class)->prefix('pruebas')->group(function(){
-		Route::get('restore//{id}', 'restore');
+		Route::get('restore/{id}', 'restore');
 		Route::get('', 'index')->name('pruebas');
 		Route::get('/records', 'records');
 		Route::get('/tables', 'tables');

@@ -54,8 +54,12 @@
 						<li class="nav-item">
 							<a href="{{route('presentaciones')}}" class="nav-link {{ Route::is('presentaciones')?'active':''}}">Presentación</a>
 						</li>
-						<li class="nav-item"><a class="nav-link" href="{{route('especies')}}">Especie</a></li>
-						<li class="nav-item"><a class="nav-link" href="{{route('subespecies')}}">Sub Especie</a></li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{route('especies.index')}}">Especie</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link {{ Route::is('subespecie')?'active':''}}" href="{{route('subespecie.index')}}">Sub Especie</a>
+						</li>
 						<li class="nav-item"><a class="nav-link" href="{{route('matrices')}}">Matríz</a></li>
 						<li class="nav-item"><a class="nav-link" href="{{route('muestras')}}">Muestra</a></li>
 						<li class="nav-item"><a class="nav-link" href="{{route('laboratorios')}}">Laboratorio</a></li>

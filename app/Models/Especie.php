@@ -10,7 +10,8 @@ class Especie extends Model
 	use HasFactory;
 	protected $table = "especies";
 	protected $fillable = [
-		'description'
+		'description',
+		'estado'
 	];
 
 

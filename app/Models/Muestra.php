@@ -11,7 +11,8 @@ class Muestra extends Model
 	protected $table = "muestras";
 	protected $fillable = [
 		'matriz_id',
-		'description'
+		'description',
+		'estado'
 	];
 
 	public function matriz(){

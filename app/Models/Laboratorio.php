@@ -11,7 +11,8 @@ class Laboratorio extends Model
 	protected $table = "laboratorios";
 	protected $fillable = [
 		'name',
-		'description'
+		'description',
+		'estado'
 	];
 
 
