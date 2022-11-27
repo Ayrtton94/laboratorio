@@ -16,6 +16,8 @@ use App\Http\Controllers\SubEspecieController;
 use App\Http\Controllers\LaboratorioController;
 use App\Http\Controllers\PresentacionController;
 use App\Http\Controllers\AreaController;
+use App\Http\Controllers\PersonController;
+use App\Http\Controllers\TipoOrdenController;
 
 Route::get('/', function () {
 	return view('auth.login');
@@ -172,4 +174,22 @@ Route::controller(PatientController::class)->prefix('patients')->group(function(
 		Route::post('', 'store');
 		Route::get('/todos', 'todos');
 		Route::delete('/{id}', 'destroy');
+	});
+	// TIPO DE ORDENES
+	Route::controller(TipoOrdenController::class)->prefix('tipodeorden')->group(function(){
+		Route::get('', 'index')->name('tipodeorden.index');
+		Route::post('', 'store');
+		Route::get('/records', 'records');
+		Route::delete('/{id}', 'destroy');
+		Route::get('restore/{id}', 'restore');
+	});
+	// PERSONAS
+	Route::controller(PersonController::class)->prefix('persons')->group(function(){
+		Route::get('restore/{id}', 'restore');
+		Route::get('columns', 'columns');
+		Route::get('tables', 'tables');
+		Route::get('{type}',  'index')->name('persons.index');
+		Route::get('{type}/records', 'records');
+		Route::post('', 'store');
+		Route::delete('{id}', 'destroy');
 	});

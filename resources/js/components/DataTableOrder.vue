@@ -198,7 +198,7 @@
         computed: {
         },
         created() {
-            this.$eventHub.$on('reloadData', () => {
+            this.emitter.on('reloadData', () => {
                 this.getRecords()
 
                 this.getTotals()
@@ -207,7 +207,7 @@
         async mounted () {
 			let column_resource = _.split(this.resource, '/')
 
-            await this.$http.get(`/${_.head(column_resource)}/columns`).then(({data}) => {
+            await axios.get(`/${_.head(column_resource)}/columns`).then(({data}) => {
                 this.columns = data.columns
 				this.orders = data.orders
 				this.search.order = Object.keys(this.orders)[0];
@@ -222,7 +222,7 @@
                 return (this.pagination.per_page * (this.pagination.current_page - 1)) + index + 1
             },
             getRecords() {
-                return this.$http.get(`/${this.resource}/records?${this.getQueryParameters()}`).then((response) => {
+                return axios.get(`/${this.resource}/records?${this.getQueryParameters()}`).then((response) => {
                     this.records = response.data.data
                     this.pagination = response.data.meta
 					this.pagination.per_page = parseInt(response.data.meta.per_page)
@@ -235,7 +235,7 @@
 			},
             getTotals(){
                 if(this.showTotals){
-                    return this.$http.get(`/${this.resource}/totals?${this.getQueryParameters()}`).then((response) => {
+                    return axios.get(`/${this.resource}/totals?${this.getQueryParameters()}`).then((response) => {
                         this.totals = response.data.data
                     });
                 }
@@ -259,22 +259,22 @@
                 this.getTotals()
 			},
 			getUsuarios(){
-				this.$http.get(`/users/records`).then(({data}) => {
+				axios.get(`/users/records`).then(({data}) => {
 					this.users = data.data;
 				});
 			},
 			getSucursales(){
-				this.$http.get(`/sucursales/records`).then(({data}) => {
+				axios.get(`/sucursales/records`).then(({data}) => {
 					this.sucursales = data.data;
 				});
 			},
 			getPresentaciones(){
-				this.$http.get(`/presentaciones/todos`).then(({data}) => {
+				axios.get(`/presentaciones/todos`).then(({data}) => {
 					this.presentaciones = data.data;
 				});
 			},
 			getAlmacenes(){
-				this.$http.get(`/warehouses/todos`).then(({data}) => {
+				axios.get(`/warehouses/todos`).then(({data}) => {
 					this.almacenes = data.data;
 				});
 			}

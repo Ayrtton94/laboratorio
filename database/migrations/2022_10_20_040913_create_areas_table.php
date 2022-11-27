@@ -14,13 +14,14 @@ class CreateAreasTable extends Migration
      */
     public function up()
     {
-        Schema::create('areas', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('description')->nullable();
+		Schema::create('areas', function (Blueprint $table) {
+			$table->id();
+			$table->string('name');
+			$table->string('description')->nullable();
 			$table->tinyInteger('estado')->default(1);
-            $table->timestamps();
-        });
+			$table->timestamps();
+		});
+		
     }
 
     /**
@@ -30,6 +31,6 @@ class CreateAreasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('areas');
+       	Schema::dropIfExists('areas');
     }
 }
