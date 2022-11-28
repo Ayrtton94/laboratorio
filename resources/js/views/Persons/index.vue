@@ -24,7 +24,7 @@
 						<th class="pt-0">Acciones</th>
 					</template>
 					<template v-slot:tbody="{ index, row }">
-						<tr :style="row.status==0 ? 'background: #830219' : '' ">
+						<tr>
 							<td>{{ index }}</td>
 							<td>
 								<span v-if="row.identity_document_id=='1'">DNI</span>
@@ -103,7 +103,11 @@
 					department_id: null,
 					province_id: null,
 					district_id: null,
-					imagen: null
+					imagen: null,
+					rol: null,
+					username: null,
+					userpassword: null,
+					user_account: false
 				},
 				this.errors = {}
 			},
@@ -133,6 +137,10 @@
 				this.form.department_id = info.department_id
 				this.form.province_id = info.province_id ? info.province_id.replace(/['"]+/g, '') : ''
 				this.form.district_id = info.district_id ? info.district_id.replace(/['"]+/g, '') : ''
+				this.form.user_account = info.user_account == 1 ? true : false
+				this.form.rol = info.rol
+				this.form.username = info.username
+				this.form.userpassword = info.userpassword
 			},
 			saveAppt(form){
 				axios.post(`/${this.resource}`, form)

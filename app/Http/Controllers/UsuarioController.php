@@ -27,12 +27,11 @@ class UsuarioController extends Controller
 	public function records()
 	{
 		$users = DB::table('users')
-		->select('users.id','users.name','users.last_name','users.email','roles.name as role_name')
+		->select('users.id','users.name','users.last_name','users.email','roles.name as role_name','users.status as status')
 		->join('model_has_roles', function($query){
 			$query->on('users.id', '=', 'model_has_roles.model_id');
 		})
-		->leftJoin('roles', function($query) { $query->on('model_has_roles.role_id', '=', 'roles.id');})
-		->where('status',1)->paginate(5);
+		->leftJoin('roles', function($query) { $query->on('model_has_roles.role_id', '=', 'roles.id');})->get();
 		return ['users' => $users];
 	}
 
@@ -44,8 +43,6 @@ class UsuarioController extends Controller
 			'password' => 'required',
 			'rol' => 'required'
 		]);
-
-		
 
 		$input = $request->all();
 
@@ -59,40 +56,8 @@ class UsuarioController extends Controller
 		];
 	}
 
-	public function edit($id)
-	{
-		$usuarios = User::with('roles')->where('id',$id)->first();
-		return view('usuarios.editar', compact('usuarios'));
-	}
-
-	public function searchuser()
-	{
-		$roles = Role::all();
-		return view('usuarios.search', compact('roles'));
-	}
-
-	public function search(Request $request)
-	{
-
-		$users = DB::table('users')
-		->select('users.id','users.name','users.last_name','users.email','roles.name as role_name')
-		->join('model_has_roles', function($query) use($request){
-			$query->on('users.id', '=', 'model_has_roles.model_id');
-			if (!!$request->rol) return $query->where('model_has_roles.role_id', $request->rol);
-		})
-		->leftJoin('roles', function($query) { $query->on('model_has_roles.role_id', '=', 'roles.id');})
-		->where(function ($query) use($request){
-			if (!!$request->specialty_id) return $query->where('users.specialty_id', $request->specialty_id);
-			if (!!$request->names) return $query->where('users.email', 'like', "%{$request->names}%");
-			if (!!$request->email) return $query->where('users.email', 'like', "%{$request->email}%");
-		})->where('status',1)->paginate(5);
-
-		return ['users' => $users];
-	}
-
 	public function update(Request $request)
 	{
-
 		$this->validate($request,[
 			'name' => 'required',
 			'email' => 'required',
@@ -118,7 +83,23 @@ class UsuarioController extends Controller
 
 	public function destroy($id)
 	{
-		$request = DB::table('users')->where('id', $id)->delete();
-		return response()->json(['request' => $request]);
+		$user = User::findOrFail($id);
+		$user->update(['status' => 0]);
+
+		return [
+            'success' => true,
+            'message' => 'Eliminada con éxito'
+		];
+	}
+
+	public function restore($id)
+    {
+        $record = User::findOrFail($id);
+        $record->update(['status' => 1]);
+
+        return [
+            'success' => true,
+            'message' => 'Resturada con éxito'
+        ];
 	}
 }

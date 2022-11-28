@@ -60,24 +60,28 @@ export const allDepartments = {
 		}
 	},
 	methods: {
-		filterProvince() {
-			this.form.province_id = null
-			this.form.district_id = null
-			this.filterProvinces()
-		},
+		
 		filterProvinces() {
 			this.provinces = this.all_provinces.filter(f => {
 				return f.department_id === this.form.department_id
 			})
 		},
-		filterDistrict() {
-			this.form.district_id = null
-			this.filterDistricts()
-		},
 		filterDistricts() {
 			this.districts = this.all_districts.filter(f => {
 				return f.province_id === this.form.province_id
 			})
+		}
+	},
+	computed: {
+		filterProvince() {
+			// this.form.province_id = null
+			// this.form.district_id = null
+			this.filterProvinces()
+		},
+		
+		filterDistrict() {
+			// this.form.district_id = null
+			this.filterDistricts()
 		}
 	}
 }
@@ -107,9 +111,20 @@ export const searchDcumentAll = {
 						this.$message.warning('Datos no encontrados');
 						this.form.number = ''
 						this.form.name = ''
+						this.form.ap_lastname = ''
+						this.form.am_lastname = ''
 						this.form.address = ''
 					}else{
-						this.form.name = tipoDoc == 'dni' ? res.data.nombre_completo : res.data.nombre_o_razon_social
+						if(this.form.type=='staff'){
+							this.form.name = tipoDoc == 'dni' ? res.data.nombres : res.data.nombre_o_razon_social
+							this.form.ap_lastname = res.data.apellido_paterno
+							this.form.am_lastname = res.data.apellido_materno
+						}else{
+							this.form.name = tipoDoc == 'dni' ? res.data.nombre_completo : res.data.nombre_o_razon_social
+						}
+						this.form.department_id = res.data.ubigeo[0]
+						this.form.province_id = res.data.ubigeo[1]
+						this.form.district_id = res.data.ubigeo[2]
 						this.form.address = res.data.direccion_completa
 					}
 				})

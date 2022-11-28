@@ -33,11 +33,9 @@ Route::get('/dashboard', function () {
 Route::controller(UsuarioController::class)->middleware(['middleware' => 'auth'])->group( function () {
 	Route::get('/usuarios', 'index')->name('usuarios');
 	Route::post('/usuarios', 'store');
-	Route::get('/usuarios/searchuser', 'searchuser')->name('searchuser');
-	Route::post('/usuarios/search', 'search');
-	Route::get('/usuarios/create', 'create')->name('usuarioscreate');
 	Route::get('/usuarios/records', 'records')->name('records');
-	Route::delete('/usuarios/eliminar/{id}', 'destroy');
+	Route::delete('/usuarios/{id}', 'destroy');
+	Route::get('/usuarios/restore/{id}', 'restore');
 	Route::get('/usuarios/edit/{id}', 'edit');
 	Route::put('/usuarios/update', 'update');
 });

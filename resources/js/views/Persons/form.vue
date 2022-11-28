@@ -19,7 +19,7 @@
 							<div class="col-xs-12 col-sm-6 col-md-6">
 								<label class="control-label">Tipo Documento</label>
 								<div class="form-group">
-									<el-select v-model="form.identity_document_id" placeholder="Tipo Documento">
+									<el-select v-model="form.identity_document_id" placeholder="Tipo Documento" >
 										<el-option v-for="option in identity_document_types" :value="option.id" :key="option.id" :label="option.description"/>
 									</el-select>
 								</div>
@@ -27,7 +27,7 @@
 							<div class="col-xs-12 col-sm-6 col-md-6">
 								<div class="form-group">
 									<label class="control-label">Documento</label>
-									<el-input v-model="form.number" placeholder="DOCUMENTO" :maxlength="maxlength">
+									<el-input v-model="form.number" placeholder="Documento" :maxlength="maxlength">
 										<template #append>
 											<el-button @click.prevent="searchDocument">Buscar</el-button>
 										</template>
@@ -35,7 +35,7 @@
 									<small class="form-control-feedback text-danger" v-if="errors.number" v-text="errors.number[0]"></small>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-6 col-md-6">
+							<div class="col-xs-12 col-sm-4 col-md-4">
 								<div class="form-group">
 									<label class="control-label">
 										<span v-if="this.form.type=='staff'">Nombres</span>
@@ -45,56 +45,56 @@
 									<small class="form-control-feedback text-danger" v-if="errors.name" v-text="errors.name[0]"></small>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-6 col-md-6" v-if="this.form.type=='staff'">
+							<div class="col-xs-12 col-sm-4 col-md-4" v-if="this.form.type=='staff'">
 								<div class="form-group">
 									<label class="control-label">Apellido Paterno</label>
 									<el-input v-model="form.ap_lastname" type="text" placeholder="Apellido Paterno"/>
 									<small class="form-control-feedback text-danger" v-if="errors.ap_lastname" v-text="errors.ap_lastname[0]"></small>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-6 col-md-6" v-if="this.form.type=='staff'">
+							<div class="col-xs-12 col-sm-4 col-md-4" v-if="this.form.type=='staff'">
 								<div class="form-group">
 									<label class="control-label">Apellido Materno</label>
 									<el-input v-model="form.am_lastname" type="text" placeholder="Apellido Materno"/>
 									<small class="form-control-feedback text-danger" v-if="errors.am_lastname" v-text="errors.am_lastname[0]"></small>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-6 col-md-6">
+							<div class="col-xs-12 col-sm-4 col-md-4">
 								<div class="form-group">
 									<label class="control-label">Telefono</label>
 									<el-input v-model="form.telephone" type="text" placeholder="Telefono"/>
 									<small class="form-control-feedback text-danger" v-if="errors.telephone" v-text="errors.telephone[0]"></small>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-6 col-md-6" v-if="this.form.type=='staff'">
+							<div class="col-xs-12 col-sm-4 col-md-4" v-if="this.form.type=='staff'">
 								<div class="form-group">
 									<label class="control-label">Teléfono adicional</label>
 									<el-input v-model="form.additional_phone" type="text" placeholder="Telefono Adicional"/>
 									<small class="form-control-feedback text-danger" v-if="errors.additional_phone" v-text="errors.additional_phone[0]"></small>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-6 col-md-6">
+							<div class="col-xs-12 col-sm-4 col-md-4">
 								<div class="form-group">
 									<label class="control-label">Email</label>
 									<el-input v-model="form.email" type="email" placeholder="Email"/>
 									<small class="form-control-feedback text-danger" v-if="errors.email" v-text="errors.email[0]"></small>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-6 col-md-6">
+							<div class="col-xs-12 col-sm-4 col-md-4">
 								<div class="form-group">
 									<label class="control-label">Dirección</label>
 									<el-input v-model="form.address" type="text" placeholder="Dirección"/>
 									<small class="form-control-feedback text-danger" v-if="errors.address" v-text="errors.address[0]"></small>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-6 col-md-6" v-if="this.form.type=='staff'">
+							<div class="col-xs-12 col-sm-4 col-md-4" v-if="this.form.type=='staff'">
 								<div class="form-group">
 									<label class="control-label">Referencia</label>
 									<el-input v-model="form.reference_address" type="text" placeholder="Referencia"/>
 									<small class="form-control-feedback text-danger" v-if="errors.reference_address" v-text="errors.reference_address[0]"></small>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-3 col-md-3">
+							<div class="col-xs-12 col-sm-4 col-md-4">
 								<label class="control-label">Departamento</label>
 								<div class="form-group">
 									<el-select v-model="form.department_id" filterable clearable @change="filterProvince" placeholder="Seleccione">
@@ -102,7 +102,7 @@
 									</el-select>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-3 col-md-3">
+							<div class="col-xs-12 col-sm-4 col-md-4">
 								<label class="control-label">Provincia</label>
 								<div class="form-group">
 									<el-select v-model="form.province_id" filterable clearable @change="filterDistrict" placeholder="Seleccione">
@@ -110,12 +110,38 @@
 									</el-select>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-3 col-md-3">
+							<div class="col-xs-12 col-sm-4 col-md-4">
 								<label class="control-label">Distrito</label>
 								<div class="form-group">
 									<el-select v-model="form.district_id" filterable clearable placeholder="Seleccione">
 										<el-option v-for="option in districts" :key="option.id" :value="option.id" :label="option.description" />
 									</el-select>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-4 col-md-4" v-if="this.form.type=='staff'">
+								<el-checkbox v-model="form.user_account">Cuenta de usuario</el-checkbox>
+							</div>
+							<div class="col-xs-12 col-sm-4 col-md-4" v-if="this.form.type=='staff' && this.form.user_account">
+								<label class="control-label">Perfil</label>
+								<div class="form-group">
+									<el-select v-model="form.rol" placeholder="Tipo usuario" >
+										<el-option v-for="option in roles" :value="option.name" :key="option.id" :label="option.name"/>
+									</el-select>
+									<small class="form-control-feedback text-danger" v-if="errors.rol" v-text="errors.rol[0]"></small>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-4 col-md-4" v-if="this.form.type=='staff' && this.form.user_account">
+								<div class="form-group">
+									<label class="control-label">Usuario</label>
+									<el-input v-model="form.username" type="email" placeholder="Email"/>
+									<small class="form-control-feedback text-danger" v-if="errors.username" v-text="errors.username[0]"></small>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-4 col-md-4" v-if="this.form.type=='staff' && this.form.user_account">
+								<div class="form-group">
+									<label class="control-label">Contraseña</label>
+									<el-input v-model="form.userpassword" type="password" placeholder="Contraseña"/>
+									<small class="form-control-feedback text-danger" v-if="errors.userpassword" v-text="errors.userpassword[0]"></small>
 								</div>
 							</div>
 						</div>
@@ -153,12 +179,14 @@
 				all_departments: [],
                 all_provinces: [],
                 all_districts: [],
-				identity_document_types: []
+				identity_document_types: [],
+				roles: []
 			}
 		},
 		created(){
 			this.getCustomerData();
 			this.title = (this.form.type === 'customers')?'Nuevo Cliente':(this.form.type === 'staff')? 'Nuevo Personal' :((this.form.type === 'suppliers'? 'Nuevo Proveedor': ''));
+			if(this.form.type === 'staff') this.getRoles()
 		},
 		methods: {
 			getCustomerData(){
@@ -170,6 +198,12 @@
 					this.all_districts = res.data.districts
 				})
 			},
+			getRoles(){
+				axios.get(`/roles/records`)
+				.then(response => {
+					this.roles = response.data.roles
+				})
+			},
 			store(form){
 				this.$emit('saveAppt',form);
 				this.$emit('uploadImage');
@@ -177,12 +211,6 @@
 			},
 			closeModal(){
 				this.$emit('closeModal');
-			}
-		},
-		watch: {
-			'form.deparment_id': function(oldVal,newVal){
-				if(oldVal) this.filterProvinces()	
-				console.log(oldVal);
 			}
 		},
 		computed:{

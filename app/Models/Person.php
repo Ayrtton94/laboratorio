@@ -36,12 +36,18 @@ class Person extends Model
 		'status',
 		'imagen',
 		'path_imagen',
-		'signature'
+		'signature',
+		'user_account'
     ];
 
     public function identity_document()
     {
         return $this->belongsTo(IdentityDocument::class, 'identity_document_id');
+    }
+
+	public function user()
+    {
+		return $this->hasMany(User::class, 'staff_id');
     }
 
     public function country()
