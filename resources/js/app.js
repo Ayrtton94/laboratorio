@@ -17,8 +17,7 @@ import mitt from 'mitt';
 import Permissions from './mixins/Permissions.js';
 // USUARIOS
 import usuarios from './views/Usuarios/index.vue'
-import usuariosform from './views/Usuarios/form.vue'
-import usuarioseditar from './views/Usuarios/edit.vue'
+
 //ROLES
 import roles from './views/Roles/index.vue'
 //PERMISOS
@@ -57,8 +56,8 @@ const emitter = mitt()
 const app = createApp({})
 app.config.globalProperties.emitter = emitter
 app.mixin(Permissions);
-app.use(ElementPlus, { size: 'mini', zIndex: 3000 })
-// app.use(ElementPlus);
+// app.use(ElementPlus, { size: 'mini', zIndex: 3000 })
+app.use(ElementPlus, {size: 'mini'});
 app.use(VueSweetalert2);
 app.use(axios);
 
@@ -68,8 +67,6 @@ app.component('dashboard', dashboard)
 
 //USUARIOS
 app.component('usuarios', usuarios)
-app.component('usuarios-create', usuariosform)
-app.component('usuarios-editar', usuarioseditar)
 
 //ROLES
 app.component('roles', roles)

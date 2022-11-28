@@ -16,6 +16,8 @@ class PersonRequest extends FormRequest
     {
         $id = $this->input('id');
         $type = $this->input('type');
+		$user_account = $this->input('user_account');
+		
         $identity_document_id = $this->input('identity_document_id');
         
         return [
@@ -42,6 +44,20 @@ class PersonRequest extends FormRequest
                 'nullable',
                 'email',
             ],
+			'username' => [
+				($type=='staff' && !!$user_account) ? 'required' : '',
+			],
+			'rol' => [
+				($type=='staff' && !!$user_account) ? 'required' : '',
+			]
         ];
     }
+
+	public function messages(){
+		
+		return [
+			'username.required' => 'El ussuario es requerido',
+			'rol.required' => 'El rol es requerido'
+		];
+	}
 }

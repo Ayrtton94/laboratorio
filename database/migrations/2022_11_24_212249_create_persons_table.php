@@ -35,6 +35,7 @@ class CreatePersonsTable extends Migration
 			$table->string('path_imagen')->nullable();
 			$table->string('signature')->nullable();
 			$table->boolean('status')->default(1);
+			$table->boolean('user_account')->default(0);
             $table->timestamps();
 			$table->softDeletes();
 			

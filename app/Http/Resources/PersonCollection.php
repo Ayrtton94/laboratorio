@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class PersonCollection extends ResourceCollection
@@ -14,6 +15,7 @@ class PersonCollection extends ResourceCollection
      */
     public function toArray($request)
     {
+
         return $this->collection->transform(function($row, $key) {
 			
             return [
@@ -34,8 +36,28 @@ class PersonCollection extends ResourceCollection
                 'created_at' => $row->created_at->format('Y-m-d H:i:s'),
 				'updated_at' => $row->updated_at->format('Y-m-d H:i:s'),
 				'deleted_at' => optional($row->deleted_at)->format('Y-m-d H:i:s'),
-				'status' => is_null($row->deleted_at) ? 1 : 0
+				'status' => is_null($row->deleted_at) ? 1 : 0,
+				'user_account' => $row->user_account ? 1 : 0,
+				'username' => $row->type=='staff' ? self::username($row) : [],
+				'userpassword' => $row->type=='staff' ? '' : '',
+				'rol' => $row->type=='staff' ? self::roleName($row) : []
             ];
         });
     }
+
+	public static function username($row){
+		$useName = '';
+		foreach ($row->user as $key => $value) {
+			$useName.= optional($value)->email;
+		}
+		return $useName;
+	}
+	
+	public static function roleName($row){
+		$roleName = '';
+		foreach($row->user as $value){
+			$roleName.= optional($value->roles[0])->name;
+		}
+		return $roleName;
+	}
 }

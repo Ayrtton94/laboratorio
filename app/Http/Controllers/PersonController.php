@@ -8,9 +8,12 @@ use App\Models\Country;
 use App\Models\District;
 use App\Models\Province;
 use App\Models\Department;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Models\IdentityDocument;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\PersonRequest;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\PersonCollection;
 
@@ -44,35 +47,39 @@ class PersonController extends Controller
      */
 	public function store(PersonRequest $request)
     {
-		// dd($request->all());
         $id = $request->input('id');
         $person = Person::firstOrNew(['id' => $id]);
         $person->fill($request->all());
 		
         $person->save();
 		
-		// if($request->type == 'staff')
-		// {
-		// 	if($id)
-		// 	{
-		// 		$user = User::where('staff_id', $id)->first();
-		// 		if($user){
-		// 			$user->update([
-		// 				'name' =>$request->name,
-		// 				'email' =>$request->email
-		// 			]);
-		// 		}
-				
-		// 	}
-		// 	else{
-		// 		User::create([
-		// 			'name' =>$request->name,
-		// 			'email' =>$request->email,
-		// 			'password' => bcrypt($request->password),
-		// 			'staff_id'=> $person->id
-		// 		]);
-		// 	}
-		// }
+		if($request->type == 'staff' && !!$request->user_account)
+		{
+			if($id)
+			{
+				$user = User::where('staff_id', $id)->first();
+				if($user){
+					$user->update([
+						'name' =>$request->name,
+						'email' => $request->username,
+						'password' => !empty($request->userpassword) ? Hash::make($request->userpassword) : $user->password
+					]);
+					DB::table('model_has_roles')->where('model_id', $user->id)->delete();
+					$user->assignRole($request->rol);
+				}else{
+					User::create(['name' =>$request->name,'email' =>$request->username,'password' => Hash::make($request->userpassword),'staff_id'=> $person->id])->assignRole($request->rol);
+				}
+			}
+			else{
+				$user = User::create([
+					'name' =>$request->name,
+					'email' =>$request->username,
+					'password' => Hash::make($request->userpassword),
+					'staff_id'=> $person->id
+				]);
+				$user->assignRole($request->rol);
+			}
+		}
 		
         return [
             'success' => true,
@@ -106,14 +113,13 @@ class PersonController extends Controller
 	public function records($type, Request $request)
     {
 		
-		$records = Person::withTrashed()->where('type', $type);
+		$records = Person::with('user.roles')->withTrashed()->where('type', $type);
 		if(!!$request->column && !!$request->value){
 			$records->where($request->column, 'like', "%{$request->value}%");
 		}
 		$records = 	$records->without('country', 'department', 'province', 'district')
-                            
                             ->orderBy('name');
-
+		
         return new PersonCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
         
     }
@@ -124,7 +130,6 @@ class PersonController extends Controller
 
 	public function tables()
     {
-        // $countries = Country::where('active',1)->orderBy('description')->get();
         $departments = Department::where('active',1)->orderBy('description')->get();
         $provinces = Province::where('active',1)->orderBy('description')->get();
         $districts = District::where('active',1)->orderBy('description')->get();
