@@ -2,21 +2,23 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AreaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\MatrizController;
 use App\Http\Controllers\MetodoController;
+use App\Http\Controllers\PersonController;
 use App\Http\Controllers\PruebaController;
+use App\Http\Controllers\EspecieController;
 use App\Http\Controllers\MuestraController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\TipoOrdenController;
 use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\EspecieController;
 use App\Http\Controllers\SubEspecieController;
 use App\Http\Controllers\LaboratorioController;
 use App\Http\Controllers\PresentacionController;
-use App\Http\Controllers\AreaController;
-use App\Http\Controllers\PersonController;
-use App\Http\Controllers\TipoOrdenController;
+use App\Http\Controllers\ProgramaBrucellaController;
+use App\Http\Controllers\Tenant\LaboratorioOrderController;
 
 Route::get('/', function () {
 	return view('auth.login');
@@ -178,4 +180,41 @@ Route::get('/permissions/records', [PermissionController::class, 'records'])->na
 		Route::get('{type}/records', 'records');
 		Route::post('', 'store');
 		Route::delete('{id}', 'destroy');
+	});
+
+	// PROGRAMA BRUCELLAS
+	Route::controller(ProgramaBrucellaController::class)->prefix('programas-brucellas')->group(function(){
+		Route::get('restore/{id}', 'restore');
+		Route::get('', 'index')->name('programas-brucellas');
+		Route::get('/records', 'records');
+		Route::get('/tables', 'tables');
+		Route::get('/columns', 'columns');
+		Route::get('/record/{id}', 'record');
+		Route::post('', 'store');
+		Route::get('/todos', 'todos');
+		Route::delete('/{id}', 'destroy');
+	});
+
+	// LABORATORIO ORDERS
+	Route::controller(LaboratorioOrderController::class)->prefix('laboratorio-orders')->group(function(){
+		Route::get('', 'index')->name('laboratorio-orders');
+		Route::post('/orderall', 'recordsAll');
+		Route::post('/AllOrder', 'AllOrder');
+		Route::get('/columns', 'columns');
+		Route::get('/records', 'records');
+		Route::get('/totals', 'totals');
+		Route::get('/crear', 'create');
+		Route::get('/editar/{order}', 'edit');
+		Route::get('/tables', 'tables');
+		Route::get('/record/{order}', 'record');
+		Route::get('/tables3/{order}', 'tables3');
+		Route::post('', 'store');
+		Route::post('/update/{order}', 'update');
+		Route::get('/send/{order}', 'send');
+		Route::post('/email', 'email');
+		Route::get('/table/{table}', 'table');
+		Route::post('/items', 'items');
+		Route::delete('/{order}', 'destroy');
+		Route::get('/imprimir/{order}/{format}', 'imprimir');
+
 	});
