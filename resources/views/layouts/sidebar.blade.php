@@ -17,7 +17,7 @@
 					<ul class="submenu-item">
 						<li class="category-heading">Personal</li>
 						<li class="nav-item"><a class="nav-link" href="">Gestión de usuarios</a></li>
-						<li class="nav-item"><a class="nav-link" href="">Control de Asistencia</a></li>
+						<li class="nav-item"><a class="nav-link" href="{{route('attendance.index')}}">Control de Asistencia</a></li>
 					</ul>
 				</div>
 			</li>

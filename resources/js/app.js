@@ -52,6 +52,8 @@ import pruebas from './views/pruebas/index.vue'
 import pruebasform from './views/pruebas/form.vue'
 import persons from './views/Persons/index.vue'
 
+import attendance from './views/Attendance/index.vue'
+
 const emitter = mitt()
 const app = createApp({})
 app.config.globalProperties.emitter = emitter
@@ -113,6 +115,9 @@ app.component('areas', areas)
 app.component('tipodeorden', tipodeorden)
 
 //PERSONAS
-app.component('persons', persons);
+app.component('persons', persons)
+
+//ASISTENCIAS
+app.component('attendance', attendance)
 
 app.mount('#app')
