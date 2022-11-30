@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,10 +19,9 @@ class User extends Authenticatable
         'last_name',
         'document',
 		'phone',
-        'specialty_id',
-        'birth_date',
 		'address',
-		'status'
+		'status',
+		'staff_id'
     ];
 
     protected $hidden = [
@@ -33,9 +33,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-
-	public function specialties()
-	{
-		return $this->hasMany(specialties::class,'id');
-	}
+	public function person()
+    {
+        return $this->belongsTo(Person::class, 'staff_id');
+    }
 }

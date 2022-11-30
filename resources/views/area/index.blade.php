@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<patients-create />
+<areas/>
 
 @endsection

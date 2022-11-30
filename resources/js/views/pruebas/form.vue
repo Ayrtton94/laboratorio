@@ -19,6 +19,7 @@
 								<el-select v-model="form.matriz_id" class="w-100" dusk="matriz_id" filterable>
 									<el-option v-for="option in matrices" :key="option.id" :label="option.description"  :value="option.id"></el-option>
 								</el-select>
+								<small class="form-control-feedback text-danger" v-if="errors.matriz_id" v-text="errors.matriz_id[0]"></small>
 							</div>
 						</div>
 						<div class="form-group">
@@ -27,18 +28,21 @@
 								<el-select v-model="form.muestra_id" class="w-100" dusk="muestra_id" filterable>
 									<el-option v-for="option in muestras" :key="option.id" :label="option.description"  :value="option.id"></el-option>
 								</el-select>
+								<small class="form-control-feedback text-danger" v-if="errors.muestra_id" v-text="errors.muestra_id[0]"></small>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Nombre</label>
 							<div class="col-md-12 col-sm-12 col-xs-12">
 								<input id="name" v-model="form.name" class="form-control" name="name" type="text" placeholder="Descripción">
+								<small class="form-control-feedback text-danger" v-if="errors.name" v-text="errors.name[0]"></small>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Precio</label>
 							<div class="col-md-12 col-sm-12 col-xs-12">
 								<input id="name" v-model="form.price" class="form-control" name="price" type="text" placeholder="Descripción">
+								<small class="form-control-feedback text-danger" v-if="errors.price" v-text="errors.price[0]"></small>
 							</div>
 						</div>
 						<div class="form-group">
@@ -47,6 +51,7 @@
 								<el-select v-model="form.laboratorio_id" class="w-100" dusk="laboratorio_id" filterable>
 									<el-option v-for="option in laboratorios" :key="option.id" :label="option.name"  :value="option.id"></el-option>
 								</el-select>
+								<small class="form-control-feedback text-danger" v-if="errors.laboratorio_id" v-text="errors.laboratorio_id[0]"></small>
 							</div>
 						</div>
 						<div class="form-group">
@@ -55,6 +60,7 @@
 								<el-select v-model="form.metodo_id" class="w-100" dusk="metodo_id" filterable>
 									<el-option v-for="option in metodos" :key="option.id" :label="option.name"  :value="option.id"></el-option>
 								</el-select>
+								<small class="form-control-feedback text-danger" v-if="errors.metodo_id" v-text="errors.metodo_id[0]"></small>
 							</div>
 						</div>
 						<div class="form-group">
@@ -67,6 +73,7 @@
 							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Tiempo de Entrega</label>
 							<div class="col-md-12 col-sm-12 col-xs-12">
 								<input id="name" v-model="form.time_entrega" class="form-control" name="time_entrega" type="text" placeholder="Descripción">
+								<small class="form-control-feedback text-danger" v-if="errors.time_entrega" v-text="errors.time_entrega[0]"></small>
 							</div>
 						</div>
 						<div class="modal-footer">
@@ -90,6 +97,7 @@
 				type: Object,
 				default: ()=>{}
 			},
+			errors: {}
 		},
 		data(){
 			return {

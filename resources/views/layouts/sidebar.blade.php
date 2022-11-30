@@ -36,20 +36,30 @@
                         <li class="nav-item">
                             <a href="{{route('roles')}}" class="nav-link">Perfil</a>
                         </li>
-						<li class="nav-item"><a class="nav-link" href="">Área</a></li>
-						<li class="nav-item "><a class="nav-link" href="">Personal</a></li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ route('areas') }}">Área</a>
+						</li>
+						<li class="nav-item ">
+							<a class="nav-link" href="{{route('persons.index', ['type'=> 'staff'])}}">Personal</a>
+						</li>
 						@verifypermissions('ver-user')
                         <li class="nav-item">
                             <a href="{{route('usuarios')}}" class="nav-link {{ Route::is('usuarios')?'active':''}}">Usuario</a>
                         </li>
                         @endverifypermissions
-						<li class="nav-item"><a class="nav-link" href="">Cliente</a></li>
-						<li class="nav-item"><a class="nav-link" href="">Tipo de Órden</a></li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{route('persons.index', ['type'=> 'customers'])}}">Cliente</a>
+						</li>
+						<li class="nav-item"><a class="nav-link" href="{{route('tipodeorden.index')}}">Tipo de Órden</a></li>
 						<li class="nav-item">
 							<a href="{{route('presentaciones')}}" class="nav-link {{ Route::is('presentaciones')?'active':''}}">Presentación</a>
 						</li>
-						<li class="nav-item"><a class="nav-link" href="{{route('especies')}}">Especie</a></li>
-						<li class="nav-item"><a class="nav-link" href="{{route('subespecies')}}">Sub Especie</a></li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{route('especies.index')}}">Especie</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link {{ Route::is('subespecie')?'active':''}}" href="{{route('subespecie.index')}}">Sub Especie</a>
+						</li>
 						<li class="nav-item"><a class="nav-link" href="{{route('matrices')}}">Matríz</a></li>
 						<li class="nav-item"><a class="nav-link" href="{{route('muestras')}}">Muestra</a></li>
 						<li class="nav-item"><a class="nav-link" href="{{route('laboratorios')}}">Laboratorio</a></li>

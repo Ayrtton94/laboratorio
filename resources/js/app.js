@@ -1,9 +1,9 @@
 require('./bootstrap');
 
 import { createApp } from 'vue'
-import { axios } from 'axios'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import { axios } from 'axios'
 
 import dashboard from './views/Dashboard/DashboardComponent.vue'
 // SweetAlert2
@@ -14,20 +14,17 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import VueFeather from 'vue-feather'
 
 import mitt from 'mitt';
-
 import Permissions from './mixins/Permissions.js';
 // USUARIOS
 import usuarios from './views/Usuarios/index.vue'
-import search from './views/Usuarios/search.vue'
-import usuariosform from './views/Usuarios/form.vue'
-import usuarioseditar from './views/Usuarios/edit.vue'
+
 //ROLES
 import roles from './views/Roles/index.vue'
 //PERMISOS
 import permisos from './views/Permissions/index.vue'
-//PACIENTES
-import patiends from './views/Patients/index.vue'
-import patiendsform from './views/Patients/form.vue'
+import areas from './views/Area/index.vue'
+import tipodeorden from './views/Tipodeorden/index.vue'
+
 
 //PRESENTACIONES
 import presentaciones from './views/presentaciones/index.vue'
@@ -53,35 +50,29 @@ import metodosform from './views/metodos/form.vue'
 
 import pruebas from './views/pruebas/index.vue'
 import pruebasform from './views/pruebas/form.vue'
+import persons from './views/Persons/index.vue'
 
 const emitter = mitt()
 const app = createApp({})
 app.config.globalProperties.emitter = emitter
 app.mixin(Permissions);
-
+// app.use(ElementPlus, { size: 'mini', zIndex: 3000 })
+app.use(ElementPlus, {size: 'mini'});
 app.use(VueSweetalert2);
 app.use(axios);
-app.use(ElementPlus);
+
 
 app.component(VueFeather.name, VueFeather);
 app.component('dashboard', dashboard)
 
 //USUARIOS
 app.component('usuarios', usuarios)
-app.component('usuarios-search', search)
-app.component('usuarios-create', usuariosform)
-app.component('usuarios-editar', usuarioseditar)
 
 //ROLES
 app.component('roles', roles)
 
 //PERMISOS
 app.component('permissions', permisos)
-
-//PACIENTES
-app.component('patiends', patiends)
-app.component('patients-create', patiendsform)
-
 
 //PRESENTACIONES
 app.component('presentaciones', presentaciones)
@@ -115,5 +106,13 @@ app.component('metodos-create', metodosform)
 app.component('pruebas', pruebas)
 app.component('pruebas-create', pruebasform)
 
+//AREA
+app.component('areas', areas)
+
+//TIPO DE ORDEN
+app.component('tipodeorden', tipodeorden)
+
+//PERSONAS
+app.component('persons', persons);
 
 app.mount('#app')

@@ -21,8 +21,18 @@ class PruebaRequest extends FormRequest
 			'price'=> 'required',
 			'laboratorio_id'=> 'required',
 			'metodo_id'=> 'required',
-			'condicion'=> 'required',
 			'time_entrega'=> 'required'
         ];
     }
+
+	public function messages(){
+		return [
+			'name.required' => 'Nombre obligatorio',
+			'muestra_id.required' => 'Muestra requerida',
+			'matriz_id.required' => 'Matriz requerida',
+			'laboratorio_id.required' => 'Laboratorio requerido',
+			'metodo_id.required' => 'Metodo requerido',
+			'price.required' => 'Precio requerido',
+		];
+	}
 }

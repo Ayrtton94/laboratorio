@@ -64,11 +64,10 @@ class EspecieController extends Controller
 
 	public function destroy($id)
     {
-        // $record = Especie::findOrFail($id);
-        // $record->update([
-		// 	'estado' => 0
-		// ]);
-		DB::table('especies')->where('id', $id)->delete();
+        $record = Especie::findOrFail($id);
+        $record->update([
+			'estado' => 0
+		]);
 			
         return [
             'success' => true,

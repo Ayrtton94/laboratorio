@@ -17,9 +17,6 @@ class CreateCountriesTable extends Migration
 		});
 
 		DB::table('countries')->insert([
-			['id' => 'AR', 'description' => 'ARGENTINA'],
-			['id' => 'CL', 'description' => 'CHILE'],
-			['id' => 'CO', 'description' => 'COLOMBIA'],
 			['id' => 'PE', 'description' => 'PERU']
 		]);
 
