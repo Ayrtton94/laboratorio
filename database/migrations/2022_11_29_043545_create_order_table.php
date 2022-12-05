@@ -136,14 +136,13 @@ class CreateOrderTable extends Migration
 				$table->id();
 				$table->unsignedBigInteger('muestra_id');
 				$table->string('ruta');
-//				$table->string('parcela');
-				$table->unsignedBigInteger('proveedor_id');
+				$table->unsignedBigInteger('supplier_id');
 				$table->decimal('peso',10,2);
 				$table->decimal('parcela',10,2);
+                $table->decimal('v_produccion',10,2);
 				$table->decimal('t_hato',10,2);
 				$table->tinyInteger('accion')->default(0);
-				$table->tinyInteger('asignacion_modulo');
-				$table->tinyInteger('estado')->default(1);
+				$table->tinyInteger('asignar_modulo');
 				$table->timestamps();
 			});
 		}

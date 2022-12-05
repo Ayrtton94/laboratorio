@@ -17,15 +17,11 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\SubEspecieController;
 use App\Http\Controllers\LaboratorioController;
 use App\Http\Controllers\PresentacionController;
-
 use App\Http\Controllers\LaboratorioOrderController;
 use App\Http\Controllers\ProgramaBrucellaController;
-
-use App\Http\Controllers\AreaController;
 use App\Http\Controllers\AttendanceController;
-use App\Http\Controllers\PersonController;
-use App\Http\Controllers\TipoOrdenController;
->>>>>>> ed043a2 (importar datos asistencias)
+
+
 
 Route::get('/', function () {
 	return view('auth.login');
@@ -33,44 +29,44 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::get('/dashboard', function () {
-	return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->middleware(['auth'])->name('dashboard');
 
-// USUARIOS
-Route::controller(UsuarioController::class)->middleware(['middleware' => 'auth'])->group( function () {
-	Route::get('/usuarios', 'index')->name('usuarios');
-	Route::post('/usuarios', 'store');
-	Route::get('/usuarios/records', 'records')->name('records');
-	Route::delete('/usuarios/{id}', 'destroy');
-	Route::get('/usuarios/restore/{id}', 'restore');
-	Route::get('/usuarios/edit/{id}', 'edit');
-	Route::put('/usuarios/update', 'update');
-});
+    // USUARIOS
+    Route::controller(UsuarioController::class)->middleware(['middleware' => 'auth'])->group( function () {
+        Route::get('/usuarios', 'index')->name('usuarios');
+        Route::post('/usuarios', 'store');
+        Route::get('/usuarios/records', 'records')->name('records');
+        Route::delete('/usuarios/{id}', 'destroy');
+        Route::get('/usuarios/restore/{id}', 'restore');
+        Route::get('/usuarios/edit/{id}', 'edit');
+        Route::put('/usuarios/update', 'update');
+    });
 
-//ROLES
-Route::get('/roles', [RoleController::class, 'index'])->name('roles');
-Route::get('/roles/create', [RoleController::class, 'create'])->name('rolescreate');
-Route::post('/roles', [RoleController::class, 'store']);
-Route::get('/roles/records', [RoleController::class, 'records'])->name('records');
-Route::get('/roles/getpermission', [RoleController::class, 'getPermission']);
-Route::delete('/roles/eliminar/{id}', [RoleController::class, 'destroy']);
-Route::get('/roles/editroles/{id}', [RoleController::class, 'editroles']);
-Route::put('/roles/update', [RoleController::class, 'update']);
-Route::get('/roles/hasroles/{id}', [RoleController::class, 'querypermisos']);
+    //ROLES
+    Route::get('/roles', [RoleController::class, 'index'])->name('roles');
+    Route::get('/roles/create', [RoleController::class, 'create'])->name('rolescreate');
+    Route::post('/roles', [RoleController::class, 'store']);
+    Route::get('/roles/records', [RoleController::class, 'records'])->name('records');
+    Route::get('/roles/getpermission', [RoleController::class, 'getPermission']);
+    Route::delete('/roles/eliminar/{id}', [RoleController::class, 'destroy']);
+    Route::get('/roles/editroles/{id}', [RoleController::class, 'editroles']);
+    Route::put('/roles/update', [RoleController::class, 'update']);
+    Route::get('/roles/hasroles/{id}', [RoleController::class, 'querypermisos']);
 
-//AREA
-Route::controller(AreaController::class)->prefix('areas')->group(function(){
-	Route::get('', 'index')->name('areas');
-	Route::post('', 'store');
-	Route::get('/records', 'records');
-	Route::delete('/{id}', 'destroy');
-});
+    //AREA
+    Route::controller(AreaController::class)->prefix('areas')->group(function(){
+        Route::get('', 'index')->name('areas');
+        Route::post('', 'store');
+        Route::get('/records', 'records');
+        Route::delete('/{id}', 'destroy');
+    });
 
-//PERMISOS
-Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions');
-Route::get('/permissions/records', [PermissionController::class, 'records'])->name('records');
+    //PERMISOS
+    Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions');
+    Route::get('/permissions/records', [PermissionController::class, 'records'])->name('records');
 
 	// PRESENTACION
 	Route::controller(PresentacionController::class)->prefix('presentaciones')->group(function(){
@@ -199,6 +195,7 @@ Route::get('/permissions/records', [PermissionController::class, 'records'])->na
 		Route::get('/columns', 'columns');
 		Route::get('/record/{id}', 'record');
 		Route::post('', 'store');
+        Route::post('/import', 'import');
 		Route::get('/todos', 'todos');
 		Route::delete('/{id}', 'destroy');
 	});

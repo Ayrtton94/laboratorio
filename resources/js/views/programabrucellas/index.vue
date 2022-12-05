@@ -7,7 +7,10 @@
                 <h6 class="card-title mb-0">GESTIÓN DE PROGRAMA BRUCELLAS</h6>
                   <div class="dropdown">
 					<button @click.prevent="clickCreate()" type="button" class="btn btn-sm btn-success btn-icon-text text-light mx-1">Nueva </button>
-                    <button type="button" class="btn bg-info btn-sm mt-2 mr-2" @click.prevent="clickImport()"><i class="fa fa-download"></i> Importar</button>
+                    <el-button @click.prevent="clickImport()" type="success">
+                      <vue-feather type="upload" class="fs-vue-feather-18"></vue-feather>
+                      Importar
+                    </el-button>
                 </div>
               </div>
               <div class="row">
@@ -23,24 +26,25 @@
 						<th class="pt-0"> Proveedor</th>
 						<th class="pt-0"> Peso</th>
 						<th class="pt-0"> Parcela</th>
+                        <th class="pt-0"> V. Producción</th>
 						<th class="pt-0"> Tiempo Hato</th>
 					  	<th class="pt-0"> Accion</th>
-                        <th class="pt-0"> Asignacion Modulo</th>
-                        <th class="pt-0"> Estado</th>
+                        <th class="pt-0"> Asignar Modulo</th>
                       	<th class="pt-0">Opciones</th>
                     </tr>
                   </thead>
                   <tbody>
 					<tr v-for="(row, index) in records" :key="index">
 						<td>{{ index + 1 }}</td>
-						<td>{{ row.matriz.description }}</td>
 						<td>{{ row.muestra.description }}</td>
-						<td>{{ row.name }}</td>
-						<td>{{ row.price }}</td>
-						<td>{{ row.laboratorio.name }}</td>
-						<td>{{ row.metodo.name }}</td>
-						<td>{{ row.condicion }}</td>
-						<td>{{ row.time_entrega }}</td>
+						<td>{{ row.ruta }}</td>
+						<td>{{ row.supplier.name }}</td>
+						<td>{{ row.peso }}</td>
+						<td>{{ row.parcela }}</td>
+						<td>{{ row.v_produccion }}</td>
+                        <td>{{ row.t_hato }}</td>
+						<td>{{ row.accion }}</td>
+						<td>{{ row.asignar_modulo }}</td>
 						<td>
 							<a v-if="row.estado!=0" class="btn text-danger" @click="clickDelete(row.id)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Eliminar" aria-label="Eliminar">
 								<vue-feather type="delete" class="fs-vue-feather-18"></vue-feather>
@@ -61,7 +65,7 @@
         </div>
     </div>
 	<programa-modal v-if="showDialog" :form="form" :errors="errors" @closeModal="closeModal" @saveAppt="saveAppt"/>
-    <program-brucella-import :showDialog.sync="showImportDialog"></program-brucella-import>
+    <program-brucella-import v-if="showImportDialog" @closeModalImport="closeModalImport"/>
 
 </template>
 <script>
@@ -95,12 +99,13 @@
 					id: '',
                     muestra_id:null,
                     ruta: null,
-                    proveedor_id: null,
+                    supplier_id: null,
 					peso: null,
                     parcela: null,
+                    v_produccion: null,
                     t_hato: null,
                     accion: null,
-                    estado: null
+                    asignar_modulo: null
 				},
 				this.errors = {}
 			},
@@ -121,15 +126,15 @@
 				this.form.id = info.id
 				this.form.muestra_id = info.muestra_id
 				this.form.ruta = info.ruta
-				this.form.proveedor_id = info.proveedor_id
+				this.form.supplier_id = info.supplier_id
 				this.form.peso = info.peso
 				this.form.parcela = info.parcela
+                this.form.v_produccion = info.v_produccion
 				this.form.t_hato = info.t_hato
 				this.form.accion = info.accion
-				this.form.asignacion_modulo = info.asignacion_modulo
-                this.form.estado = info.estado
+				this.form.asignar_modulo = info.asignar_modulo
 			},
-			closeModal(){
+            closeModal(){
 				this.showDialog = false;
 				this.initForm();
 			},
@@ -165,9 +170,16 @@
                 )
             },
             clickImport() {
-                debugger
                 this.showImportDialog = true
+            },
+            closeModalImport(){
+                this.showImportDialog = false;
             },
 		}
     }
 </script>
+<style>
+thead, tbody, tfoot, tr, td, th {
+    border-width: thin !important;
+}
+</style>

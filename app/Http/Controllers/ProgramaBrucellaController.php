@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Person;
 use App\Models\Muestra;
 use App\Models\ProgramaBrucella;
+use App\Imports\programBrucellaImport;
 use Illuminate\Database\QueryException;
 use App\Http\Requests\ProgramaBrucellaRequest;
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Excel;
 
 class ProgramaBrucellaController extends Controller
 {
@@ -105,4 +108,32 @@ class ProgramaBrucellaController extends Controller
             'message' => 'Resturada con éxito'
         ];
 	}
+
+    public function import(Request $request)
+    {
+//        dd($request->all());
+        if ($request->hasFile('file')) {
+            try {
+
+                $import = new programBrucellaImport();
+                $import->import($request->file('file'), null, Excel::XLSX);
+                $data = $import->getData();
+                return [
+                    'success' => true,
+                    'message' => 'Datos Ingresados',
+                    'data' => $data
+                ];
+
+            } catch (Throwable $th) {
+                return [
+                    'success' => false,
+                    'message' => $th->getMessage()
+                ];
+            }
+        }
+        return [
+            'success' => false,
+            'message' => __('app.actions.upload.error'),
+        ];
+    }
 }

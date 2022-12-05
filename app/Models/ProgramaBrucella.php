@@ -9,17 +9,18 @@ class ProgramaBrucella extends Model
 {
 	use HasFactory;
 	protected $table = "programa_brucellas";
-	
+
 	protected $fillable = [
 		'muestra_id',
 		'ruta',
 		'parcela',
-		'proveedor_id',
+		'supplier_id',
 		'peso',
 		'parcela',
+        'v_produccion',
 		't_hato',
 		'accion',
-		'asignacion_modulo'
+		'asignar_modulo'
 	];
 
 
@@ -28,9 +29,9 @@ class ProgramaBrucella extends Model
         return $this->belongsTo(Muestra::class,'muestra_id');
     }
 
-	public function proveedor()
+	public function supplier()
     {
-        return $this->belongsTo(Person::class,'proveedor_id');
+        return $this->belongsTo(Person::class,'supplier_id');
     }
 
 }

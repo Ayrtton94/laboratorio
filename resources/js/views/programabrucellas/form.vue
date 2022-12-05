@@ -33,10 +33,10 @@
                         <div class="form-group">
                             <label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Proveedores</label>
                             <div class="col-md-12 col-sm-12 col-xs-12">
-                                <el-select v-model="form.proveedor_id" class="w-100" dusk="proveedor_id" filterable>
+                                <el-select v-model="form.supplier_id" class="w-100" dusk="supplier_id" filterable>
                                     <el-option v-for="option in suppliers" :key="option.id" :label="option.name"  :value="option.id"></el-option>
                                 </el-select>
-                                <small class="form-control-feedback text-danger" v-if="errors.proveedor_id" v-text="errors.laboratorio_id[0]"></small>
+                                <small class="form-control-feedback text-danger" v-if="errors.supplier_id" v-text="errors.supplier_id[0]"></small>
                             </div>
                         </div>
 						<div class="form-group">
@@ -54,6 +54,13 @@
 								<input id="parcela" v-model="form.parcela" class="form-control" name="parcela" type="text" placeholder="Descripción">
 							</div>
 						</div>
+                        <div class="form-group">
+                            <label class="control-label col-md-12 col-sm-12 col-xs-12">(*)V. Producción</label>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <input id="v_produccion" v-model="form.v_produccion" class="form-control" name="v_produccion" type="text" placeholder="Descripción">
+                                <small class="form-control-feedback text-danger" v-if="errors.v_produccion" v-text="errors.v_produccion[0]"></small>
+                            </div>
+                        </div>
 						<div class="form-group">
 							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Tiempo de Entrega</label>
 							<div class="col-md-12 col-sm-12 col-xs-12">
@@ -65,7 +72,7 @@
                             <label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Accion</label>
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <el-select v-model="form.accion" class="w-100" dusk="accion" filterable>
-                                    <el-option v-for="option in metodos" :key="option.id" :label="option.name"  :value="option.id"></el-option>
+                                    <el-option v-for="option in acciones" :key="option.id" :label="option.name"  :value="option.id"></el-option>
                                 </el-select>
                                 <small class="form-control-feedback text-danger" v-if="errors.accion" v-text="errors.metodo_id[0]"></small>
                             </div>
@@ -73,19 +80,10 @@
                         <div class="form-group">
                             <label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Asignación Modulo</label>
                             <div class="col-md-12 col-sm-12 col-xs-12">
-                                <el-select v-model="form.asignacion_modulo" class="w-100" dusk="asignacion_modulo" filterable>
+                                <el-select v-model="form.asignar_modulo" class="w-100" dusk="asignar_modulo" filterable>
                                     <el-option v-for="option in asignaciones" :key="option.id" :label="option.name"  :value="option.id"></el-option>
                                 </el-select>
-                                <small class="form-control-feedback text-danger" v-if="errors.asignacion_modulo" v-text="errors.metodo_id[0]"></small>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Estado</label>
-                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                <el-select v-model="form.estado" class="w-100" dusk="estado" filterable>
-                                    <el-option v-for="option in estados" :key="option.id" :label="option.name"  :value="option.id"></el-option>
-                                </el-select>
-                                <small class="form-control-feedback text-danger" v-if="errors.estado" v-text="errors.estado[0]"></small>
+                                <small class="form-control-feedback text-danger" v-if="errors.asignar_modulo" v-text="errors.asignar_modulo[0]"></small>
                             </div>
                         </div>
 						<div class="modal-footer">
@@ -117,12 +115,17 @@
                 suppliers: [],
 				muestras: [],
                 asignaciones: [
-                    {"id": "1", "nombre": "Asignacion 01"},
-                    {"id": "2", "nombre": "Asignacion 02"},
+                    {"id": 1, "name": "de Modulo"},
+                    {"id": 2, "name": "de Planta"},
                 ],
-                estados: [
-                    {"id": "1", "nombre": "Estado 01"},
-                    {"id": "2", "nombre": "Estado 02"},
+                acciones: [
+
+                    {"id": 1, "name": "Accion" },
+                    {"id": 2, "name": "Certificado" },
+                    {"id": 3, "name": "Comprobante" },
+                    {"id": 4, "name": "Certificado/comprobante" },
+                    {"id": 5, "name": "Ninguno" }
+
                 ],
 			}
 		},
