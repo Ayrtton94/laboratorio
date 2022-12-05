@@ -17,8 +17,15 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\SubEspecieController;
 use App\Http\Controllers\LaboratorioController;
 use App\Http\Controllers\PresentacionController;
+
+use App\Http\Controllers\LaboratorioOrderController;
 use App\Http\Controllers\ProgramaBrucellaController;
-use App\Http\Controllers\Tenant\LaboratorioOrderController;
+
+use App\Http\Controllers\AreaController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\PersonController;
+use App\Http\Controllers\TipoOrdenController;
+>>>>>>> ed043a2 (importar datos asistencias)
 
 Route::get('/', function () {
 	return view('auth.login');
@@ -182,10 +189,11 @@ Route::get('/permissions/records', [PermissionController::class, 'records'])->na
 		Route::delete('{id}', 'destroy');
 	});
 
+
 	// PROGRAMA BRUCELLAS
-	Route::controller(ProgramaBrucellaController::class)->prefix('programas-brucellas')->group(function(){
+	Route::controller(ProgramaBrucellaController::class)->prefix('programabrucellas')->group(function(){
 		Route::get('restore/{id}', 'restore');
-		Route::get('', 'index')->name('programas-brucellas');
+		Route::get('', 'index')->name('programabrucellas');
 		Route::get('/records', 'records');
 		Route::get('/tables', 'tables');
 		Route::get('/columns', 'columns');
@@ -196,8 +204,8 @@ Route::get('/permissions/records', [PermissionController::class, 'records'])->na
 	});
 
 	// LABORATORIO ORDERS
-	Route::controller(LaboratorioOrderController::class)->prefix('laboratorio-orders')->group(function(){
-		Route::get('', 'index')->name('laboratorio-orders');
+	Route::controller(LaboratorioOrderController::class)->prefix('orders')->group(function(){
+		Route::get('', 'index')->name('orders.index');
 		Route::post('/orderall', 'recordsAll');
 		Route::post('/AllOrder', 'AllOrder');
 		Route::get('/columns', 'columns');
@@ -218,3 +226,17 @@ Route::get('/permissions/records', [PermissionController::class, 'records'])->na
 		Route::get('/imprimir/{order}/{format}', 'imprimir');
 
 	});
+
+	// ASISTENCIAS
+	Route::controller(AttendanceController::class)->prefix('attendance')->group(function(){
+		// Route::get('restore/{id}', 'restore');
+		// Route::get('columns', 'columns');
+		// Route::get('tables', 'tables');
+		Route::get('',  'index')->name('attendance.index');
+		Route::post('import', 'import');
+		Route::get('/records', 'records');
+		// Route::post('', 'store');
+		// Route::delete('{id}', 'destroy');
+	});
+
+

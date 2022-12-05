@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 class CreateCatalogsTable extends Migration
 {
 
-	public function up()
+    public function up()
     {
 
         /*
@@ -16,23 +16,25 @@ class CreateCatalogsTable extends Migration
          ***************************************************************************************************************
          ***************************************************************************************************************
          */
-        Schema::create('cat_document_types', function (Blueprint $table) {
-            $table->string('id', 3)->index();
-            $table->boolean('active');
-            $table->string('short')->nullable();
-            $table->string('description');
-        });
+        if (!Schema::hasTable('cat_currency_types')) {
+            Schema::create('cat_document_types', function (Blueprint $table) {
+                $table->string('id', 3)->index();
+                $table->boolean('active');
+                $table->string('short')->nullable();
+                $table->string('description');
+            });
+        }
 
         DB::table('cat_document_types')->insert([
-            ['id' => '01', 'active' => true,  'short' => 'FT', 'description' => 'FACTURA ELECTRÓNICA'],
-            ['id' => '02', 'active' => true,  'short' => 'CP', 'description' => 'COTIZACIÓN'],
-            ['id' => '03', 'active' => true,  'short' => 'BV', 'description' => 'BOLETA DE VENTA ELECTRÓNICA'],
-            ['id' => '07', 'active' => true,  'short' => 'NC', 'description' => 'NOTA DE CRÉDITO'],
-            ['id' => '08', 'active' => true,  'short' => 'ND', 'description' => 'NOTA DE DÉBITO'],
-            ['id' => '09', 'active' => true,  'short' => null, 'description' => 'GUIA DE REMISIÓN REMITENTE'],
-            ['id' => '20', 'active' => true,  'short' => null, 'description' => 'COMPROBANTE DE RETENCIÓN ELECTRÓNICA'],
-            ['id' => '31', 'active' => true,  'short' => null, 'description' => 'Guía de remisión transportista'],
-            ['id' => '40', 'active' => true,  'short' => null, 'description' => 'COMPROBANTE DE PERCEPCIÓN ELECTRÓNICA'],
+            ['id' => '01', 'active' => true, 'short' => 'FT', 'description' => 'FACTURA ELECTRÓNICA'],
+            ['id' => '02', 'active' => true, 'short' => 'CP', 'description' => 'COTIZACIÓN'],
+            ['id' => '03', 'active' => true, 'short' => 'BV', 'description' => 'BOLETA DE VENTA ELECTRÓNICA'],
+            ['id' => '07', 'active' => true, 'short' => 'NC', 'description' => 'NOTA DE CRÉDITO'],
+            ['id' => '08', 'active' => true, 'short' => 'ND', 'description' => 'NOTA DE DÉBITO'],
+            ['id' => '09', 'active' => true, 'short' => null, 'description' => 'GUIA DE REMISIÓN REMITENTE'],
+            ['id' => '20', 'active' => true, 'short' => null, 'description' => 'COMPROBANTE DE RETENCIÓN ELECTRÓNICA'],
+            ['id' => '31', 'active' => true, 'short' => null, 'description' => 'Guía de remisión transportista'],
+            ['id' => '40', 'active' => true, 'short' => null, 'description' => 'COMPROBANTE DE PERCEPCIÓN ELECTRÓNICA'],
             ['id' => '71', 'active' => false, 'short' => null, 'description' => 'Guia de remisión remitente complementaria'],
             ['id' => '72', 'active' => false, 'short' => null, 'description' => 'Guia de remisión transportista complementaria'],
         ]);
@@ -42,16 +44,18 @@ class CreateCatalogsTable extends Migration
          ***************************************************************************************************************
          ***************************************************************************************************************
          */
-        Schema::create('cat_currency_types', function (Blueprint $table) {
-            $table->string('id', 4)->index();
-            $table->boolean('active');
-            $table->string('symbol')->nullable();
-            $table->string('description');
-        });
+        if (!Schema::hasTable('cat_currency_types')) {
+            Schema::create('cat_currency_types', function (Blueprint $table) {
+                $table->string('id', 4)->index();
+                $table->boolean('active');
+                $table->string('symbol')->nullable();
+                $table->string('description');
+            });
+        }
 
         DB::table('cat_currency_types')->insert([
             ['id' => 'PEN', 'active' => true, 'symbol' => 'S/', 'description' => 'Soles'],
-            ['id' => 'USD', 'active' => true, 'symbol' => '$',  'description' => 'Dólares Americanos'],
+            ['id' => 'USD', 'active' => true, 'symbol' => '$', 'description' => 'Dólares Americanos'],
         ]);
 
         /*
@@ -59,16 +63,18 @@ class CreateCatalogsTable extends Migration
          ***************************************************************************************************************
          ***************************************************************************************************************
          */
-        Schema::create('cat_unit_types', function (Blueprint $table) {
-            $table->string('id', 5)->index();
-            $table->boolean('active');
-            $table->string('symbol')->nullable();
-            $table->string('description');
-        });
+        if (!Schema::hasTable('cat_unit_types')) {
+            Schema::create('cat_unit_types', function (Blueprint $table) {
+                $table->string('id', 5)->index();
+                $table->boolean('active');
+                $table->string('symbol')->nullable();
+                $table->string('description');
+            });
+        }
 
         DB::table('cat_unit_types')->insert([
-            ['id' => 'ZZ',  'active' => true, 'symbol' => null, 'description' => 'SERVICIO'],
-            ['id' => 'BX',  'active' => true, 'symbol' => null, 'description' => 'CAJA'],
+            ['id' => 'ZZ', 'active' => true, 'symbol' => null, 'description' => 'SERVICIO'],
+            ['id' => 'BX', 'active' => true, 'symbol' => null, 'description' => 'CAJA'],
             ['id' => 'GLL', 'active' => true, 'symbol' => null, 'description' => 'GALONES'],
             ['id' => 'GRM', 'active' => true, 'symbol' => null, 'description' => 'GRAMOS'],
             ['id' => 'KGM', 'active' => true, 'symbol' => null, 'description' => 'KILOGRAMO'],
@@ -105,42 +111,40 @@ class CreateCatalogsTable extends Migration
             ['id' => 'SET', 'active' => true, 'symbol' => null, 'description' => 'JUEGO'],
             ['id' => 'KT', 'active' => true, 'symbol' => null, 'description' => 'KIT'],
             ['id' => 'ONZ', 'active' => true, 'symbol' => null, 'description' => 'ONZA'],
-			['id' => 'JR', 'active' => true, 'symbol' => null, 'description' => 'FRASCO'],
-			['id' => 'GLI', 'active' => true, 'symbol' => null, 'description' => 'GALON INGLES (4,545956L)'],
+            ['id' => 'JR', 'active' => true, 'symbol' => null, 'description' => 'FRASCO'],
+            ['id' => 'GLI', 'active' => true, 'symbol' => null, 'description' => 'GALON INGLES (4,545956L)'],
 
-			['id' => 'RO', 'active' => true, 'symbol' => null, 'description' => 'ROLLO'],
-			['id' => 'LEF', 'active' => true, 'symbol' => null, 'description' => 'HOJA'],
-			['id' => 'LBR', 'active' => true, 'symbol' => null, 'description' => 'LIBRA'],
-			['id' => 'TU', 'active' => true, 'symbol' => null, 'description' => 'TUBO'],
-		
-			['id' => 'CS', 'active' => true, 'symbol' => null, 'description' => 'JABA'],
-			['id' => 'DR', 'active' => true, 'symbol' => null, 'description' => 'TAMBOR'],
-			['id' => 'CA', 'active' => true, 'symbol' => null, 'description' => 'LATA'],
-			['id' => 'MWH', 'active' => true, 'symbol' => null, 'description' => 'MEGAWATT HORA'],
-			['id' => 'MTK', 'active' => true, 'symbol' => null, 'description' => 'METRO CUADRADO'],
-			['id' => 'MTQ', 'active' => true, 'symbol' => null, 'description' => 'METRO CUBICO'],
-			['id' => 'MGM', 'active' => true, 'symbol' => null, 'description' => 'MILIGRAMO'],
+            ['id' => 'RO', 'active' => true, 'symbol' => null, 'description' => 'ROLLO'],
+            ['id' => 'LEF', 'active' => true, 'symbol' => null, 'description' => 'HOJA'],
+            ['id' => 'LBR', 'active' => true, 'symbol' => null, 'description' => 'LIBRA'],
+            ['id' => 'TU', 'active' => true, 'symbol' => null, 'description' => 'TUBO'],
 
-			['id' => 'MLT', 'active' => true, 'symbol' => null, 'description' => 'MILILITRO'],
-			['id' => 'MMT', 'active' => true, 'symbol' => null, 'description' => 'MILIMETRO'],
+            ['id' => 'CS', 'active' => true, 'symbol' => null, 'description' => 'JABA'],
+            ['id' => 'DR', 'active' => true, 'symbol' => null, 'description' => 'TAMBOR'],
+            ['id' => 'CA', 'active' => true, 'symbol' => null, 'description' => 'LATA'],
+            ['id' => 'MWH', 'active' => true, 'symbol' => null, 'description' => 'MEGAWATT HORA'],
+            ['id' => 'MTK', 'active' => true, 'symbol' => null, 'description' => 'METRO CUADRADO'],
+            ['id' => 'MTQ', 'active' => true, 'symbol' => null, 'description' => 'METRO CUBICO'],
+            ['id' => 'MGM', 'active' => true, 'symbol' => null, 'description' => 'MILIGRAMO'],
 
-			['id' => 'MMK', 'active' => true, 'symbol' => null, 'description' => 'MILIMETRO CUADRADO' ],
-			['id' => 'MMQ', 'active' => true, 'symbol' => null, 'description' => 'MILIMETRO CUBICO' ],
+            ['id' => 'MLT', 'active' => true, 'symbol' => null, 'description' => 'MILILITRO'],
+            ['id' => 'MMT', 'active' => true, 'symbol' => null, 'description' => 'MILIMETRO'],
 
-			['id' => 'MIL', 'active' => true, 'symbol' => null, 'description' => 'MILLARES' ],
-			['id' => 'UM', 'active' => true, 'symbol' => null, 'description' => 'MILLON DE UNIDADES' ],
-			['id' => 'PK', 'active' => true, 'symbol' => null, 'description' => 'CAJETILLA' ],
-			['id' => 'RD', 'active' => true, 'symbol' => null, 'description' => 'VARILLA' ],
+            ['id' => 'MMK', 'active' => true, 'symbol' => null, 'description' => 'MILIMETRO CUADRADO'],
+            ['id' => 'MMQ', 'active' => true, 'symbol' => null, 'description' => 'MILIMETRO CUBICO'],
 
-			['id' => 'DS', 'active' => true, 'symbol' => null, 'description' => 'DISPLAY' ],
-			['id' => 'SR', 'active' => true, 'symbol' => null, 'description' => 'TIRA' ],
-			['id' => 'PA', 'active' => true, 'symbol' => null, 'description' => 'PACK' ],
-			['id' => 'KWH', 'active' => true, 'symbol' => null, 'description' => 'KILOVATIO HORA' ],
-			['id' => 'YDK', 'active' => true, 'symbol' => null, 'description' => 'YARDA CUADRADA' ],
+            ['id' => 'MIL', 'active' => true, 'symbol' => null, 'description' => 'MILLARES'],
+            ['id' => 'UM', 'active' => true, 'symbol' => null, 'description' => 'MILLON DE UNIDADES'],
+            ['id' => 'PK', 'active' => true, 'symbol' => null, 'description' => 'CAJETILLA'],
+            ['id' => 'RD', 'active' => true, 'symbol' => null, 'description' => 'VARILLA'],
+
+            ['id' => 'DS', 'active' => true, 'symbol' => null, 'description' => 'DISPLAY'],
+            ['id' => 'SR', 'active' => true, 'symbol' => null, 'description' => 'TIRA'],
+            ['id' => 'PA', 'active' => true, 'symbol' => null, 'description' => 'PACK'],
+            ['id' => 'KWH', 'active' => true, 'symbol' => null, 'description' => 'KILOVATIO HORA'],
+            ['id' => 'YDK', 'active' => true, 'symbol' => null, 'description' => 'YARDA CUADRADA'],
 
 
-			
-			
         ]);
 
         /*
@@ -148,18 +152,21 @@ class CreateCatalogsTable extends Migration
          ***************************************************************************************************************
          ***************************************************************************************************************
          */
-        Schema::create('cat_identity_document_types', function (Blueprint $table) {
-            $table->string('id', 2)->index();
-            $table->boolean('active');
-            $table->string('description');
-        });
+
+        if (!Schema::hasTable('cat_identity_document_types')) {
+            Schema::create('cat_identity_document_types', function (Blueprint $table) {
+                $table->string('id', 2)->index();
+                $table->boolean('active');
+                $table->string('description');
+            });
+        }
 
         DB::table('cat_identity_document_types')->insert([
-            ['id' => '0', 'active' => true,  'description' => 'Doc.trib.no.dom.sin.ruc'],
-            ['id' => '1', 'active' => true,  'description' => 'DNI'],
-            ['id' => '4', 'active' => true,  'description' => 'CE'],
-            ['id' => '6', 'active' => true,  'description' => 'RUC'],
-            ['id' => '7', 'active' => true,  'description' => 'Pasaporte'],
+            ['id' => '0', 'active' => true, 'description' => 'Doc.trib.no.dom.sin.ruc'],
+            ['id' => '1', 'active' => true, 'description' => 'DNI'],
+            ['id' => '4', 'active' => true, 'description' => 'CE'],
+            ['id' => '6', 'active' => true, 'description' => 'RUC'],
+            ['id' => '7', 'active' => true, 'description' => 'Pasaporte'],
             ['id' => 'A', 'active' => false, 'description' => 'Ced. Diplomática de identidad'],
             ['id' => 'B', 'active' => false, 'description' => 'Documento identidad país residencia-no.d'],
             ['id' => 'C', 'active' => false, 'description' => 'Tax Identification Number - TIN – Doc Trib PP.NN'],
@@ -181,25 +188,25 @@ class CreateCatalogsTable extends Migration
         });
 
         DB::table('cat_affectation_igv_types')->insert([
-            ['id' => '10', 'active' => true,  'exportation' => false, 'free' => false, 'description' => 'Gravado - Operación Onerosa'],
-            ['id' => '11', 'active' => true,  'exportation' => false, 'free' => true,  'description' => 'Gravado – Retiro por premio'],
-            ['id' => '12', 'active' => true,  'exportation' => false, 'free' => true,  'description' => 'Gravado – Retiro por donación'],
-            ['id' => '13', 'active' => true,  'exportation' => false, 'free' => true,  'description' => 'Gravado – Retiro'],
-            ['id' => '14', 'active' => true,  'exportation' => false, 'free' => true,  'description' => 'Gravado – Retiro por publicidad'],
-            ['id' => '15', 'active' => true,  'exportation' => false, 'free' => true,  'description' => 'Gravado – Bonificaciones'],
-            ['id' => '16', 'active' => true,  'exportation' => false, 'free' => true,  'description' => 'Gravado – Retiro por entrega a trabajadores'],
-            ['id' => '17', 'active' => false, 'exportation' => false, 'free' => true,  'description' => 'Gravado – IVAP'],
-            ['id' => '20', 'active' => true,  'exportation' => false, 'free' => false, 'description' => 'Exonerado - Operación Onerosa'],
-            ['id' => '21', 'active' => true,  'exportation' => false, 'free' => true,  'description' => 'Exonerado – Transferencia Gratuita'],
-            ['id' => '30', 'active' => true,  'exportation' => false, 'free' => false, 'description' => 'Inafecto - Operación Onerosa'],
-            ['id' => '31', 'active' => true,  'exportation' => false, 'free' => true,  'description' => 'Inafecto – Retiro por Bonificación'],
-            ['id' => '32', 'active' => true,  'exportation' => false, 'free' => true,  'description' => 'Inafecto – Retiro'],
-            ['id' => '33', 'active' => true,  'exportation' => false, 'free' => true,  'description' => 'Inafecto – Retiro por Muestras Médicas'],
-            ['id' => '34', 'active' => true,  'exportation' => false, 'free' => true,  'description' => 'Inafecto - Retiro por Convenio Colectivo'],
-            ['id' => '35', 'active' => true,  'exportation' => false, 'free' => true,  'description' => 'Inafecto – Retiro por premio'],
-            ['id' => '36', 'active' => true,  'exportation' => false, 'free' => true,  'description' => 'Inafecto - Retiro por publicidad'],
-            ['id' => '37', 'active' => true,  'exportation' => false, 'free' => true,  'description' => 'Inafecto - Transferencia gratuita'],
-            ['id' => '40', 'active' => true,  'exportation' => true,  'free' => false, 'description' => 'Exportación de bienes o servicios'],
+            ['id' => '10', 'active' => true, 'exportation' => false, 'free' => false, 'description' => 'Gravado - Operación Onerosa'],
+            ['id' => '11', 'active' => true, 'exportation' => false, 'free' => true, 'description' => 'Gravado – Retiro por premio'],
+            ['id' => '12', 'active' => true, 'exportation' => false, 'free' => true, 'description' => 'Gravado – Retiro por donación'],
+            ['id' => '13', 'active' => true, 'exportation' => false, 'free' => true, 'description' => 'Gravado – Retiro'],
+            ['id' => '14', 'active' => true, 'exportation' => false, 'free' => true, 'description' => 'Gravado – Retiro por publicidad'],
+            ['id' => '15', 'active' => true, 'exportation' => false, 'free' => true, 'description' => 'Gravado – Bonificaciones'],
+            ['id' => '16', 'active' => true, 'exportation' => false, 'free' => true, 'description' => 'Gravado – Retiro por entrega a trabajadores'],
+            ['id' => '17', 'active' => false, 'exportation' => false, 'free' => true, 'description' => 'Gravado – IVAP'],
+            ['id' => '20', 'active' => true, 'exportation' => false, 'free' => false, 'description' => 'Exonerado - Operación Onerosa'],
+            ['id' => '21', 'active' => true, 'exportation' => false, 'free' => true, 'description' => 'Exonerado – Transferencia Gratuita'],
+            ['id' => '30', 'active' => true, 'exportation' => false, 'free' => false, 'description' => 'Inafecto - Operación Onerosa'],
+            ['id' => '31', 'active' => true, 'exportation' => false, 'free' => true, 'description' => 'Inafecto – Retiro por Bonificación'],
+            ['id' => '32', 'active' => true, 'exportation' => false, 'free' => true, 'description' => 'Inafecto – Retiro'],
+            ['id' => '33', 'active' => true, 'exportation' => false, 'free' => true, 'description' => 'Inafecto – Retiro por Muestras Médicas'],
+            ['id' => '34', 'active' => true, 'exportation' => false, 'free' => true, 'description' => 'Inafecto - Retiro por Convenio Colectivo'],
+            ['id' => '35', 'active' => true, 'exportation' => false, 'free' => true, 'description' => 'Inafecto – Retiro por premio'],
+            ['id' => '36', 'active' => true, 'exportation' => false, 'free' => true, 'description' => 'Inafecto - Retiro por publicidad'],
+            ['id' => '37', 'active' => true, 'exportation' => false, 'free' => true, 'description' => 'Inafecto - Transferencia gratuita'],
+            ['id' => '40', 'active' => true, 'exportation' => true, 'free' => false, 'description' => 'Exportación de bienes o servicios'],
         ]);
 
         /*
@@ -311,7 +318,7 @@ class CreateCatalogsTable extends Migration
         ]);
 
         /*
-   
+
         /*
          ***************************************************************************************************************
          ***************************************************************************************************************
@@ -417,8 +424,8 @@ class CreateCatalogsTable extends Migration
         });
 
         DB::table('cat_perception_types')->insert([
-            ['id' => '01', 'active' => true, 'percentage' => 2,   'description' => 'Percepción Venta Interna'],
-            ['id' => '02', 'active' => true, 'percentage' => 1,   'description' => 'Percepción a la adquisición de combustible'],
+            ['id' => '01', 'active' => true, 'percentage' => 2, 'description' => 'Percepción Venta Interna'],
+            ['id' => '02', 'active' => true, 'percentage' => 1, 'description' => 'Percepción a la adquisición de combustible'],
             ['id' => '03', 'active' => true, 'percentage' => 0.5, 'description' => 'Percepción realizada al agente de percepción con tasa especial'],
         ]);
 
@@ -452,18 +459,18 @@ class CreateCatalogsTable extends Migration
         });
 
         DB::table('cat_operation_types')->insert([
-            ['id' => '0101', 'active' => true,  'exportation' => false, 'description' => 'Venta interna'],
+            ['id' => '0101', 'active' => true, 'exportation' => false, 'description' => 'Venta interna'],
             ['id' => '0112', 'active' => false, 'exportation' => false, 'description' => 'Venta Interna - Sustenta Gastos Deducibles Persona Natural'],
             ['id' => '0113', 'active' => false, 'exportation' => false, 'description' => 'Venta Interna - NRUS'],
-            ['id' => '0200', 'active' => true,  'exportation' => true,  'description' => 'Exportación de Bienes'],
-            ['id' => '0201', 'active' => false, 'exportation' => true,  'description' => 'Exportación de Servicios – Prestación servicios realizados íntegramente en el país'],
-            ['id' => '0202', 'active' => false, 'exportation' => true,  'description' => 'Exportación de Servicios – Prestación de servicios de hospedaje No Domiciliado'],
-            ['id' => '0203', 'active' => false, 'exportation' => true,  'description' => 'Exportación de Servicios – Transporte de navieras'],
-            ['id' => '0204', 'active' => false, 'exportation' => true,  'description' => 'Exportación de Servicios – Servicios a naves y aeronaves de bandera extranjera'],
-            ['id' => '0205', 'active' => false, 'exportation' => true,  'description' => 'Exportación de Servicios - Servicios que conformen un Paquete Turístico'],
-            ['id' => '0206', 'active' => false, 'exportation' => true,  'description' => 'Exportación de Servicios – Servicios complementarios al transporte de carga'],
-            ['id' => '0207', 'active' => false, 'exportation' => true,  'description' => 'Exportación de Servicios – Suministro de energía eléctrica a favor de sujetos domiciliados en ZED'],
-            ['id' => '0208', 'active' => false, 'exportation' => true,  'description' => 'Exportación de Servicios – Prestación servicios realizados parcialmente en el extranjero'],
+            ['id' => '0200', 'active' => true, 'exportation' => true, 'description' => 'Exportación de Bienes'],
+            ['id' => '0201', 'active' => false, 'exportation' => true, 'description' => 'Exportación de Servicios – Prestación servicios realizados íntegramente en el país'],
+            ['id' => '0202', 'active' => false, 'exportation' => true, 'description' => 'Exportación de Servicios – Prestación de servicios de hospedaje No Domiciliado'],
+            ['id' => '0203', 'active' => false, 'exportation' => true, 'description' => 'Exportación de Servicios – Transporte de navieras'],
+            ['id' => '0204', 'active' => false, 'exportation' => true, 'description' => 'Exportación de Servicios – Servicios a naves y aeronaves de bandera extranjera'],
+            ['id' => '0205', 'active' => false, 'exportation' => true, 'description' => 'Exportación de Servicios - Servicios que conformen un Paquete Turístico'],
+            ['id' => '0206', 'active' => false, 'exportation' => true, 'description' => 'Exportación de Servicios – Servicios complementarios al transporte de carga'],
+            ['id' => '0207', 'active' => false, 'exportation' => true, 'description' => 'Exportación de Servicios – Suministro de energía eléctrica a favor de sujetos domiciliados en ZED'],
+            ['id' => '0208', 'active' => false, 'exportation' => true, 'description' => 'Exportación de Servicios – Prestación servicios realizados parcialmente en el extranjero'],
             ['id' => '0301', 'active' => false, 'exportation' => false, 'description' => 'Operaciones con Carta de porte aéreo (emitidas en el ámbito nacional)'],
             ['id' => '0302', 'active' => false, 'exportation' => false, 'description' => 'Operaciones de Transporte ferroviario de pasajeros'],
             ['id' => '0303', 'active' => false, 'exportation' => false, 'description' => 'Operaciones de Pago de regalía petrolera'],
@@ -517,22 +524,22 @@ class CreateCatalogsTable extends Migration
         });
 
         DB::table('cat_charge_discount_types')->insert([
-            ['id' => '00', 'active' => true,  'base' => true,  'level' => 'item',   'type' => 'discount', 'description' => 'Descuentos que afectan la base imponible del IGV/IVAP'],
-            ['id' => '01', 'active' => true,  'base' => false, 'level' => 'item',   'type' => 'discount', 'description' => 'Descuentos que no afectan la base imponible del IGV/IVAP'],
-            ['id' => '02', 'active' => true,  'base' => true,  'level' => 'global', 'type' => 'discount', 'description' => 'Descuentos globales que afectan la base imponible del IGV/IVAP'],
-            ['id' => '03', 'active' => true,  'base' => false, 'level' => 'global', 'type' => 'discount', 'description' => 'Descuentos globales que no afectan la base imponible del IGV/IVAP'],
-            ['id' => '04', 'active' => false, 'base' => true,  'level' => 'global', 'type' => 'discount', 'description' => 'Descuentos globales por anticipos gravados que afectan la base imponible del IGV/IVAP'],
+            ['id' => '00', 'active' => true, 'base' => true, 'level' => 'item', 'type' => 'discount', 'description' => 'Descuentos que afectan la base imponible del IGV/IVAP'],
+            ['id' => '01', 'active' => true, 'base' => false, 'level' => 'item', 'type' => 'discount', 'description' => 'Descuentos que no afectan la base imponible del IGV/IVAP'],
+            ['id' => '02', 'active' => true, 'base' => true, 'level' => 'global', 'type' => 'discount', 'description' => 'Descuentos globales que afectan la base imponible del IGV/IVAP'],
+            ['id' => '03', 'active' => true, 'base' => false, 'level' => 'global', 'type' => 'discount', 'description' => 'Descuentos globales que no afectan la base imponible del IGV/IVAP'],
+            ['id' => '04', 'active' => false, 'base' => true, 'level' => 'global', 'type' => 'discount', 'description' => 'Descuentos globales por anticipos gravados que afectan la base imponible del IGV/IVAP'],
             ['id' => '05', 'active' => false, 'base' => false, 'level' => 'global', 'type' => 'discount', 'description' => 'Descuentos globales por anticipos exonerados'],
             ['id' => '06', 'active' => false, 'base' => false, 'level' => 'global', 'type' => 'discount', 'description' => 'Descuentos globales por anticipos inafectos'],
-            ['id' => '45', 'active' => false, 'base' => true,  'level' => 'global', 'type' => 'charge',   'description' => 'FISE'],
-            ['id' => '46', 'active' => true,  'base' => false, 'level' => 'global', 'type' => 'charge',   'description' => 'Recargo al consumo y/o propinas'],
-            ['id' => '47', 'active' => true,  'base' => true,  'level' => 'item',   'type' => 'charge',   'description' => 'Cargos que afectan la base imponible del IGV/IVAP'],
-            ['id' => '48', 'active' => true,  'base' => false, 'level' => 'item',   'type' => 'charge',   'description' => 'Cargos que no afectan la base imponible del IGV/IVAP'],
-            ['id' => '49', 'active' => true,  'base' => true,  'level' => 'global', 'type' => 'charge',   'description' => 'Cargos globales que afectan la base imponible del IGV/IVAP'],
-            ['id' => '50', 'active' => true,  'base' => false, 'level' => 'global', 'type' => 'charge',   'description' => 'Cargos globales que no afectan la base imponible del IGV/IVAP'],
-            ['id' => '51', 'active' => false, 'base' => true,  'level' => 'global', 'type' => 'charge',   'description' => 'Percepción venta interna'],
-            ['id' => '52', 'active' => false, 'base' => true,  'level' => 'global', 'type' => 'charge',   'description' => 'Percepción a la adquisición de combustible'],
-            ['id' => '53', 'active' => false, 'base' => true,  'level' => 'global', 'type' => 'charge',   'description' => 'Percepción realizada al agente de percepción con tasa especial'],
+            ['id' => '45', 'active' => false, 'base' => true, 'level' => 'global', 'type' => 'charge', 'description' => 'FISE'],
+            ['id' => '46', 'active' => true, 'base' => false, 'level' => 'global', 'type' => 'charge', 'description' => 'Recargo al consumo y/o propinas'],
+            ['id' => '47', 'active' => true, 'base' => true, 'level' => 'item', 'type' => 'charge', 'description' => 'Cargos que afectan la base imponible del IGV/IVAP'],
+            ['id' => '48', 'active' => true, 'base' => false, 'level' => 'item', 'type' => 'charge', 'description' => 'Cargos que no afectan la base imponible del IGV/IVAP'],
+            ['id' => '49', 'active' => true, 'base' => true, 'level' => 'global', 'type' => 'charge', 'description' => 'Cargos globales que afectan la base imponible del IGV/IVAP'],
+            ['id' => '50', 'active' => true, 'base' => false, 'level' => 'global', 'type' => 'charge', 'description' => 'Cargos globales que no afectan la base imponible del IGV/IVAP'],
+            ['id' => '51', 'active' => false, 'base' => true, 'level' => 'global', 'type' => 'charge', 'description' => 'Percepción venta interna'],
+            ['id' => '52', 'active' => false, 'base' => true, 'level' => 'global', 'type' => 'charge', 'description' => 'Percepción a la adquisición de combustible'],
+            ['id' => '53', 'active' => false, 'base' => true, 'level' => 'global', 'type' => 'charge', 'description' => 'Percepción realizada al agente de percepción con tasa especial'],
         ]);
 
         /*
@@ -680,20 +687,21 @@ class CreateCatalogsTable extends Migration
             ['id' => '999', 'active' => true, 'description' => 'Otros medios de pago']
         ]);
 
-		if (!Schema::hasTable('soap_types')) {
-			Schema::create('soap_types', function (Blueprint $table) {
-				$table->char('id',2);
-				$table->string('description');
-			});
-		}
+        if (!Schema::hasTable('soap_types')) {
+            Schema::create('soap_types', function (Blueprint $table) {
+                $table->char('id', 2);
+                $table->string('description');
+            });
+        }
 
-		if (!Schema::hasTable('state_types')) {
-			Schema::create('state_types', function (Blueprint $table) {
-				$table->char('id',2);
-				$table->string('description');
-			});
-		}
+        if (!Schema::hasTable('state_types')) {
+            Schema::create('state_types', function (Blueprint $table) {
+                $table->char('id', 2);
+                $table->string('description');
+            });
+        }
     }
+
     /**
      * Reverse the migrations.
      *
@@ -723,7 +731,7 @@ class CreateCatalogsTable extends Migration
         Schema::dropIfExists('cat_unit_types');
         Schema::dropIfExists('cat_currency_types');
         Schema::dropIfExists('cat_document_types');
-		Schema::dropIfExists('soap_types');
-		Schema::dropIfExists('state_types');
+        Schema::dropIfExists('soap_types');
+        Schema::dropIfExists('state_types');
     }
 }

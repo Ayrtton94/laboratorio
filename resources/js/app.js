@@ -52,6 +52,15 @@ import pruebas from './views/pruebas/index.vue'
 import pruebasform from './views/pruebas/form.vue'
 import persons from './views/Persons/index.vue'
 
+
+import orders from './views/orders/index.vue'
+import ordersinvoice from './views/orders/invoice.vue'
+
+import programabrucellas from './views/programabrucellas/index.vue'
+
+import attendance from './views/Attendance/index.vue'
+
+
 const emitter = mitt()
 const app = createApp({})
 app.config.globalProperties.emitter = emitter
@@ -106,6 +115,15 @@ app.component('metodos-create', metodosform)
 app.component('pruebas', pruebas)
 app.component('pruebas-create', pruebasform)
 
+
+//ORDER LABORATORIO
+app.component('orders', orders)
+app.component('orders-invoice', ordersinvoice)
+
+
+//PROGRAMA BRUCELLA
+app.component('programabrucellas', programabrucellas)
+
 //AREA
 app.component('areas', areas)
 
@@ -113,6 +131,9 @@ app.component('areas', areas)
 app.component('tipodeorden', tipodeorden)
 
 //PERSONAS
-app.component('persons', persons);
+app.component('persons', persons)
+
+//ASISTENCIAS
+app.component('attendance', attendance)
 
 app.mount('#app')

@@ -1,49 +1,13 @@
 <?php
-namespace App\Http\Controllers;
 
-use App\CoreDevPro\Template;
-use App\Models\Tenant\Account;
-use App\Models\Tenant\Catalogs\NoteCreditType;
-use App\Models\Tenant\Catalogs\NoteDebitType;
-use App\Models\Tenant\Catalogs\PaymentMethod;
-use Barryvdh\DomPDF\Facade as PDF;
-use Exception;
+    namespace App\Http\Controllers;
 
-use Modules\Inventory\Models\Warehouse;
-use Mpdf\Mpdf;
-use Nexmo\Account\Price;
-use App\CoreDevPro\DevPro;
-use App\Models\Tenant\Item;
-use App\Models\Tenant\Order;
-use Illuminate\Http\Request;
-use App\Models\Tenant\Person;
-use App\Models\Tenant\Series;
-use App\Models\Tenant\Company;
-use App\Mail\Tenant\DocumentEmail;
-use App\Models\Tenant\OrderDetail;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use App\Models\Tenant\Configuration;
-use App\Models\Tenant\Establishment;
-use App\Models\Tenant\QuotationItem;
-use Illuminate\Support\Facades\Mail;
-use App\Models\Tenant\UnidadEquivalente;
-use App\Models\Tenant\Catalogs\PriceType;
-use App\Http\Requests\Tenant\OrderRequest;
-use App\Http\Resources\Tenant\OrderResource;
-use App\Models\Tenant\Catalogs\CurrencyType;
-use App\Models\Tenant\Catalogs\DocumentType;
-use App\Models\Tenant\Catalogs\AttributeType;
-use App\Models\Tenant\Catalogs\OperationType;
-use App\Models\Tenant\Catalogs\SystemIscType;
-use App\Http\Resources\Tenant\OrderCollection;
-use App\Http\Requests\Tenant\DocumentEmailRequest;
-use App\Models\Tenant\Catalogs\AffectationIgvType;
-use App\Models\Tenant\Catalogs\ChargeDiscountType;
-use App\Http\Requests\Tenant\DocumentVoidedRequest;
-use App\Models\LaboratorioOrder;
-use App\Models\Tenant\Parametro;
-use Modules\Inventory\Models\InventoryConfiguration;
+    use Barryvdh\DomPDF\Facade as PDF;
+    use Mpdf\Mpdf;
+    use Nexmo\Account\Price;
+    use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\DB;
+    use App\Models\LaboratorioOrder;
 
 class LaboratorioOrderController extends Controller
 {
@@ -54,7 +18,7 @@ class LaboratorioOrderController extends Controller
 
     public function index()
     {
-       return view('tenant.laboratoriosorders.index');
+       return view('orders.index');
     }
 
     public function columns()
@@ -183,13 +147,13 @@ class LaboratorioOrderController extends Controller
 
     public function create()
     {
-//		$video ='KN-fTY2-Od4';
-        return view('tenant.orders.form');
+
+        return view('orders.form');
     }
 
     public function edit($order_id)
     {
-       return view('tenant.orders.edit', compact('order_id'));
+       return view('orders.edit', compact('order_id'));
     }
 
     public function tables()

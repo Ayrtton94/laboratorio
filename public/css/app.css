@@ -10967,4 +10967,40 @@ a.text-dark:focus {
   display: block !important;
 }
 
+.modal-import {
+  background-color: #ffffff !important;
+  border: 0 !important;
+  width: 70% !important;
+  margin: auto !important;
+}
+
+.bg-import {
+  /* background: #23856d;
+     border-color: #23856d; */
+}
+
+.bg-import:hover {
+  /* background: #23856d;
+     border-color: #23856d; */
+  color: #ffffff;
+}
+
+.donwload-format {
+  color: #217F68;
+  text-decoration: none !important;
+  font-weight: 500;
+}
+
+.donwload-format:hover {
+  color: #217F68;
+}
+
+.el-upload-list__item-name {
+  text-decoration: none !important;
+}
+
+.fs-vue-color {
+  color: #3dea71;
+}
+
 

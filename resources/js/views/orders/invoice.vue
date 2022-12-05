@@ -2,7 +2,7 @@ npm<template>
     <div class="container-fluid m-0 pb-0 mt-1">
 		<div class="page-header d-flex bd-highlight">
 			<div class="ml-4 mt-2 p-2 flex-grow-1">
-				<h4 >Nueva Orden de Venta / Pedido</h4>
+				<h4 >Nueva Orden de Laboratorio</h4>
 			</div>
         </div>
 		<div class="card">
@@ -47,41 +47,41 @@ npm<template>
 										<p class="text-info font-weight-bold fs-11" v-if="option.stock>0" v-html="option.stock"></p>
 
 										<p class="text-info font-weight-bold fs-11"   v-else >SIN STOCK</p>
-										<div v-if="muestraprecios.valor=='1'">
-											<div v-if="muestrapreciocompra.valor=='1' && admin==true">
-												<p class="text-success font-weight-bold fs-11">PRECIOS COMPRA</p>
-												<div v-for="valor in option.precios_compra" :key="valor.id">
-												<span class="font-weight-bold" style="font-size: 11px !important; color: #7481C9;">
-													{{valor.descripcion}} {{valor.unidad_medida_id}}:
-												</span>
-												<span class="font-weight-bold" style="font-size: 11px !important; color: rgb(233 13 13);">
-													{{valor.moneda.symbol}}{{formaterNumber(valor.precio,2)}}
-												</span>
-											</div>
-											</div>
-											<p class="text-success font-weight-bold fs-11">PRECIOS VENTA</p>
-											<div v-for="valor in option.precios_venta" :key="valor.id">
-												<span class="font-weight-bold" style="font-size: 11px !important; color: #7481C9;">
-													{{valor.descripcion}} {{valor.unidad_medida_id}}:
-												</span>
-												<span class="font-weight-bold" style="font-size: 11px !important; color: rgb(233 13 13);">
-													{{valor.moneda.symbol}}{{formaterNumber(valor.precio,2)}}
-												</span>
-											</div>
+<!--										<div v-if="muestraprecios.valor=='1'">-->
+<!--											<div v-if="muestrapreciocompra.valor=='1' && admin==true">-->
+<!--												<p class="text-success font-weight-bold fs-11">PRECIOS COMPRA</p>-->
+<!--												<div v-for="valor in option.precios_compra" :key="valor.id">-->
+<!--												<span class="font-weight-bold" style="font-size: 11px !important; color: #7481C9;">-->
+<!--													{{valor.descripcion}} {{valor.unidad_medida_id}}:-->
+<!--												</span>-->
+<!--												<span class="font-weight-bold" style="font-size: 11px !important; color: rgb(233 13 13);">-->
+<!--													{{valor.moneda.symbol}}{{formaterNumber(valor.precio,2)}}-->
+<!--												</span>-->
+<!--											</div>-->
+<!--											</div>-->
+<!--											<p class="text-success font-weight-bold fs-11">PRECIOS VENTA</p>-->
+<!--											<div v-for="valor in option.precios_venta" :key="valor.id">-->
+<!--												<span class="font-weight-bold" style="font-size: 11px !important; color: #7481C9;">-->
+<!--													{{valor.descripcion}} {{valor.unidad_medida_id}}:-->
+<!--												</span>-->
+<!--												<span class="font-weight-bold" style="font-size: 11px !important; color: rgb(233 13 13);">-->
+<!--													{{valor.moneda.symbol}}{{formaterNumber(valor.precio,2)}}-->
+<!--												</span>-->
+<!--											</div>-->
 
-										</div>
-										<div v-if="muestraprecios.valor=='0'">
-											<div v-if="muestrapreciocompra.valor=='1' && admin==true">
-												<p class="text-danger font-weight-bold fs-11">PRECIO COMPRA</p>
-												<span class="font-weight-bold text-primary">
-												{{option.currency_type_symbol}} {{ formaterNumber(option.purchase_unit_price, decimal) }}
-											</span>
-											</div>
-											<p class="text-success font-weight-bold fs-11">PRECIO VENTA</p>
-											<span class="font-weight-bold text-primary">
-												{{option.currency_type_symbol}} {{ formaterNumber(option.sale_unit_price, decimal) }}
-											</span>
-										</div>
+<!--										</div>-->
+<!--										<div v-if="muestraprecios.valor=='0'">-->
+<!--											<div v-if="muestrapreciocompra.valor=='1' && admin==true">-->
+<!--												<p class="text-danger font-weight-bold fs-11">PRECIO COMPRA</p>-->
+<!--												<span class="font-weight-bold text-primary">-->
+<!--												{{option.currency_type_symbol}} {{ formaterNumber(option.purchase_unit_price, decimal) }}-->
+<!--											</span>-->
+<!--											</div>-->
+<!--											<p class="text-success font-weight-bold fs-11">PRECIO VENTA</p>-->
+<!--											<span class="font-weight-bold text-primary">-->
+<!--												{{option.currency_type_symbol}} {{ formaterNumber(option.sale_unit_price, decimal) }}-->
+<!--											</span>-->
+<!--										</div>-->
 									</div>
 								</div>
 							</div>
@@ -91,10 +91,8 @@ npm<template>
                                         <tr>
                                             <th v-if="checkImages"></th>
                                             <th>CÓDIGO</th>
-<!--                                            <th>CÓDIGO PERS.</th>-->
                                             <th>DESCRIPCIÓN</th>
                                             <th>PRECIOS</th>
-<!--                                            <th>UNID. BASE</th>-->
                                             <th>CANT.</th>
                                             <th>PRECIO</th>
                                             <th>ACT.</th>
@@ -102,8 +100,7 @@ npm<template>
                                         </tr>
                                     </thead>
                                     <tbody class="bg-white">
-										<!-- <p class="text-info font-weight-bold fs-11" v-if="option.stock>0" v-html="option.stock"></p>
-										<p class="text-info font-weight-bold fs-11" v-else >SIN STOCK</p> -->
+
                                         <tr  v-for="(option, index) in findItem" :key="option.id" :class="option.stock>0 ? 'fs-td bg-white' : 'fs-td bg-warning-tr'">
                                             <td class="text-center fs-td" v-if="checkImages"><img :src="option.avatar" class="uploading-image" height="50" width="50"/></td>
                                             <td class="fs-td" v-text="option.internal_id"></td>
@@ -111,15 +108,12 @@ npm<template>
                                             <td class="fs-td">
                                                 <div v-for="valor in option.precios_venta" :key="valor.id">
                                                     <span class="font-weight-bold" style="font-size: 11px !important; color: #7481C9;">
-<!--                                                        {{valor.descripcion}} {{valor.unidad_medida_id}} - {{valor.tipoprecio.name}} - {{valor.moneda.symbol}}. {{valor.precio}}-->
                                                          {{valor.tipoprecio.name}} - {{valor.moneda.symbol}}. {{valor.precio}}
                                                     </span>
                                                 </div>
                                             </td>
-<!--                                            <td v-text="option.unit_type_id"></td>-->
                                             <td class="text-center">
                                                 <el-input-number style="width: 100px;" v-model="option.quantity" size="mini" value="1" :min="1" @change="cambiarPrecio(option,index)"></el-input-number>
-<!--                                                <input type="number" min="1" v-model="option.quantity" @change="cambiarPrecio(option,index)">-->
                                             </td>
                                             <td class="fs-td"> {{option.currency_type_symbol}} {{ formaterNumber(option.sale_unit_price, decimal) }}</td>
                                             <td class="text-center">
@@ -151,51 +145,51 @@ npm<template>
 										</tr>
 										</thead>
 										<tbody v-if="form.items.length > 0">
-											<tr v-for="(row, index) in form.items" :key="index">
-												<td class="fs-td">{{ index + 1 }}</td>
-												<td class="fs-td">
-													{{ row.item.description }} - {{ 'stock' }} : {{ row.item.stock }} --
-													<span v-if="formato_ordenventa.valor==1 && row.item.marca">({{row.item.marca}})</span>
-													<br/>
-													<small>
-														{{ row.affectation_igv_type.description }}/{{ row.unit_type_id }}
-														{{ row.description_unidad}}
-													</small>
-													<br>
-													<div v-if="venta_multialmacen.valor == 1" class="float-right">
-														<el-select v-model="row.warehouse_id"  style="width: 250px;">
-															<el-option v-for="option in warehouses" :key="option.id" :value="option.id" :label="option.description"></el-option>
-														</el-select>
-													</div>
-													
-												</td>
-                                                <td class="fs-td" style="width: 25px;">{{ row.item.desc_tipoprecio }}</td>
-												<td class="" >
-													<div id="outer" style="width:100%; text-align: center;">
-														<span class="inner" style="display: inline-block;" @click.prevent="disnimuirCantidad(row.item.id,index)">
-															<el-button type="button" class="btn btn-sm btn-warning">-</el-button>
-														</span>
-														<span class="inner" style="display: inline-block;">
-															<el-input class="touchspin1" style="width: 80px; top: 2px;" size="mini" v-model="row.quantity" @change="recalcularSubTotal(row.item.id,3,index)"></el-input>
-														</span>
-														<span class="inner" style="display: inline-block;" @click.prevent="agregarCantidad(row.item.id,index)">
-															<el-button type="button" class="btn btn-sm btn-info">+</el-button>
-														</span>
-													</div>
-												</td>
-												<td v-if="validarprecios.valor=='0'" class="text-right ">
-													<el-input class="touchspin1" size="mini" style="width: 80px;" v-model="row.unit_price" @change="recalcularSubTotal(row.item.id,3,index)" :readonly="! editar_precio"></el-input>
-												</td>
-												<td v-if="validarprecios.valor=='1'" class="text-right ">
-													<el-input class="touchspin1" size="mini" style="width: 80px;" v-model="row.unit_price" @change="modificarprecio(row.item.id,index)" :readonly="! editar_precio"></el-input>
-												</td>
-												<td class="text-center fs-td">
-													<div style="width: 80px;">{{ currency_type.symbol }} {{ formaterNumber(row.total) }}</div>
-												</td>
-												<td class="text-center pl-0 pr-0">
-													<el-button type="button" class="btn waves-effect waves-light btn-sm btn-danger" size="small" @click.prevent="clickRemoveItem(index)">x</el-button>
-												</td>
-											</tr>
+<!--											<tr v-for="(row, index) in form.items" :key="index">-->
+<!--												<td class="fs-td">{{ index + 1 }}</td>-->
+<!--												<td class="fs-td">-->
+<!--													{{ row.item.description }} - {{ 'stock' }} : {{ row.item.stock }} &#45;&#45;-->
+<!--													<span v-if="formato_ordenventa.valor==1 && row.item.marca">({{row.item.marca}})</span>-->
+<!--													<br/>-->
+<!--													<small>-->
+<!--														{{ row.affectation_igv_type.description }}/{{ row.unit_type_id }}-->
+<!--														{{ row.description_unidad}}-->
+<!--													</small>-->
+<!--													<br>-->
+<!--													<div v-if="venta_multialmacen.valor == 1" class="float-right">-->
+<!--														<el-select v-model="row.warehouse_id"  style="width: 250px;">-->
+<!--															<el-option v-for="option in warehouses" :key="option.id" :value="option.id" :label="option.description"></el-option>-->
+<!--														</el-select>-->
+<!--													</div>-->
+
+<!--												</td>-->
+<!--                                                <td class="fs-td" style="width: 25px;">{{ row.item.desc_tipoprecio }}</td>-->
+<!--												<td class="" >-->
+<!--													<div id="outer" style="width:100%; text-align: center;">-->
+<!--														<span class="inner" style="display: inline-block;" @click.prevent="disnimuirCantidad(row.item.id,index)">-->
+<!--															<el-button type="button" class="btn btn-sm btn-warning">-</el-button>-->
+<!--														</span>-->
+<!--														<span class="inner" style="display: inline-block;">-->
+<!--															<el-input class="touchspin1" style="width: 80px; top: 2px;" size="mini" v-model="row.quantity" @change="recalcularSubTotal(row.item.id,3,index)"></el-input>-->
+<!--														</span>-->
+<!--														<span class="inner" style="display: inline-block;" @click.prevent="agregarCantidad(row.item.id,index)">-->
+<!--															<el-button type="button" class="btn btn-sm btn-info">+</el-button>-->
+<!--														</span>-->
+<!--													</div>-->
+<!--												</td>-->
+<!--												<td v-if="validarprecios.valor=='0'" class="text-right ">-->
+<!--													<el-input class="touchspin1" size="mini" style="width: 80px;" v-model="row.unit_price" @change="recalcularSubTotal(row.item.id,3,index)" :readonly="! editar_precio"></el-input>-->
+<!--												</td>-->
+<!--												<td v-if="validarprecios.valor=='1'" class="text-right ">-->
+<!--													<el-input class="touchspin1" size="mini" style="width: 80px;" v-model="row.unit_price" @change="modificarprecio(row.item.id,index)" :readonly="! editar_precio"></el-input>-->
+<!--												</td>-->
+<!--												<td class="text-center fs-td">-->
+<!--													<div style="width: 80px;">{{ currency_type.symbol }} {{ formaterNumber(row.total) }}</div>-->
+<!--												</td>-->
+<!--												<td class="text-center pl-0 pr-0">-->
+<!--													<el-button type="button" class="btn waves-effect waves-light btn-sm btn-danger" size="small" @click.prevent="clickRemoveItem(index)">x</el-button>-->
+<!--												</td>-->
+<!--											</tr>-->
 										</tbody>
 									</table>
 								</div>
@@ -254,7 +248,7 @@ npm<template>
 									<div class="col-xs-6 col-sm-6 col-md-5">
 										<customer-search :customer_id.sync="form.customer_id" :document_type_id.sync="form.type_document_fact" :width="true"
 											:customersList.sync="customers" :document_type_03_filter="document_type_03_filter"
-											:errors="errors" :showLabel="true" :molitalia="molitalia"></customer-search>
+											:errors="errors" :showLabel="true"></customer-search>
 										<small class="form-control-feedback" v-if="errors.type_document_fact" v-text="errors.type_document_fact[0]"></small>
 									</div>
 									<div class="col-xs-6 col-sm-6 col-md-3">
@@ -345,7 +339,7 @@ npm<template>
                         </el-input>
                     </div>
                 </div>
-				<div class="col-lg-3" v-if="checkEmptyObject(almacen) && venta_multialmacen.valor == 1">
+				<div class="col-lg-3">
 					<div class="form-group" :class="{'has-danger': errors.warehouse_id}">
 						<label class="control-label">Almacén</label>
 						<el-select v-model="warehouse_id" style="font-size: 12px !important;">
@@ -435,9 +429,6 @@ npm<template>
                     <div class="col-md-6">
                         <el-button class="btn btn-info"  @click.prevent="closeDescuentos()">Agregar</el-button>
                     </div>
-                    <div class="col-md-6">
-<!--                        <el-button  class="btn btn-success" native-type="button" type="button">Agregar</el-button>-->
-                    </div>
                 </div>
             </div>
         </el-dialog>
@@ -446,23 +437,23 @@ npm<template>
 
 <script>
 
-    import DocumentFormItem from './partials/item.vue';
-    import DocumentOptions from './partials/options.vue'
-    import {functions, exchangeRate} from '../../../mixins/functions'
-    import {calculateRowItem, checkEmptyObject, formaterNumber} from '../../../helpers/functions'
-    import Logo from '../companies/logo.vue'
-	import CustomerSearch from '../../../components/CustomerSearch'
+    // import DocumentFormItem from './partials/item.vue';
+    // import DocumentOptions from './partials/options.vue'
+    // import {functions, exchangeRate} from '../../../mixins/functions'
+    // import {calculateRowItem, checkEmptyObject, formaterNumber} from '../../../helpers/functions'
+    // import Logo from '../companies/logo.vue'
+	// import CustomerSearch from '../../../components/CustomerSearch'
     export default {
-        props: ['pos_station', 'pos_shift_id','checkalmacenprecio','almacen','sucursal','isadmin','molitalia','muestraprecios','validarprecios',
-			'venta_multialmacen','venta_multipagos','muestrapreciocompra','admin','inventory_configuration',
-            'formato_ordenventa','impredirecta'],
-        components: {
-             DocumentFormItem, CustomerSearch, DocumentOptions, Logo
-        },
-        mixins: [functions, exchangeRate],
+        // props: ['pos_station', 'pos_shift_id','checkalmacenprecio','almacen','sucursal','isadmin','molitalia','muestraprecios','validarprecios',
+		// 	'venta_multialmacen','venta_multipagos','muestrapreciocompra','admin','inventory_configuration',
+        //     'formato_ordenventa','impredirecta'],
+        // components: {
+        //       CustomerSearch, DocumentOptions, Logo
+        // },
+        // mixins: [functions, exchangeRate],
         data() {
             return {
-                resource: 'documentos',
+                resource: 'orders',
                 showDialogAddItem: false,
                 showDialogNewPerson: false,
                 showDialogOptions: false,
@@ -525,13 +516,13 @@ npm<template>
             }
         },
         async created() {
-            if(this.formato_ordenventa.valor==1){
-                this.typeList= false;
-            }
+            // if(this.formato_ordenventa.valor==1){
+            //     this.typeList= false;
+            // }
             await this.initForm();
             await this.initTempItem();
             await this.refreshItems();
-            await this.$http.get(`/${this.resource}/tables`)
+            await axios.get(`/${this.resource}/tables`)
                 .then(response => {
                     this.document_types = response.data.document_types_invoice2
                     this.currency_types = response.data.currency_types
@@ -555,8 +546,8 @@ npm<template>
                     this.form.document_type_id = (this.document_types.length > 0) ? '104' : null
                     this.form.operation_type_id = (this.operation_types.length > 0) ? this.operation_types[0].id : null
 
-                    this.form.establishment_id = ! this.checkEmptyObject(this.sucursal) ? this.sucursal.id : ((this.establishments.length > 0)?this.establishments[0].id:null)
-                    this.form.warehouse_id = ! this.checkEmptyObject(this.almacen) ? this.almacen.id : ((this.warehouses.length > 0)? response.data.warehouse_id:null)
+                    this.form.establishment_id = (this.establishments.length > 0)?this.establishments[0].id:null
+                    this.form.warehouse_id = (this.warehouses.length > 0)? response.data.warehouse_id:null
 
 
                     this.changeEstablishment()
@@ -589,17 +580,15 @@ npm<template>
         computed: {
 			stock_actual(){
 
-                const stockItem = this.stock_details.find(el=> el.warehouse_id ==
-				  ( this.venta_multialmacen.valor == 1 ? this.warehouse_id : this.form.warehouse_id));
+                const stockItem = this.stock_details.find(el=> el.warehouse_id == this.form.warehouse_id);//( this.venta_multialmacen.valor == 1 ? this.warehouse_id : this.form.warehouse_id));
 				const eequivalencia =  _.find(this.precios_venta, {'id': this.form.equivalencia_id});
-				// const equivalencia = eequivalencia ? _.find(this.equivalencias,{ 'moneda_id' : eequivalencia.moneda_id,'unidad_medida_equivalente_id' : eequivalencia.unidad_medida_equivalente_id,
-				// 	'unidad_medida_id': eequivalencia.unidad_medida_id}) : {};
+
                 if(stockItem) {
                     if(eequivalencia){
 						this.stock_number = `${stockItem.stock/ ( eequivalencia.factor<=0 ? 1 : eequivalencia.factor)}`;
                         return `${ _.round((stockItem.stock/ ( eequivalencia.factor<=0 ? 1 : eequivalencia.factor)),2)} - DE  ${ eequivalencia.descripcion}` ;
 					}
-					// this.stock_number = `${stockItem.stock}`;
+
                     this.stock_number = isNaN(stockItem.stock) ? 0 : stockItem.stock;
                     return   isNaN(stockItem.stock) ? 0 : stockItem.stock
                 }
@@ -663,7 +652,7 @@ npm<template>
                 if(oldVal){
 					if(oldVal.length> 2)
 					{
-						this.$http.post(`/orders/items`,{ search  :oldVal,warehouse_id : this.form.warehouse_id,
+						axios.post(`/orders/items`,{ search  :oldVal,warehouse_id : this.form.warehouse_id,
                             searchCode : this.searchCode}).then(({data}) => {
 							let lista = data.items;
 							// console.log(data.items);
@@ -699,7 +688,7 @@ npm<template>
             },
             showDialogAttrib(){
                 if(!this.showDialogAttrib){
-                    this.$http.get(`/${this.resource}/productos/tables`).then(response => {
+                    axios.get(`/${this.resource}/productos/tables`).then(response => {
                         this.discount_types = response.data.discount_types
                         this.charge_types = response.data.charge_types
                         this.attribute_types = response.data.attribute_types
@@ -722,7 +711,7 @@ npm<template>
             },
 			getStock(id){
 
-				this.$http.get(`/productos/stock_details/${id}`)
+				axios.get(`/productos/stock_details/${id}`)
 				.then(response => {
 						this.stock_details = response.data.stock_details
 					}
@@ -749,14 +738,14 @@ npm<template>
             initForm() {
                 this.errors = {}
                 this.form = {
-                    establishment_id : ! this.checkEmptyObject(this.sucursal) ? this.sucursal.id : ((this.establishments.length > 0)?this.establishments[0].id:null),//(this.establishments.length > 0) ? this.establishments[0].id : null,
-               		warehouse_id :  ! this.checkEmptyObject(this.almacen) ? this.almacen.id : ((this.warehouses.length > 0)?this.warehouses[0].id:null),//(this.warehouses.length > 0) ? this.warehouses[0].id : null,
+                    establishment_id : (this.establishments.length > 0)?this.establishments[0].id:null,//(this.establishments.length > 0) ? this.establishments[0].id : null,
+               		warehouse_id :  (this.warehouses.length > 0)?this.warehouses[0].id:null,//(this.warehouses.length > 0) ? this.warehouses[0].id : null,
                     document_type_id: null,
 					series_id: null,
 					series: null,
                     number: '#',
-                    date_of_issue: moment().format('YYYY-MM-DD'),
-                    time_of_issue: moment().format('HH:mm:ss'),
+                    // date_of_issue: moment().format('YYYY-MM-DD'),
+                    // time_of_issue: moment().format('HH:mm:ss'),
                     customer_id: null,
                     currency_type_id: null,
                     purchase_order: null,
@@ -778,7 +767,7 @@ npm<template>
                     total_value: 0,
                     total: 0,
                     operation_type_id: null,
-                    date_of_due: moment().format('YYYY-MM-DD'),
+                    // date_of_due: moment().format('YYYY-MM-DD'),
                     items: [],
                     charges: [],
                     discounts: [],
@@ -799,15 +788,13 @@ npm<template>
                     newAddress : '',
                 }
             },
-            checkEmptyObject(obj){
-                return checkEmptyObject(obj)
-            },
+
             resetForm() {
 
                 this.initForm()
                 this.form.currency_type_id = (this.currency_types.length > 0) ? this.currency_types[0].id : null
-                this.form.establishment_id = ! this.checkEmptyObject(this.sucursal) ? this.sucursal.id : ((this.establishments.length > 0)?this.establishments[0].id:null)
-                this.form.warehouse_id = ! this.checkEmptyObject(this.almacen) ? this.almacen.id : ((this.warehouses.length > 0)?this.warehouses[0].id:null)
+                this.form.establishment_id = (this.establishments.length > 0)?this.establishments[0].id:null
+                this.form.warehouse_id = (this.warehouses.length > 0)?this.warehouses[0].id:null
 
                 this.form.document_type_id = (this.document_types.length > 0) ? '104' : null
                 this.form.operation_type_id = (this.operation_types.length > 0) ? this.operation_types[0].id : null
@@ -871,8 +858,6 @@ npm<template>
                 this.currency_type = _.find(this.currency_types, {'id': this.form.currency_type_id})
                 let items = []
                 this.form.items.forEach((row) => {
-
-					//items.push(calculateRowItem(row, this.form.currency_type_id, this.form.exchange_rate_sale))
 					let rowIten =calculateRowItem(row, this.form.currency_type_id, this.form.exchange_rate_sale)
 					rowIten.equivalencia_id =row.equivalencia_id;
 					rowIten.description_unidad=row.description_unidad
@@ -936,17 +921,17 @@ npm<template>
 
             },
             submit() {
-                // if(this.inventory_configuration.stock_control){
+
 				if(this.stockitembase()) {
 					this.$message.warning("No puede procesar la orden porque no cuenta con stock necesario. Realice un ajuste o ingrese stock por medio de una compra")
-                    // }
+
                 }else{
 
                 this.loading_submit = true
 				this.model = 'orders'
 				this.table_name = 'orders'
 
-					this.$http.post(`/${this.model}`, this.form).then(({data}) => {
+					axios.post(`/${this.model}`, this.form).then(({data}) => {
 						if (data.success) {
 							this.$message.success(data.message);
 							this.resetForm();
@@ -977,7 +962,7 @@ npm<template>
                 if(option.quantity >= 3){
                     this.items.map(el=> {
                         if(el.id == option.id){
-                            // return el.sale_unit_price = option.precios_venta[2].precio
+
                             let precio_venta = Object.values(option.precios_venta)
                             let sale_price = precio_venta.filter(equi =>
                                 {
@@ -992,7 +977,7 @@ npm<template>
                 if(option.quantity < 3){
                     this.items.map(el=> {
                         if(el.id == option.id){
-                            // return el.sale_unit_price = option.precios_venta[1].precio
+
                             let precio_venta = Object.values(option.precios_venta)
                             let sale_price = precio_venta.filter(equi =>
                                 {
@@ -1010,7 +995,6 @@ npm<template>
                 let item_cant =option.quantity;
                 if(item_cant < 3) {
                     this.tempItem.item.id = option.id
-                    // this.tempItem.item.equivalencia_id = option.precios_venta[1].id
                     let precio_venta = Object.values(option.precios_venta)
                     let equi_precio = precio_venta.filter(equi =>
                                     {
@@ -1025,7 +1009,6 @@ npm<template>
                     this.selectItem(this.tempItem.item.id);
                 }else{
                     this.tempItem.item.id = option.id
-                    // this.tempItem.item.equivalencia_id = option.precios_venta[2].id
                     let precio_venta = Object.values(option.precios_venta)
                     let equi_precio = precio_venta.filter(equi =>
                                         {
@@ -1078,7 +1061,7 @@ npm<template>
 
                 this.items = [];
 
-                this.$http.get(`/documentos/productos/tables`).then(response => {
+                axios.get(`/documentos/productos/tables`).then(response => {
                     this.affectation_igv_types = response.data.affectation_igv_types
                 })
             },
@@ -1149,15 +1132,8 @@ npm<template>
                         let uniType= this.getUnidadfinal(this.precios_venta,this.form.equivalencia_id);
                         if(typeof uniType ==='undefined' ) uniType =this.tempItem.item.unit_type_id;
 
-
-						if(this.venta_multialmacen.valor == 1){
-							index =  _.findIndex(this.form.items, {item: {id: id, unit_type_id : uniType } ,
-							 	equivalencia_id :this.form.equivalencia_id, 'warehouse_id' : this.warehouse_id});
-						}else{
-							index =  _.findIndex(this.form.items, {item: {id: id, unit_type_id : uniType } ,
-							 equivalencia_id :this.form.equivalencia_id});
-						}
-
+                        index =  _.findIndex(this.form.items, {item: {id: id, unit_type_id : uniType } ,
+                         equivalencia_id :this.form.equivalencia_id});
 
                         this.tempItem = Object.assign({}, this.tempItem, {unit_type_id : uniType })
                         this.tempItem.item = Object.assign({},this.tempItem.item, {unit_type_id : uniType })
@@ -1183,52 +1159,9 @@ npm<template>
 							}
 						}
 
-                        // debugger
                         this.tempItem.id = this.tempItem.item.id
 
-                        if(this.formato_ordenventa.valor==1){
-                            if(this.tempItem.quantity >= 3){
-
-                                // this.tempItem.unit_price = this.precios_venta[1].precio
-                                let pre_venta = this.precios_venta.filter(equi =>
-                                                {
-                                                    if(!!equi.desc_tipoprecio && equi.desc_tipoprecio === "X MAYOR"){
-                                                        return equi.precio
-                                                    }
-                                                })
-                                this.tempItem.unit_price = pre_venta[0].precio
-
-                                // this.tempItem.item.desc_tipoprecio = this.precios_venta[1].desc_tipoprecio;
-                                let descprice_venta = this.precios_venta.filter(equi =>
-													{
-														if(!!equi.desc_tipoprecio && equi.desc_tipoprecio === "X MAYOR"){
-															return equi.desc_tipoprecio
-														}
-													})
-                                this.tempItem.item.desc_tipoprecio = descprice_venta[0].desc_tipoprecio
-                            }
-                            if(this.tempItem.quantity < 3){
-
-                                // this.tempItem.unit_price = this.precios_venta[0].precio
-                                let pre_venta = this.precios_venta.filter(equi =>
-                                            {
-                                                if(!!equi.desc_tipoprecio && equi.desc_tipoprecio === "GENERAL"){
-                                                    return equi.precio
-                                                }
-                                            })
-                                this.tempItem.unit_price = pre_venta[0].precio
-                                // this.tempItem.item.desc_tipoprecio = this.precios_venta[0].desc_tipoprecio;
-                                let descprice_venta = this.precios_venta.filter(equi =>
-                                                {
-                                                    if(!!equi.desc_tipoprecio && equi.desc_tipoprecio === "GENERAL"){
-                                                        return equi.desc_tipoprecio
-                                                    }
-                                                })
-                                this.tempItem.item.desc_tipoprecio = descprice_venta[0].desc_tipoprecio
-                            }
-                        }else{
-                            this.tempItem.unit_price = +this.precio  || +this.precios_venta[0].precio || + this.tempItem.item.sale_unit_price;
-                        }
+                        this.tempItem.unit_price = +this.precio  || +this.precios_venta[0].precio || + this.tempItem.item.sale_unit_price;
 
                         if(this.monedaequivalencia == undefined){
                             this.tempItem.item.currency_type_id = "PEN"
@@ -1238,52 +1171,12 @@ npm<template>
 
                         this.tempItem.affectation_igv_type_id = this.tempItem.item.sale_affectation_igv_type_id
 
-                        if(this.formato_ordenventa.valor==1){
-                            if(this.tempItem.quantity >= 3){
-                                // this.tempItem.item.unit_price = this.precios_venta[1].precio
-                                let priceunit = this.precios_venta.filter(equi =>
-                                                {
-                                                    if(!!equi.desc_tipoprecio && equi.desc_tipoprecio === "X MAYOR"){
-                                                        return equi.precio
-                                                    }
-                                                })
-                                this.tempItem.item.unit_price = priceunit[0].precio
-
-                                // this.tempItem.item.desc_tipoprecio = this.precios_venta[1].desc_tipoprecio;
-                                let descprice = this.precios_venta.filter(equi =>
-                                            {
-                                                if(!!equi.desc_tipoprecio && equi.desc_tipoprecio === "X MAYOR"){
-                                                    return equi.desc_tipoprecio
-                                                }
-                                            })
-                                this.tempItem.item.desc_tipoprecio = descprice[0].desc_tipoprecio
-                            }
-                            if(this.tempItem.quantity < 3){
-                                let priceunit = this.precios_venta.filter(equi =>
-                                                {
-                                                    if(!!equi.desc_tipoprecio && equi.desc_tipoprecio === "GENERAL"){
-                                                        return equi.precio
-                                                    }
-                                                })
-                                this.tempItem.item.unit_price = priceunit[0].precio
-                                // this.tempItem.item.desc_tipoprecio = this.precios_venta[0].desc_tipoprecio;
-                                let descprice  = this.precios_venta.filter(equi =>
-                                                {
-                                                    if(!!equi.desc_tipoprecio && equi.desc_tipoprecio === "GENERAL"){
-                                                        return equi.desc_tipoprecio
-                                                    }
-                                                })
-                                this.tempItem.item.desc_tipoprecio = descprice[0].desc_tipoprecio
-                            }
-                        }else{
-                            this.tempItem.item.unit_price =  +this.precio  || +this.precios_venta[0].precio || + this.tempItem.item.sale_unit_price;
-                        }
+                        this.tempItem.item.unit_price =  +this.precio  || +this.precios_venta[0].precio || + this.tempItem.item.sale_unit_price;
 
 
                         this.tempItem.affectation_igv_type = _.find(this.affectation_igv_types, {'id': this.tempItem.affectation_igv_type_id})
                         this.tempItem.has_plastic_bag_taxes = (this.tempItem.item.has_plastic_bag_taxes)?true:false
-						this.tempItem = calculateRowItem(this.tempItem, this.form.currency_type_id, this.form.exchange_rate_sale)
-						// this.tempItem = Object.assign({},this.tempItem,{'sale_affectation_igv_type_id' : this.tempItem.affectation_igv_type_id});
+						// this.tempItem = calculateRowItem(this.tempItem, this.form.currency_type_id, this.form.exchange_rate_sale)
 						this.tempItem = Object.assign({},this.tempItem,{'item' : this.tempItem.item,'warehouse_id' : this.warehouse_id});
 						this.tempItem.equivalencia_id = this.form.equivalencia_id;
 						this.tempItem.warehouse_id = this.warehouse_id;
@@ -1380,7 +1273,7 @@ npm<template>
 						this.tempItem.quantity = parseFloat(this.form.items[index].quantity)  + 1;
                     }else if(tipo==2){
 						this.tempItem.quantity = parseFloat(this.form.items[index].quantity)  -  1;
-                    }else if(tipo==3 && this.validarprecios.valor=="1"){
+                    }else if(tipo==3){
 							if(this.tempItem.unit_price < +preciocomprafinal){
 								this.$message.warning('No puedes vender a un Precio menor,que el precio compra.');
 							}
@@ -1397,49 +1290,14 @@ npm<template>
                         this.tempItem.unit_type_id = this.form.items[index].unit_type_id;
                         this.tempItem.item.unit_type_id= this.form.items[index].unit_type_id;
                         this.tempItem.item.currency_type_id =this.form.items[index].currency_type_id;
-							if(this.tempItem.unit_price <  +preciocomprafinal && this.validarprecios.valor=="1"){
+							if(this.tempItem.unit_price <  +preciocomprafinal){
 								this.tempItem.unit_price =precioventafinal;
                       		   this.tempItem.item.unit_price =precioventafinal;
 							}else{
 
-                                if(this.formato_ordenventa.valor==1){
-                                    if(this.tempItem.quantity >= 3){
+                               this.tempItem.unit_price =this.form.items[index].unit_price;
+                               this.tempItem.item.unit_price =this.form.items[index].unit_price;
 
-										let precio_venta = Object.values(this.form.items[index].item.precios_venta)
-										let pre_venta = precio_venta.filter(equi =>
-                                                {
-                                                    if(!!equi.desc_tipoprecio && equi.desc_tipoprecio === "X MAYOR"){
-                                                        return equi.precio
-                                                    }
-                                                })
-
-										if(pre_venta){
-											this.tempItem.unit_price = pre_venta[0].precio
-											this.tempItem.item.unit_price = pre_venta[0].precio
-											this.tempItem.item.desc_tipoprecio = "X MAYOR"
-										}
-
-                                    }
-                                    if(this.tempItem.quantity < 3){
-                                        // this.tempItem.unit_price =this.form.items[index].item.precios_venta[1].precio;
-                                        // this.tempItem.item.unit_price =this.form.items[index].item.precios_venta[1].precio;
-                                        // this.tempItem.desc_tipoprecio = this.form.items[index].item.precios_venta[1].desc_tipoprecio;
-										let precio_venta = Object.values(this.form.items[index].item.precios_venta)
-										let pre_venta = precio_venta.filter(equi =>
-                                                {
-                                                    if(!!equi.desc_tipoprecio && equi.desc_tipoprecio === "GENERAL"){
-                                                        return equi.precio
-                                                    }
-                                                })
-                                		this.tempItem.unit_price = pre_venta[0].precio
-										this.tempItem.item.unit_price = pre_venta[0].precio
-                                		this.tempItem.item.desc_tipoprecio = "GENERAL"
-                                    }
-                                }else{
-                                   this.tempItem.unit_price =this.form.items[index].unit_price;
-                                   this.tempItem.item.unit_price =this.form.items[index].unit_price;
-
-                                }
 							}
                         this.tempItem.id = this.tempItem.item.id
 
@@ -1460,11 +1318,9 @@ npm<template>
                         this.tempItem.affectation_igv_type_id = this.tempItem.affectation_igv_type_id
                         this.tempItem.has_plastic_bag_taxes = this.tempItem.item.has_plastic_bag_taxes
                         this.tempItem.affectation_igv_type = _.find(this.affectation_igv_types, {'id': this.tempItem.affectation_igv_type_id})
-                        this.tempItem = calculateRowItem(this.tempItem, this.form.currency_type_id, this.form.exchange_rate_sale)
+                        // this.tempItem = calculateRowItem(this.tempItem, this.form.currency_type_id, this.form.exchange_rate_sale)
                         this.tempItem.equivalencia_id =this.form.items[index].equivalencia_id;
-                        if(this.formato_ordenventa.valor==1){
-                            this.tempItem.desc_tipoprecio = this.form.items[index].desc_tipoprecio
-                        }
+
                         this.tempItem.description_unidad = this.form.items[index].description_unidad;
 						this.tempItem.warehouse_id =this.form.items[index].warehouse_id;
                         if (index > -1) {
@@ -1489,7 +1345,7 @@ npm<template>
                         this.tempItem.affectation_igv_type_id = this.tempItem.affectation_igv_type_id
                         this.tempItem.has_plastic_bag_taxes = this.tempItem.item.has_plastic_bag_taxes
                         this.tempItem.affectation_igv_type = _.find(this.affectation_igv_types, {'id': this.tempItem.affectation_igv_type_id})
-                        this.tempItem = calculateRowItem(this.tempItem, this.form.currency_type_id, this.form.exchange_rate_sale)
+                        // this.tempItem = calculateRowItem(this.tempItem, this.form.currency_type_id, this.form.exchange_rate_sale)
                         this.tempItem.equivalencia_id =this.form.items[index].equivalencia_id;
                         this.tempItem.description_unidad = this.form.items[index].description_unidad;
                         if (index > -1) {
@@ -1508,10 +1364,9 @@ npm<template>
 
 					const result = Object.keys(pro.precios_venta).map(i => pro.precios_venta[i]);
                     //  si es 1, tomamos en cuuenta el almacén
-                    //if(this.checkalmacenprecio.valor == 1) return result.filter(el=> el.almacen_id == this.almacen && el.moneda_id == this.moneda);
-					if(this.checkalmacenprecio.valor == 1) return result.filter(el=> el.almacen_id == this.almacen);
-					//else return result.filter(el=> el.moneda_id == this.moneda);
-					else return result;
+					// if(this.checkalmacenprecio.valor == 1) return result.filter(el=> el.almacen_id == this.almacen);
+					// else
+                        return result;
 
                 }
                 return []
@@ -1540,25 +1395,25 @@ npm<template>
 				}
 
             },
-			verificarprecio(){
-				if(this.validarprecios.valor=="1"){
-					const unidadmedida =  _.find(this.precios_venta, {'id': this.form.equivalencia_id}).unidad_medida_equivalente_id;
-					let preciocompra =  _.find(this.precios_compra, {'unidad_medida_equivalente_id':unidadmedida});
-					let precioventa =  _.find(this.precios_venta, {'id': this.form.equivalencia_id});
-					let preciocomprafinal = !preciocompra ? 0 : preciocompra.precio;
-					if(!preciocompra){
-						let factor = precioventa.factor ;
-						let preciocomprabase = this.items[0].preciobase.precio;
-						preciocomprafinal =  factor * preciocomprabase ;
-					}
-					if(+preciocomprafinal >= +this.precio)
-					{
-						this.$message.warning('No puedes vender a un Precio menor,que el precio compra.');
-						this.precio = +precioventa.precio ;
-						return;
-					}
-				}
-            },
+			// verificarprecio(){
+			// 	if(this.validarprecios.valor=="1"){
+			// 		const unidadmedida =  _.find(this.precios_venta, {'id': this.form.equivalencia_id}).unidad_medida_equivalente_id;
+			// 		let preciocompra =  _.find(this.precios_compra, {'unidad_medida_equivalente_id':unidadmedida});
+			// 		let precioventa =  _.find(this.precios_venta, {'id': this.form.equivalencia_id});
+			// 		let preciocomprafinal = !preciocompra ? 0 : preciocompra.precio;
+			// 		if(!preciocompra){
+			// 			let factor = precioventa.factor ;
+			// 			let preciocomprabase = this.items[0].preciobase.precio;
+			// 			preciocomprafinal =  factor * preciocomprabase ;
+			// 		}
+			// 		if(+preciocomprafinal >= +this.precio)
+			// 		{
+			// 			this.$message.warning('No puedes vender a un Precio menor,que el precio compra.');
+			// 			this.precio = +precioventa.precio ;
+			// 			return;
+			// 		}
+			// 	}
+            // },
             unidadfinal(){
                 const equivalencia =  _.find(this.precios_venta, {'id': this.form.equivalencia_id});
                 if(equivalencia )return equivalencia.unidad_medida_equivalente_id;

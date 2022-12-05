@@ -10,7 +10,7 @@ class CreateOrderTable extends Migration
 	public function up()
 	{
 
-		
+
 
 		if (!Schema::hasTable('companies')) {
 			Schema::create('companies', function (Blueprint $table) {
@@ -25,7 +25,7 @@ class CreateOrderTable extends Migration
 				$table->string('certificate')->nullable();
 				$table->string('logo')->nullable();
 				$table->timestamps();
-	
+
 				$table->foreign('identity_document_type_id')->references('id')->on('cat_identity_document_types');
 				// $table->foreign('soap_type_id')->references('id')->on('soap_types');
 			});
@@ -43,7 +43,7 @@ class CreateOrderTable extends Migration
 				$table->string('telephone');
 				$table->string('code');
 				$table->timestamps();
-	
+
 				$table->foreign('country_id')->references('id')->on('countries');
 				$table->foreign('department_id')->references('id')->on('departments');
 				$table->foreign('province_id')->references('id')->on('provinces');
@@ -67,7 +67,7 @@ class CreateOrderTable extends Migration
 			Schema::create('laboratorio_orders', function (Blueprint $table) {
 				$table->increments('id');
 				$table->unsignedBigInteger('user_id');
-				$table->unsignedInteger('establishment_id');
+				$table->unsignedBigInteger('establishment_id');
             	$table->json('establishment');
 				$table->char('state_type_id', 2);
 				$table->char('group_id', 2);
@@ -76,7 +76,7 @@ class CreateOrderTable extends Migration
 				$table->integer('number');
 				$table->date('date_of_issue');
 				$table->time('time_of_issue');
-				$table->unsignedInteger('customer_id');
+				$table->unsignedBigInteger('customer_id');
 				$table->json('customer');
 				$table->string('currency_type_id', 4);
 				$table->unsignedInteger('responsable_id')->nullable();
@@ -90,13 +90,13 @@ class CreateOrderTable extends Migration
 				$table->boolean('estado')->default(1);
 				$table->string('type_document_fact',3)->nullable();
 				$table->smallInteger('tipo')->default(1);
-					  
+
 				$table->timestamps();
 				$table->foreign('user_id')->references('id')->on('users');
 				$table->foreign('establishment_id')->references('id')->on('establishments');
 				$table->foreign('customer_id')->references('id')->on('persons');
-				$table->foreign('state_type_id')->references('id')->on('state_types');
-				$table->foreign('group_id')->references('id')->on('groups');
+//				$table->foreign('state_type_id')->references('id')->on('state_types');
+//				$table->foreign('group_id')->references('id')->on('groups');
 				$table->foreign('document_type_id')->references('id')->on('cat_document_types');
 				$table->foreign('currency_type_id')->references('id')->on('cat_currency_types');
 			});
@@ -125,9 +125,9 @@ class CreateOrderTable extends Migration
 					$table->decimal('total', 12, 2);
 					$table->json('attributes')->nullable();
 					$table->boolean('estado')->default(1);
-		
+
 					$table->foreign('laboratorio_order_id')->references('id')->on('laboratorio_orders')->onDelete('cascade');
-					
+
 				});
 		}
 
@@ -136,7 +136,7 @@ class CreateOrderTable extends Migration
 				$table->id();
 				$table->unsignedBigInteger('muestra_id');
 				$table->string('ruta');
-				$table->string('parcela');
+//				$table->string('parcela');
 				$table->unsignedBigInteger('proveedor_id');
 				$table->decimal('peso',10,2);
 				$table->decimal('parcela',10,2);
@@ -151,7 +151,7 @@ class CreateOrderTable extends Migration
 
 	public function down()
 	{
-		
+
 		Schema::dropIfExists('companies');
 		Schema::dropIfExists('establishments');
 		Schema::dropIfExists('laboratorio_orders');
