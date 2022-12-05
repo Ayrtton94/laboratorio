@@ -5,11 +5,12 @@ namespace App\Models;
 use App\Models\Country;
 use App\Models\District;
 use App\Models\Province;
+use App\Models\Attendance;
 use App\Models\Department;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\IdentityDocument;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Person extends Model
 {
 	use HasFactory;
@@ -43,6 +44,11 @@ class Person extends Model
     public function identity_document()
     {
         return $this->belongsTo(IdentityDocument::class, 'identity_document_id');
+    }
+
+	public function attendance()
+    {
+        return $this->hasMany(Attendance::class, 'staff_id');
     }
 
 	public function user()

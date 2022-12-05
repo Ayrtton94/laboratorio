@@ -15,6 +15,7 @@ use App\Http\Controllers\SubEspecieController;
 use App\Http\Controllers\LaboratorioController;
 use App\Http\Controllers\PresentacionController;
 use App\Http\Controllers\AreaController;
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\TipoOrdenController;
 
@@ -179,3 +180,15 @@ Route::get('/permissions/records', [PermissionController::class, 'records'])->na
 		Route::post('', 'store');
 		Route::delete('{id}', 'destroy');
 	});
+	// ASISTENCIAS
+	Route::controller(AttendanceController::class)->prefix('attendance')->group(function(){
+		// Route::get('restore/{id}', 'restore');
+		// Route::get('columns', 'columns');
+		// Route::get('tables', 'tables');
+		Route::get('',  'index')->name('attendance.index');
+		Route::post('import', 'import');
+		Route::get('/records', 'records');
+		// Route::post('', 'store');
+		// Route::delete('{id}', 'destroy');
+	});
+

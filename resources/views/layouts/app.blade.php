@@ -30,7 +30,6 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <!-- Layout styles -->
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
-
 </head>
 <body>
     <div id="app">
