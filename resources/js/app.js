@@ -3,6 +3,7 @@ require('./bootstrap');
 import { createApp } from 'vue'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import { axios } from 'axios'
 
 import dashboard from './views/Dashboard/DashboardComponent.vue'
@@ -59,6 +60,10 @@ const app = createApp({})
 app.config.globalProperties.emitter = emitter
 app.mixin(Permissions);
 // app.use(ElementPlus, { size: 'mini', zIndex: 3000 })
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+	app.component(key, component)
+}
+
 app.use(ElementPlus, {size: 'mini'});
 app.use(VueSweetalert2);
 app.use(axios);

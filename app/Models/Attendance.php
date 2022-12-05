@@ -16,10 +16,13 @@ class Attendance extends Model
 		'hour_start',
 		'hour_end',
 		'hour_start_1',
-		'hour_end_1',
+		'hour_end_2',
 		'delays_min',
 		'ouput_min',
-		'extra_hours'
+		'extra_hours',
+		'justification_hours_cg',
+		'justification_hours_sg',
+		'comp_hours'
 	];
 
 	public function persons()

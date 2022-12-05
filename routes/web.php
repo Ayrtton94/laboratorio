@@ -188,7 +188,7 @@ Route::get('/permissions/records', [PermissionController::class, 'records'])->na
 		Route::get('',  'index')->name('attendance.index');
 		Route::post('import', 'import');
 		Route::get('/records', 'records');
-		// Route::post('', 'store');
+		Route::put('/update', 'update');
 		// Route::delete('{id}', 'destroy');
 	});
 
