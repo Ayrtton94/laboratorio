@@ -2,6 +2,12 @@
 
     namespace App\Http\Controllers;
 
+    use App\Models\Catalogs\IdentityDocumentType;
+    use App\Models\Especie;
+    use App\Models\Matriz;
+    use App\Models\Muestra;
+    use App\Models\Prueba;
+    use App\Models\SubEspecie;
     use Barryvdh\DomPDF\Facade as PDF;
     use Mpdf\Mpdf;
     use Nexmo\Account\Price;
@@ -159,41 +165,17 @@ class LaboratorioOrderController extends Controller
     public function tables()
     {
         $customers = $this->table('customers');
+        $identity_document_types = IdentityDocumentType::query()->all();
+        $matrices = Matriz::query()->all();
+        $muestras = Muestra::query()->all();
+        $pruebas = Prueba::query()->all();
+        $especies = Especie::query()->all();
+        $subespecies = SubEspecie::query()->all();
 
-		//if(auth()->user()->hasRole('administrador'))
-		if(auth()->user()->hasRole('administrador') || auth()->user()->hasRole('administrador-tienda'))
-        {
-            $establishments = Establishment::all();
-        }
-        else
-        {
-            $establishments = Establishment::where('id', auth()->user()->establishment_id)->get();
-        }
 
-        $series = Series::all();
-        $document_types_invoice = DocumentType::whereIn('id', ['104'])->get();
-        $currency_types = CurrencyType::whereActive()->get();
-        $operation_types = OperationType::whereActive()->get();
-        $discount_types = ChargeDiscountType::whereType('discount')->whereLevel('item')->get();
-        $charge_types = ChargeDiscountType::whereType('charge')->whereLevel('item')->get();
-        $company = Company::active();
-        $document_type_03_filter = env('DOCUMENT_TYPE_03_FILTER', true);
-		$decimal = Configuration::first()->decimal;
 
-		$editar_precio = false;
-
-		//if(auth()->user()->hasRole('administrador'))
-		if(auth()->user()->hasRole('administrador') || auth()->user()->hasRole('administrador-tienda'))
-        {
-            $editar_precio = true;
-        }
-        else
-        {
-            $editar_precio = auth()->user()->hasPermissionTo('tenant.orders.edit_price');
-        }
-
-        return compact('customers', 'establishments', 'series', 'document_types_invoice', 'currency_types', 'operation_types',
-                       'discount_types', 'charge_types', 'company', 'document_type_03_filter', 'decimal','editar_precio');
+        return compact('customers','identity_document_types',
+                'matrices','muestras','pruebas','especies','subespecies');
     }
 
     public function tables3($order_id = false)

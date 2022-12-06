@@ -58,6 +58,9 @@ import attendance from './views/Attendance/index.vue'
 import orders from './views/orders/index.vue'
 import ordersinvoice from './views/orders/invoice.vue'
 
+import programabrucellas from './views/programabrucellas/index.vue'
+import programabrucellasform from './views/programabrucellas/form.vue'
+
 const emitter = mitt()
 const app = createApp({})
 app.config.globalProperties.emitter = emitter
@@ -131,5 +134,9 @@ app.component('attendance', attendance)
 //ORDENES
 app.component('orders', orders);
 app.component('orders-invoice', ordersinvoice);
+
+//PROGRAMA BRUCELLAS
+app.component('programabrucellas', programabrucellas);
+app.component('programabrucellas-create', programabrucellasform)
 
 app.mount('#app')
