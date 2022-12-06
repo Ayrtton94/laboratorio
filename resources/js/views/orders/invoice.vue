@@ -1470,10 +1470,7 @@ npm<template>
 	.bg-dark, .bg-dark tr  {
 		background: #1f496a !important;
 	}
-	.table thead th{
-		background: #3183c1 !important;
-		color : #ffffff  !important;
-	}
+	
 	.border-primary {
 		border-color: #3183c1 !important;
 	}
