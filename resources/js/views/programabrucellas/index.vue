@@ -112,7 +112,7 @@
 			getData(){
 				axios.get(`/${this.resource}/records`)
 				.then(res => {
-					this.records = res.data.program
+					this.records = res.data.$program
 				})
 			},
 			clickCreate(){

@@ -21,10 +21,6 @@ use App\Http\Controllers\LaboratorioOrderController;
 use App\Http\Controllers\ProgramaBrucellaController;
 use App\Http\Controllers\AttendanceController;
 
-use App\Http\Controllers\AreaController;
-use App\Http\Controllers\AttendanceController;
-use App\Http\Controllers\PersonController;
-use App\Http\Controllers\TipoOrdenController;
 
 Route::get('/', function () {
 	return view('auth.login');
