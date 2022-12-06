@@ -574,8 +574,4 @@ class LaboratorioOrderController extends Controller
         }
         return $pdf->stream();
     }
-
-
-
 }
-
