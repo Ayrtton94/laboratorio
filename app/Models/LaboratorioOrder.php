@@ -10,7 +10,7 @@ use App\Models\Tenant\Catalogs\DocumentType;
 
 class LaboratorioOrder extends Model
 {
-	
+
 	protected $with = ['user', 'state_type', 'document_type', 'currency_type', 'group', 'items'];
 
 	/**
@@ -35,19 +35,7 @@ class LaboratorioOrder extends Model
         'currency_type_id',
         'responsable_id',
         'documento_referencia',
-        'total_discount',
-        'total_charge',
-        'total_exportation',
-        'total_free',
-        'total_taxed',
-        'total_unaffected',
-        'total_exonerated',
         'total_igv',
-        'total_base_isc',
-        'total_isc',
-        'total_base_other_taxes',
-        'total_other_taxes',
-        'total_taxes',
         'total_value',
         'total',
 		'estado',
@@ -188,11 +176,11 @@ class LaboratorioOrder extends Model
     {
         return $this->belongsTo(StateType::class);
     }
-    
+
     public function person() {
         return $this->belongsTo(Person::class, 'customer_id');
     }
-    
+
     public function group()
     {
         return $this->belongsTo(Group::class);

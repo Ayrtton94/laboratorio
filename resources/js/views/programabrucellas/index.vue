@@ -43,8 +43,31 @@
 						<td>{{ row.parcela }}</td>
 						<td>{{ row.v_produccion }}</td>
                         <td>{{ row.t_hato }}</td>
-						<td>{{ row.accion }}</td>
-						<td>{{ row.asignar_modulo }}</td>
+						<td>
+                            <div v-if="row.accion == 1">
+                                <p>Accion</p>
+                            </div>
+                            <div v-if="row.accion == 2">
+                                <p>Certificado</p>
+                            </div>
+                            <div v-if="row.accion == 3">
+                                <p>Comprobante</p>
+                            </div>
+                            <div v-if="row.accion == 4">
+                                <p>Certificado/Comprobante</p>
+                            </div>
+                            <div v-if="row.accion == 5">
+                                <p>Ninguno</p>
+                            </div>
+                        </td>
+						<td>
+                            <div v-if="row.asignar_modulo == 1">
+                                <p>de Modulo</p>
+                            </div>
+                            <div v-else>
+                                <p>de Planta</p>
+                            </div>
+                        </td>
 						<td>
 							<a v-if="row.estado!=0" class="btn text-danger" @click="clickDelete(row.id)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Eliminar" aria-label="Eliminar">
 								<vue-feather type="delete" class="fs-vue-feather-18"></vue-feather>
@@ -112,7 +135,7 @@
 			getData(){
 				axios.get(`/${this.resource}/records`)
 				.then(res => {
-					this.records = res.data.$program
+					this.records = res.data.program
 				})
 			},
 			clickCreate(){

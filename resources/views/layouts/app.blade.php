@@ -40,19 +40,6 @@
 			</div>
             <div class="page-wrapper">
                 <div class="page-content">
-                    <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
-						<div>
-							<h4 class="mb-3 mb-md-0">Bienvenido {{ optional(Auth::user())->name }}!</h4>
-						</div>
-						<div class="d-flex align-items-center flex-wrap text-nowrap">
-							<div class="input-group date datepicker wd-200 me-2 mb-2 mb-md-0" id="dashboardDate">
-								<span class="input-group-text input-group-addon bg-transparent border-primary">
-									<vue-feather type="calendar" class="fs-vue-feather-18 text-primary"></vue-feather>
-								</span>
-								<input type="date" class="form-control border-primary bg-transparent text-white"/>
-							</div>
-						</div>
-					</div>
                     @yield('content')
                 </div>
             </div>
