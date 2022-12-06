@@ -38,7 +38,9 @@ class Person extends Model
 		'imagen',
 		'path_imagen',
 		'signature',
-		'user_account'
+		'user_account',
+		'area_id',
+		'schedule_id'
     ];
 
     public function identity_document()
@@ -49,6 +51,16 @@ class Person extends Model
 	public function attendance()
     {
         return $this->hasMany(Attendance::class, 'staff_id');
+    }
+
+	public function schedule()
+    {
+        return $this->belongsTo(Schedule::class, 'schedule_id');
+    }
+
+	public function areas()
+    {
+        return $this->belongsTo(Area::class);
     }
 
 	public function user()

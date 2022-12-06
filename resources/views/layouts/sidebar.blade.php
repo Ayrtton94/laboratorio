@@ -21,7 +21,7 @@
                 <div class="submenu">
                     <ul class="submenu-item">
                         <li class="category-heading">Personal</li>
-                        <li class="nav-item"><a class="nav-link" href="">Gestión de usuarios</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{route('persons.index', ['type'=> 'staff'])}}">Gestión de usuarios</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{route('attendance.index')}}">Control de Asistencia</a></li>
                     </ul>
                 </div>
@@ -37,48 +37,14 @@
                 <div class="submenu">
                     <ul class="submenu-item">
                         <li class="category-heading">Lavetsur</li>
-                        {{-- <li class="nav-item">
-
-	<div class="container">
-		<ul class="nav page-navigation">
-			<li class="nav-item">
-				<a class="nav-link" href="{{ route('home') }}">
-					<i class="link-icon"><vue-feather type="box" class="fs-vue-feather-18"> </vue-feather></i>
-					<span class="menu-title">Dashboard</span>
-				</a>
-			</li>
-			<li class="nav-item">
-				<a href="#"  class="nav-link">
-					<i class="link-icon"><vue-feather type="hash" class="fs-vue-feather-18"> </vue-feather></i>
-					<span class="menu-title">RRHH</span>
-					<i class="link-arrow"></i>
-				</a>
-				<div class="submenu">
-					<ul class="submenu-item">
-						<li class="category-heading">Personal</li>
-						<li class="nav-item"><a class="nav-link" href="">Gestión de usuarios</a></li>
-						<li class="nav-item"><a class="nav-link" href="{{route('attendance.index')}}">Control de Asistencia</a></li>
-					</ul>
-				</div>
-			</li>
-			<li class="nav-item">
-				<a href="#" class="nav-link">
-					<i class="link-icon"><vue-feather type="database" class="fs-vue-feather-18"> </vue-feather></i>
-					<span class="menu-title">Mantenimientos</span>
-					<i class="link-arrow"></i>
-				</a>
-				<div class="submenu">
-					<ul class="submenu-item">
-						<li class="category-heading">Lavetsur</li>
-						{{-- <li class="nav-item">
-
-                            <a href="{{route('rolescreate')}}" class="nav-link  {{ Route::is('rolescreate')?'active':''}}">Nuevo Rol</a>
-                        </li> --}}
                         <li class="nav-item">
                             <a href="{{route('roles')}}" class="nav-link">Perfil</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('areas') }}">Área</a>
+                        </li>
+						<li class="nav-item">
+                            <a class="nav-link" href="{{ route('schedule') }}">Horarios</a>
                         </li>
                         <li class="nav-item ">
                             <a class="nav-link" href="{{route('persons.index', ['type'=> 'staff'])}}">Personal</a>

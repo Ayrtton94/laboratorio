@@ -28,9 +28,11 @@ class CreateAttendanceTable extends Migration
 				$table->integer('justification_hours_cg')->nullable();
 				$table->integer('justification_hours_sg')->nullable();
 				$table->integer('comp_hours')->nullable();
+				$table->unsignedBigInteger('schedule_id');
 				$table->timestamps();
 
 				$table->foreign('staff_id')->references('id')->on('persons');
+				$table->foreign('schedule_id')->references('id')->on('schedule');
 			});
 		}
     }
