@@ -25,6 +25,9 @@ class CreateAttendanceTable extends Migration
 				$table->integer('delays_min')->nullable();
 				$table->integer('ouput_min')->nullable();
 				$table->integer('extra_hours')->nullable();
+				$table->integer('justification_hours_cg')->nullable();
+				$table->integer('justification_hours_sg')->nullable();
+				$table->integer('comp_hours')->nullable();
 				$table->timestamps();
 
 				$table->foreign('staff_id')->references('id')->on('persons');

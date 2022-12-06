@@ -19,7 +19,10 @@ class AttendanceCollection extends ResourceCollection
 				'hours_attended' => self::restasHoras($row),
 				'delays_min' => $row->delays_min,
 				'ouput_min' => $row->ouput_min,
-				'extra_hours' => $row->extra_hours
+				'extra_hours' => $row->extra_hours,
+				'justification_hours_cg' => $row->justification_hours_cg,
+				'justification_hours_sg' => $row->justification_hours_sg,
+				'comp_hours' => $row->comp_hours
 			];
 		});
     }

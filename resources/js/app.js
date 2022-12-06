@@ -3,6 +3,7 @@ require('./bootstrap');
 import { createApp } from 'vue'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import { axios } from 'axios'
 
 import dashboard from './views/Dashboard/DashboardComponent.vue'
@@ -52,20 +53,17 @@ import pruebas from './views/pruebas/index.vue'
 import pruebasform from './views/pruebas/form.vue'
 import persons from './views/Persons/index.vue'
 
-
-import orders from './views/orders/index.vue'
-import ordersinvoice from './views/orders/invoice.vue'
-
-import programabrucellas from './views/programabrucellas/index.vue'
-
 import attendance from './views/Attendance/index.vue'
-
 
 const emitter = mitt()
 const app = createApp({})
 app.config.globalProperties.emitter = emitter
 app.mixin(Permissions);
 // app.use(ElementPlus, { size: 'mini', zIndex: 3000 })
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+	app.component(key, component)
+}
+
 app.use(ElementPlus, {size: 'mini'});
 app.use(VueSweetalert2);
 app.use(axios);
@@ -114,15 +112,6 @@ app.component('metodos-create', metodosform)
 //PRUEBA
 app.component('pruebas', pruebas)
 app.component('pruebas-create', pruebasform)
-
-
-//ORDER LABORATORIO
-app.component('orders', orders)
-app.component('orders-invoice', ordersinvoice)
-
-
-//PROGRAMA BRUCELLA
-app.component('programabrucellas', programabrucellas)
 
 //AREA
 app.component('areas', areas)

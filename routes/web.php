@@ -21,7 +21,10 @@ use App\Http\Controllers\LaboratorioOrderController;
 use App\Http\Controllers\ProgramaBrucellaController;
 use App\Http\Controllers\AttendanceController;
 
-
+use App\Http\Controllers\AreaController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\PersonController;
+use App\Http\Controllers\TipoOrdenController;
 
 Route::get('/', function () {
 	return view('auth.login');
@@ -185,7 +188,6 @@ Auth::routes();
 		Route::delete('{id}', 'destroy');
 	});
 
-
 	// PROGRAMA BRUCELLAS
 	Route::controller(ProgramaBrucellaController::class)->prefix('programabrucellas')->group(function(){
 		Route::get('restore/{id}', 'restore');
@@ -232,8 +234,7 @@ Auth::routes();
 		Route::get('',  'index')->name('attendance.index');
 		Route::post('import', 'import');
 		Route::get('/records', 'records');
-		// Route::post('', 'store');
+		Route::put('/update', 'update');
 		// Route::delete('{id}', 'destroy');
 	});
-
 

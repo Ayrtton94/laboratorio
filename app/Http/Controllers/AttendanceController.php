@@ -37,7 +37,6 @@ class AttendanceController extends Controller
 		$records = Attendance::with('persons')->get();
 		
 		return new AttendanceCollection($records);
-		// return response()->json(['attendance' => $records]);
 	}
 
     public function edit($id)
@@ -45,9 +44,21 @@ class AttendanceController extends Controller
         //
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+		$Attendance = Attendance::where('id', $request->input('id'))->first();
+		
+		if($Attendance){
+			$Attendance->update([
+				'justification_hours_cg' => $request->input('justification_hours_cg'),
+				'justification_hours_sg' => $request->input('justification_hours_sg'),
+				'comp_hours' => $request->input('comp_hours')
+			]);
+		}
+		return [
+            'success' => true,
+            'message' => 'Datos Actualizados'
+        ];
     }
 
     public function destroy($id)
