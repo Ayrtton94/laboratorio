@@ -21,6 +21,7 @@
 					</div>
 					<div class="col-xl-2">
 						<div class="form-group col-12">
+							
 							<button v-if="(exportPDF && search.staff_id && search.date_of_issue_1 && search.date_of_issue_2)" type="button" class="p-1 btn btn-sm btn-danger" @click.prevent="getRecordsPdf"  data-toggle="tooltip" title="Exportar Registros">
 								<el-icon style="display: inline !important;"><List /></el-icon> <span>Pdf</span>
 							</button>&nbsp;
@@ -44,7 +45,6 @@
 							<slot name="foot"></slot>
 						</tfoot>
 					</table>
-					<!-- <slot name="totals" :totals="totals"></slot> -->
 					<div class="mt-2">
 						<el-pagination
 							@current-change="getRecords2"
@@ -66,10 +66,6 @@
     export default {
         props: {
             resource: String,
-            showTotals : {
-                type:   Boolean,
-                default : true
-			},
 			exportPDF : {
 				type : Boolean,
 				default : false
@@ -97,8 +93,6 @@
         created() {
             this.emitter.on('reloadData', () => {
                 this.getRecords()
-				
-                // this.getTotals()
             })
         },
         async mounted () {
@@ -123,13 +117,6 @@
 			getRecordsPdf(){
 				window.open(`/${this.resource}/records/pdf?${this.getQueryParameters()}`,'_blank');
 			},
-            getTotals(){
-                if(this.showTotals){
-                    return axios.get(`/${this.resource}/totals?${this.getQueryParameters()}`).then((response) => {
-                        this.totals = response.data.data
-                    });
-                }
-            },
             getQueryParameters() {
                 return queryString.stringify({
                     page: this.pagination.current_page,
@@ -140,7 +127,6 @@
             },
             getRecords2(){
                 this.getRecords()
-                // this.getTotals()
             },
 			getStaff(){
 				axios.get(`persons/staff/records`).then(({data}) => {
@@ -149,14 +135,8 @@
 			}
 		},
 		watch : {
-			// 'search.column': function(oldVal,newVal){
-			// 	if(this.search.column == 'staff_id'){
-			// 		this.getStaff();
-			// 	}
-			// },
 			'search.staff_id': function(){
 				this.getRecords();
-				// this.getTotals()
 			}
 		}
     }
