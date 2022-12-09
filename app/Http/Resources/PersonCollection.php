@@ -25,6 +25,7 @@ class PersonCollection extends ResourceCollection
                 'name' => $row->name,
 				'ap_lastname' => $row->ap_lastname,
 				'am_lastname' => $row->am_lastname,
+				'name_full' => $row->type=='staff' ? $row->name.' '.$row->ap_lastname.' '. $row->am_lastname : '',
 				'address' => $row->address,
 				'address' => $row->address,
 				'email' => $row->email,
@@ -40,7 +41,9 @@ class PersonCollection extends ResourceCollection
 				'user_account' => $row->user_account ? 1 : 0,
 				'username' => $row->type=='staff' ? self::username($row) : [],
 				'userpassword' => $row->type=='staff' ? '' : '',
-				'rol' => $row->type=='staff' ? self::roleName($row) : []
+				'rol' => $row->type=='staff' ? self::roleName($row) : [],
+				'area_id' => $row->type=='staff' ? $row->area_id : '',
+				'schedule_id' => $row->type=='staff' ? $row->schedule_id : ''
             ];
         });
     }

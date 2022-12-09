@@ -41,7 +41,6 @@ class AttendanceImport implements ToCollection
 			
 			if($row[0] != "")
 			{
-				// dd($row);
 				$num_document = $row[0];
 				$date_of_issue = $this->transformDate($row[3]);
 				$hour_start = isset($row[4]) ? $this->transformTime($row[4]) : $row[4];
@@ -63,6 +62,7 @@ class AttendanceImport implements ToCollection
 						'hour_end_2' => $hour_end_2,
 						'delays_min' => $delays_min,
 						'ouput_min' => $ouput_min,
+						'schedule_id' => $staff->schedule_id
 					]);
 					$registered += 1;
 				}

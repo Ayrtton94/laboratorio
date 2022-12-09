@@ -49,7 +49,7 @@
 								<span class="input-group-text input-group-addon bg-transparent border-primary">
 									<vue-feather type="calendar" class="fs-vue-feather-18 text-primary"></vue-feather>
 								</span>
-								<input type="text" class="form-control border-primary bg-transparent">
+								<input type="date" class="form-control border-primary bg-transparent text-white"/>
 							</div>
 						</div>
 					</div>

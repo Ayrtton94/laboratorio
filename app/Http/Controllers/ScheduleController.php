@@ -2,50 +2,51 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Area;
+use Throwable;
+use App\Models\Schedule;
 use Illuminate\Http\Request;
-use App\Http\Requests\AreaRequest;
+use App\Http\Requests\ScheduleRequest;
 
-class AreaController extends Controller
+class ScheduleController extends Controller
 {
-	public function index()
-	{
-		return view('area.index');
-	}
+
+    public function index()
+    {
+        return view('schedule.index');
+    }
 
 	public function records()
 	{
-		$areas = Area::get();
-		return ['areas' => $areas];
+		$schedules = Schedule::get();
+		return ['schedules' => $schedules];
 	}
 
-	public function store(AreaRequest $request)
-	{
-		
-		try {
+    public function store(ScheduleRequest $request)
+    {
+       try {
 			$id = $request->input('id');
-			$Area = Area::firstOrNew(['id' => $id]);
-			$Area->fill($request->all());
-			$Area->save();
+			$Schedule = Schedule::firstOrNew(['id' => $id]);
+			$Schedule->fill($request->all());
+			$Schedule->save();
 
 			return [
 				'success' => true,
 				'message' => ($id) ? 'Registro Actualizado' : 'Registro Exitoso'
 			];
-		} catch (\Throwable $th) {
+		} catch (Throwable $th) {
 
 			return [
                 'success' => false,
                 'message' => $th->getMessage()
             ];
 		}	
-	}
+    }
 
 	public function restore($id)
     {
-        $record = Area::findOrFail($id);
+        $record = Schedule::findOrFail($id);
         $record->update([
-			'estado' => 1
+			'status' => 1
 		]);
 
         return [
@@ -54,15 +55,16 @@ class AreaController extends Controller
         ];
 	}
 
-	public function destroy($id)
-	{
-        $record = Area::findOrFail($id);
+    public function destroy($id)
+    {
+		
+        $record = Schedule::findOrFail($id);
         $record->update([
-			'estado' => 0
+			'status' => 0
 		]);
 		return [
             'success' => true,
             'message' => 'Eliminada con éxito'
 		];
-	}
+    }
 }
