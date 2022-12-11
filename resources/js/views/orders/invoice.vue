@@ -13,21 +13,21 @@
                 <form autocomplete="off" @submit.prevent="submit">
 
                     <div class="row d-flex justify-content-end">
-                        <div class="col-lg-2">
+                        <div class="col-xs-12 col-sm-6 col-md-6">
                             <div class="form-group" :class="{'has-danger': errors.num_orden}">
                                 <label class="control-label">Número de Orden</label>
                                 <el-input v-model="form.num_orden"></el-input>
                                 <small class="form-control-feedback" v-if="errors.num_orden" v-text="errors.num_orden[0]"></small>
                             </div>
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-xs-12 col-sm-6 col-md-6">
                             <div class="form-group" :class="{'has-danger': errors.date_of_issue}">
                                 <label class="control-label">Fecha de Emisión</label>
                                 <el-date-picker v-model="form.date_of_issue" type="date" value-format="yyyy-MM-dd" :clearable="false" @change="changeDateOfIssue"></el-date-picker>
                                 <small class="form-control-feedback" v-if="errors.date_of_issue" v-text="errors.date_of_issue[0]"></small>
                             </div>
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-xs-12 col-sm-6 col-md-6">
                             <div class="form-group" :class="{'has-danger': errors.tporden_id}">
                                 <label class="control-label">(*)Tipo de Orden:</label>
                                 <el-select v-model="form.tporden_id">
@@ -71,12 +71,12 @@
                         </div>
 
                         <div class="col-lg-2">
-                            <div class="form-group" :class="{'has-danger': errors.tporden_id}">
+                            <div class="form-group" :class="{'has-danger': errors.responsable_id}">
                                 <label class="control-label">(*)Responsable</label>
-                                <el-select v-model="form.tporden_id">
-                                    <el-option v-for="option in establishments" :key="option.id" :value="option.id" :label="option.description"></el-option>
+                                <el-select v-model="form.responsable_id">
+                                    <el-option v-for="option in staffs" :key="option.id" :value="option.id" :label="option.name"></el-option>
                                 </el-select>
-                                <small class="form-control-feedback" v-if="errors.tporden_id" v-text="errors.tporden_id[0]"></small>
+                                <small class="form-control-feedback" v-if="errors.responsable_id" v-text="errors.responsable_id[0]"></small>
                             </div>
                         </div>
                         <div class="col-lg-2">
@@ -87,13 +87,15 @@
                             </div>
                         </div>
                     </div>
-
+                    <br>
                     <div class="row d-flex justify-content-end">
+                        <h4>Pruebas</h4>
+                        <br>
                         <div class="col-lg-2">
-                            <div class="form-group" :class="{'has-danger': errors.num_orden}">
+                            <div class="form-group" :class="{'has-danger': errors.quantity}">
                                 <label class="control-label">(*)Cantidad</label>
-                                <el-input v-model="form.num_orden"></el-input>
-                                <small class="form-control-feedback" v-if="errors.num_orden" v-text="errors.num_orden[0]"></small>
+                                <el-input v-model="form.quantity"></el-input>
+                                <small class="form-control-feedback" v-if="errors.quantity" v-text="errors.quantity[0]"></small>
                             </div>
                         </div>
                         <div class="col-lg-2">
@@ -118,7 +120,7 @@
                             <div class="form-group" :class="{'has-danger': errors.prueba_id}">
                                 <label class="control-label">(*)Prueba</label>
                                 <el-select v-model="form.prueba_id">
-                                    <el-option v-for="option in pruebas" :key="option.id" :value="option.id" :label="option.description"></el-option>
+                                    <el-option v-for="option in pruebas" :key="option.id" :value="option.id" :label="option.name"></el-option>
                                 </el-select>
                                 <small class="form-control-feedback" v-if="errors.prueba_id" v-text="errors.prueba_id[0]"></small>
                             </div>
@@ -197,7 +199,6 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th class="text-center font-weight-bold">CÓDIGO</th>
                                             <th class="text-center font-weight-bold">MUESTRA</th>
                                             <th class="text-center font-weight-bold">ENSAYO</th>
                                             <th class="text-center font-weight-bold">ESPECIE</th>
@@ -217,15 +218,33 @@
                                         </tr>
                                     </thead>
                                     <tbody >
+                                        <tr v-for="(row, index) in form.tests" :key="index">
+                                            <td>{{ index + 1 }}</td>
+                                            <td class="text-center">{{ getNameMuestra(row.muestra_id) }}</td>
+                                            <td class="text-center">{{ getNamePrueba(row.prueba_id) }}</td>
+                                            <td class="text-center">{{ getNameEspecie(row.especie_id) }}</td>
+                                            <td class="text-center">{{ row.observacion }}</td>
+                                            <td class="text-center">{{ getNamePresentacion(row.presentacion_id) }}</td>
+                                            <td class="text-center">{{ getNameLaboratorio(row.prueba_id) }}</td>
+                                            <td class="text-center">{{ row.quantity }}</td>
+                                            <td class="text-center">{{ getPruebaPrice(row.prueba_id) }}</td>
+                                            <td class="text-center">{{ total_pagar }}</td>
+                                            <td class="text-center">{{ getPruebaTime(row.time_entrega) }}</td>
+                                            <td class="text-center">{{ getPruebaCondition(row.condicion) }}</td>
+                                            <td class="text-center">{{ row.date_of_muestra }}</td>
+                                            <td class="text-center">{{ row.date_of_recepcion }}</td>
+                                            <td class="text-center">{{ row.date_of_result }}</td>
+                                            <td class="text-center">{{ row.temperatura }}</td>
+                                            <td class="text-center"></td>
 
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                         <div class="col-lg-12 col-md-6 mt-3 d-flex align-items-end mb-3">
                             <div class="form-group">
-                                <button type="button" class="btn  btn-primary btn-sm"
-                                        @click.prevent="showDialogAddItem = true">+ Agregar Producto</button>
+                                <button type="button" class="btn  btn-primary btn-sm" @click="AddTest"> Agregar +</button>
                             </div>
                         </div>
 
@@ -250,9 +269,10 @@
 
 <script>
 
-
+    import moment from 'moment'
 export default {
-
+    props: {
+    },
     data() {
         return {
             resource: 'orders',
@@ -261,34 +281,83 @@ export default {
             loading_form: false,
             errors: {},
             form: {},
-            tpordenes: [],
+            typeordenes: [
+                {"id":1,"description":"Servicio"},
+                {"id":2,"description":"Capacitación"},
+                {"id":3,"description":"Otros"}
+            ],
             identity_document_types: [],
             matrices: [],
             muestras: [],
             pruebas: [],
             especies: [],
-            subespecies: []
+            subespecies: [],
+            presentaciones: [],
+            staffs: []
 
         }
     },
-    async created() {
-        await this.initForm()
-        await this.$http.get(`/${this.resource}/tables`)
-            .then(response => {
-
-                this.identity_document_types = response.data.document_types_invoice
-                this.tpordenes = response.data.tpordenes
-                this.matrices = response.data.matrices
-                this.muestras = response.data.muestras
-                this.pruebas = response.data.pruebas
-                this.especies = response.data.especies
-                this.subespecies = response.data.subespecies
-
-            })
-
+    created() {
+        this.getDataTables();
+        this.initForm();
     },
     methods: {
+        getDataTables(){
+            axios.get(`/${this.resource}/tables`)
+                .then(response => {
 
+                    this.identity_document_types = response.data.identity_document_types
+                    this.tpordenes = response.data.tpordenes
+                    this.matrices = response.data.matrices
+                    this.muestras = response.data.muestras
+                    this.pruebas = response.data.pruebas
+                    this.especies = response.data.especies
+                    this.subespecies = response.data.subespecies
+                    this.presentaciones = response.data.presentaciones
+                    this.staffs = response.data.staffs
+
+                })
+        },
+        getNameMuestra(id){
+            const itemMuestra = _.find(this.muestras, {id: id})
+            if(itemMuestra) return itemMuestra.description;
+            return '';
+        },
+        getNamePrueba(id){
+            const itemPrueba = _.find(this.pruebas, {id: id})
+            if(itemPrueba) return itemPrueba.description;
+            return '';
+        },
+        getNameEspecie(id){
+            const itemEspecie = _.find(this.especies, {id: id})
+            if(itemEspecie) return itemEspecie.description;
+            return '';
+        },
+        getNamePresentacion(id){
+            const itemPresentacion = _.find(this.presentaciones, {id: id})
+            if(itemPresentacion) return itemPresentacion.description;
+            return '';
+        },
+        getNameLaboratorio(id){
+            const itemPresentacion = _.find(this.presentaciones, {id: id})
+            if(itemPresentacion) return itemPresentacion.description;
+            return '';
+        },
+        getPruebaCondition(id){
+            const itemPrueba = _.find(this.pruebas, {id: id})
+            if(itemPrueba) return itemPrueba.condicion;
+            return '';
+        },
+        getPruebaTime(id){
+            const itemPrueba = _.find(this.pruebas, {id: id})
+            if(itemPrueba) return itemPrueba.time_entrega;
+            return '';
+        },
+        getPruebaPrice(id){
+            const itemPrueba = _.find(this.pruebas, {id: id})
+            if(itemPrueba) return itemPrueba.price;
+            return '';
+        },
         initForm() {
             this.errors = {}
             this.form = {
@@ -303,34 +372,84 @@ export default {
                 referencia: null,
                 quantity: 0,
                 tporden_id: null,
-                matriz_id: null,
-                muestra_id: null,
-                prueba_id: null,
-                especie_id: null,
-                subespecie_id: null,
-                observacion: null,
-                temperatura: null,
-                date_of_due: moment().format('YYYY-MM-DD'),
+                // matriz_id: null,
+                // muestra_id: null,
+                // prueba_id: null,
+                // especie_id: null,
+                // subespecie_id: null,
+                // observacion: null,
+                // temperatura: null,
+                date_of_issue: moment().format('YYYY-MM-DD'),
                 date_of_muestra: moment().format('YYYY-MM-DD'),
                 date_of_recepcion: moment().format('YYYY-MM-DD'),
-                date_of_resultado: moment().format('YYYY-MM-DD'),
-                items: [],
+                date_of_result: moment().format('YYYY-MM-DD'),
+                tests: [],
                 total_value: 0,
                 total_igv: 0,
                 total: 0
 
-            },
-                this.pay_data = {
-                    payment_method_id: 1,
-                    account_id: 1,
-                    total: 0,
-                    credit_note_id : null
+            }
+
+        },
+        AddTest(){
+
+            this.form.tests.push({
+                codigo: this.form.codigo,
+                muestra_id: this.form.muestra_id,
+                prueba_id: this.form.prueba_id,
+                especie_id: this.form.especie_id,
+                observacion: this.form.observacion,
+                presentacion_id: this.form.presentacion_id,
+                laboratorio_id: this.form.laboratorio_id,
+                quantity: this.form.quantity,
+                precio_unitario: this.form.precio_unitario,
+                price_total: this.form.price_total,
+                tiempo_entrega: this.form.tiempo_entrega,
+                condicion: this.form.condicion,
+                date_of_muestra: this.form.date_of_muestra,
+                date_of_recepcion: this.form.date_of_recepcion,
+                date_of_result: this.form.date_of_result,
+                temperatura: this.form.temperatura
+            });
+
+
+        },
+        async submit() {
+
+            this.loading_submit = true
+
+            axios.post(`/${this.resource}`, this.form)
+                .then(async response => {
+                    if (response.data.success) {
+                        this.documentNewId = response.data.data.id;
+                        this.resetForm();
+                        // this.showDialogOptions = true;
+                    }
+                    else {
+
+                        this.$message.error(response.data.message);
+                        this.loading_submit = false;
+                    }
+                }).catch(error => {
+
+                if (error.response.status === 422) {
+                    this.errors = error.response.data;
                 }
-            this.credit_note_apply = [];
-            this.getSeries();
+                else {
+                    this.$message.error(error.response.data.message);
+                }
+                this.loading_submit = false;
+            });
+
+        },
+        close() {
+            location.href = '/orders'
         },
     },
     computed :{
+        total_pagar(){
+            return  parseFloat(this.form.quantity * this.form.quantity).toFixed(2)
+        },
 
     },
     watch :{

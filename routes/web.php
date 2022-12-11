@@ -208,7 +208,7 @@ Auth::routes();
 		Route::get('/totals', 'totals');
 		Route::get('/crear', 'create');
 		Route::get('/editar/{order}', 'edit');
-		Route::get('/tables', 'tables');
+		Route::get('tables', 'tables');
 		Route::get('/record/{order}', 'record');
 		Route::get('/tables3/{order}', 'tables3');
 		Route::post('', 'store');
