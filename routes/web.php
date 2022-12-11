@@ -14,6 +14,7 @@ use App\Http\Controllers\MuestraController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\TipoOrdenController;
+use App\Http\Controllers\ApiServiceController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\SubEspecieController;
@@ -210,7 +211,7 @@ Auth::routes();
 		Route::get('/totals', 'totals');
 		Route::get('/crear', 'create');
 		Route::get('/editar/{order}', 'edit');
-		Route::get('/tables', 'tables');
+		Route::get('tables', 'tables');
 		Route::get('/record/{order}', 'record');
 		Route::get('/tables3/{order}', 'tables3');
 		Route::post('', 'store');
@@ -232,6 +233,10 @@ Auth::routes();
 		Route::put('/update', 'update');
 		Route::get('records/pdf', 'pdf');
 		Route::get('records/excel', 'excel');
+	});
+
+	Route::controller(ApiServiceController::class)->prefix('apiservices')->group(function(){
+		Route::get('{type}/{number}', 'ApiServices');
 	});
 
 	//HORARIOS

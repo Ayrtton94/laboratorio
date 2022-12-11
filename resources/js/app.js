@@ -62,6 +62,8 @@ import orders from './views/orders/index.vue'
 import ordersinvoice from './views/orders/invoice.vue'
 
 import schedules from './views/Schedule/index.vue'
+import programabrucellas from './views/programabrucellas/index.vue'
+import programabrucellasform from './views/programabrucellas/form.vue'
 
 const emitter = mitt()
 const app = createApp({})
@@ -139,5 +141,9 @@ app.component('orders-invoice', ordersinvoice);
 
 //HORARIO
 app.component('schedule', schedules)
+
+//PROGRAMA BRUCELLAS
+app.component('programabrucellas', programabrucellas);
+app.component('programabrucellas-create', programabrucellasform)
 
 app.mount('#app')

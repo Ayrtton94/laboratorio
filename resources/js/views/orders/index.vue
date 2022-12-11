@@ -6,7 +6,6 @@
                     <div class="d-flex justify-content-between align-items-baseline mb-4">
                         <h6 class="card-title mb-0">GESTIÓN DE ORDENES DE LABORATORIOS</h6>
                         <div class="dropdown">
-<!--                            <button @click.prevent="clickCreate()" type="button" class="btn btn-sm btn-success btn-icon-text text-light mx-1">Nueva </button>-->
                             <a :href="`/${resource}/crear`" class="btn btn-success btn-sm  mt-2 mr-2"><i class="fa fa-plus-circle"></i> Nuevo</a>
                         </div>
                     </div>
