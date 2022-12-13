@@ -20,7 +20,7 @@
                         <div class="col-xs-12 col-sm-4 col-md-4">
                             <div class="form-group" :class="{'has-danger': errors.date_of_issue}">
                                 <label class="control-label">Fecha de Emisión</label>
-                                <el-date-picker v-model="form.date_of_issue" type="date" value-format="yyyy-MM-dd" :clearable="false" @change="changeDateOfIssue"></el-date-picker>
+                                <el-date-picker v-model="form.date_of_issue" type="date" value-format="yyyy-MM-dd" :clearable="false"></el-date-picker>
                                 <small class="form-control-feedback" v-if="errors.date_of_issue" v-text="errors.date_of_issue[0]"></small>
                             </div>
                         </div>
@@ -34,7 +34,7 @@
                             </div>
                         </div>
                     </div>
-				
+
                     <div class="row">
 						<div class="col-xs-12 col-sm-3 col-md-3">
                             <label class="control-label">(*)Tipo Documento</label>
@@ -47,7 +47,11 @@
                         <div class="col-xs-12 col-sm-3 col-md-3">
                             <div class="form-group">
                                 <label class="control-label">(*)Documento</label>
-                                <el-input v-model="form.number" placeholder="Documento" :maxlength="maxlength" v-on:keypress.enter="queryDocumentApi"/>
+                                <el-input v-model="form.number" placeholder="Documento" :maxlength="maxlength">
+                                    <template #append>
+                                        <el-button @click.prevent="queryDocumentApi">Buscar</el-button>
+                                    </template>
+                                </el-input>
                                 <small class="form-control-feedback text-danger" v-if="errors.number" v-text="errors.number[0]"></small>
                             </div>
                         </div>
@@ -99,10 +103,10 @@
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-3 col-md-3">
-                            <div class="form-group" :class="{'has-danger': errors.num_orden}">
+                            <div class="form-group" :class="{'has-danger': errors.referencia}">
                                 <label class="control-label">(*)Referencia</label>
-                                <el-input v-model="form.num_orden"></el-input>
-                                <small class="form-control-feedback" v-if="errors.num_orden" v-text="errors.num_orden[0]"></small>
+                                <el-input v-model="form.referencia"></el-input>
+                                <small class="form-control-feedback" v-if="errors.referencia" v-text="errors.referencia[0]"></small>
                             </div>
                         </div>
                     </div>
@@ -183,21 +187,21 @@
                         <div class="col-lg-2">
                             <div class="form-group" :class="{'has-danger': errors.date_of_muestra}">
                                 <label class="control-label">(*)Fecha de Muestra</label>
-                                <el-date-picker v-model="form.date_of_muestra" type="date" value-format="yyyy-MM-dd" :clearable="false" @change="changeDateOfIssue"></el-date-picker>
+                                <el-date-picker v-model="form.date_of_muestra" type="date" value-format="yyyy-MM-dd" :clearable="false"></el-date-picker>
                                 <small class="form-control-feedback" v-if="errors.date_of_muestra" v-text="errors.date_of_muestra[0]"></small>
                             </div>
                         </div>
                         <div class="col-lg-2">
                             <div class="form-group" :class="{'has-danger': errors.date_of_recepcion}">
                                 <label class="control-label">(*)Fecha de Recepción</label>
-                                <el-date-picker v-model="form.date_of_recepcion" type="date" value-format="yyyy-MM-dd" :clearable="false" @change="changeDateOfIssue"></el-date-picker>
+                                <el-date-picker v-model="form.date_of_recepcion" type="date" value-format="yyyy-MM-dd" :clearable="false"></el-date-picker>
                                 <small class="form-control-feedback" v-if="errors.date_of_recepcion" v-text="errors.date_of_recepcion[0]"></small>
                             </div>
                         </div>
                         <div class="col-lg-2">
                             <div class="form-group" :class="{'has-danger': errors.date_of_result}">
                                 <label class="control-label">(*)Fecha de Resultados</label>
-                                <el-date-picker v-model="form.date_of_result" type="date" value-format="yyyy-MM-dd" :clearable="false" @change="changeDateOfIssue"></el-date-picker>
+                                <el-date-picker v-model="form.date_of_result" type="date" value-format="yyyy-MM-dd" :clearable="false"></el-date-picker>
                                 <small class="form-control-feedback" v-if="errors.date_of_result" v-text="errors.date_of_result[0]"></small>
                             </div>
                         </div>
@@ -247,7 +251,7 @@
                                             <td class="text-center">{{ getNameLaboratorio(row.prueba_id) }}</td>
                                             <td class="text-center">{{ row.quantity }}</td>
                                             <td class="text-center">{{ getPruebaPrice(row.prueba_id) }}</td>
-                                            <td class="text-center">{{ total_pagar }}</td>
+                                            <td class="text-center">{{ getTotal(row.prueba_id) }}</td>
                                             <td class="text-center">{{ getPruebaTime(row.time_entrega) }}</td>
                                             <td class="text-center">{{ getPruebaCondition(row.condicion) }}</td>
                                             <td class="text-center">{{ row.date_of_muestra }}</td>
@@ -267,16 +271,19 @@
                             </div>
                         </div>
 
-<!--                        <div class=" col-12 col-sm-12 float-right" :class="total > 0 ? 'col-xl-4' : 'col-xl-12'">-->
+                        <div class=" col-12 col-sm-12 float-right">
 
-<!--                            -->
-<!--                            <p class="text-right" v-if="form.total_igv > 0">IGV: {{ currency_type.symbol }} {{ form.total_igv }}</p>-->
-<!--                            -->
-<!--                            <p class="text-right"   v-if="form.total > 0"><button type="button" class="btn  btn-info btn-sm mr-3"-->
-<!--                                                                                  @click.prevent="showDialogNotes = true"><i class="fa fa-search fs-15"></i></button>TOTAL NOTA CRÉDITO: {{ currency_type.symbol }} {{ total_nc_apply }}</p>-->
-<!--                            <h5 class="text-right" v-if="form.total > 0"><b>TOTAL: </b>{{ currency_type.symbol }} {{ form.total }}</h5>-->
-<!--                            -->
-<!--                        </div>-->
+                            <h5 class="text-right"><b>TOTAL: </b>{{ total_pagar }}</h5>
+
+                        </div>
+
+                        <div class=" col-12 col-sm-12 float-right">
+
+                            <button  type="submit" class="btn btn-sm btn-success">
+                                <span>Registrar</span>
+                            </button>
+
+                        </div>
                     </div>
 
                 </form>
@@ -287,7 +294,7 @@
 </template>
 
 <script>
-import { allDepartments } from "../../mixins/deletable" 
+import { allDepartments } from "../../mixins/deletable"
 import { searchDcumentType } from "../../mixins/searchApi"
 import moment from 'moment'
 export default {
@@ -387,6 +394,12 @@ export default {
             if(itemPrueba) return itemPrueba.price;
             return '';
         },
+        getTotal(id){
+
+            const itemTotal = _.find(this.pruebas, {id: id})
+            if(itemTotal) return itemTotal.price * this.form.quantity;
+            return '';
+        },
         initForm() {
             this.errors = {}
             this.form = {
@@ -403,13 +416,6 @@ export default {
                 referencia: null,
                 quantity: 0,
                 tporden_id: null,
-                // matriz_id: null,
-                // muestra_id: null,
-                // prueba_id: null,
-                // especie_id: null,
-                // subespecie_id: null,
-                // observacion: null,
-                // temperatura: null,
                 date_of_issue: moment().format('YYYY-MM-DD'),
                 date_of_muestra: moment().format('YYYY-MM-DD'),
                 date_of_recepcion: moment().format('YYYY-MM-DD'),
@@ -431,8 +437,8 @@ export default {
                 presentacion_id: this.form.presentacion_id,
                 laboratorio_id: this.form.laboratorio_id,
                 quantity: this.form.quantity,
-                precio_unitario: this.form.precio_unitario,
-                price_total: this.form.price_total,
+                precio_unitario: this.getPruebaPrice(this.form.prueba_id),
+                price_total: this.getTotal(this.form.prueba_id),
                 tiempo_entrega: this.form.tiempo_entrega,
                 condicion: this.form.condicion,
                 date_of_muestra: this.form.date_of_muestra,
@@ -450,13 +456,11 @@ export default {
 
             axios.post(`/${this.resource}`, this.form)
                 .then(async response => {
+                    console.log(response.data)
                     if (response.data.success) {
-                        this.documentNewId = response.data.data.id;
                         this.resetForm();
-                        // this.showDialogOptions = true;
                     }
                     else {
-
                         this.$message.error(response.data.message);
                         this.loading_submit = false;
                     }
@@ -478,7 +482,15 @@ export default {
     },
     computed :{
         total_pagar(){
-            return  parseFloat(this.form.quantity * this.form.quantity).toFixed(2)
+
+            let itemsTotales = this.form.tests;
+            if(itemsTotales.length > 0) {
+                return itemsTotales.reduce((sum,item)=>{
+                    return sum+ +item.price_total;
+                },0);
+            }
+
+
         },
 		maxlength: function(){
 			if(this.form.identity_document_id === '6'){

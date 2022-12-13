@@ -20,7 +20,7 @@ class LaboratorioOrder extends Model
 	 */
 	protected $table = 'laboratorio_orders';
     protected $fillable = [
-        'user_id',
+//        'user_id',
         'establishment_id',
         'establishment',
         'state_type_id',
@@ -28,13 +28,17 @@ class LaboratorioOrder extends Model
         'document_type_id',
         'series',
         'number',
+
         'date_of_issue',
         'time_of_issue',
+
         'customer_id',
         'customer',
-        'currency_type_id',
+        'tporden_id',
+
         'responsable_id',
         'documento_referencia',
+
         'total_igv',
         'total_value',
         'total',

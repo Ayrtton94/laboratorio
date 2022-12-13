@@ -2,8 +2,10 @@
 
  namespace App\Http\Controllers;
 
+use App\Http\Requests\OrderRequest;
 use App\Models\Catalogs\IdentityDocumentType;
 use App\Models\Especie;
+use App\Models\LaboratorioOrderDetail;
 use App\Models\Matriz;
 use App\Models\Muestra;
 use App\Models\Person;
@@ -24,7 +26,7 @@ class LaboratorioOrderController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('input.request:order,web', ['only' => ['store', 'update']]);
+//        $this->middleware('input.request:order,web', ['only' => ['store', 'update']]);
     }
 
     public function index()
@@ -144,25 +146,49 @@ class LaboratorioOrderController extends Controller
 
     public function store(OrderRequest $request)
     {
-        try {
+        $orderLaboratorio = DB::transaction(function () use ($request) {
 
             $orderLaboratorio = new LaboratorioOrder();
-            $orderLaboratorio->save($request->all());
+            $orderLaboratorio->save($request->all()+['user_id'=>auth()->id()]);
+
+            if(count($request['tests']) > 0){
+                foreach ($request['tests'] as $test) {
+//                    dd($orderLaboratorio->id);
+                    LaboratorioOrderDetail::query()->create(
+                        [
+                        'laboratorio_order_id' => $orderLaboratorio->id,
+                        'matriz_id' => $test['muestra_id'],
+                        'muestra_id' => $test['muestra_id'],
+                        'prueba_id' => $test['prueba_id'],
+                        'especie_id' => $test['especie_id'],
+                        'subespecie_id' => $test['especie_id'],
+                        'presentacion_id' => $test['presentacion_id'],
+                        'quantity' => $test['quantity'],
+                        'observacion' => $test['observacion'],
+                        'date_of_muestra' => $test['date_of_muestra'],
+                        'date_of_recepcion' => $test['date_of_recepcion'],
+                        'date_of_resultado' => $test['date_of_result'],
+                        'temperatura' => $test['temperatura'],
+                        'unit_value' => 0,
+                        'unit_price' => 0,
+                        'total_igv' => 0,
+                        'total_value' => 0,
+                        'total' => $test['price_total'],
+                        'attributes' => null
+                    ]
+                    );
+                }
+            }
+
+
+
+        });
 
             return [
                 'success' => true,
                 'message'=> "Orden Generada Correctamente",
                 'id'=> $orderLaboratorio,
             ];
-
-        }catch (\Exception $e) {
-            return [
-                'success' => true,
-                'message'=> $e->getMessage()
-            ];
-        }
-
-
     }
 
     public function update(OrderRequest $request, $order_id)
