@@ -82,7 +82,6 @@
 			}
 		},
         created() {
-			console.log(this.type);
 			this.title = (this.type == 'customers')?'CLIENTES':(this.type === 'staff')? 'PERSONAL' :((this.type === 'suppliers'? 'PROVEEDORES': ''))
         },
         methods: {
@@ -107,7 +106,9 @@
 					rol: null,
 					username: null,
 					userpassword: null,
-					user_account: false
+					user_account: false,
+					area_id: null,
+					schedule_id: null,
 				},
 				this.errors = {}
 			},
@@ -141,6 +142,8 @@
 				this.form.rol = info.rol
 				this.form.username = info.username
 				this.form.userpassword = info.userpassword
+				this.form.area_id = info.area_id
+				this.form.schedule_id = info.schedule_id
 			},
 			saveAppt(form){
 				axios.post(`/${this.resource}`, form)

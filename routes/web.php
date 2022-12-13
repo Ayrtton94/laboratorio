@@ -12,14 +12,16 @@ use App\Http\Controllers\PruebaController;
 use App\Http\Controllers\EspecieController;
 use App\Http\Controllers\MuestraController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\TipoOrdenController;
+use App\Http\Controllers\ApiServiceController;
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\SubEspecieController;
 use App\Http\Controllers\LaboratorioController;
 use App\Http\Controllers\PresentacionController;
 use App\Http\Controllers\LaboratorioOrderController;
 use App\Http\Controllers\ProgramaBrucellaController;
-use App\Http\Controllers\AttendanceController;
 
 
 Route::get('/', function () {
@@ -60,6 +62,7 @@ Auth::routes();
         Route::get('', 'index')->name('areas');
         Route::post('', 'store');
         Route::get('/records', 'records');
+		Route::get('restore/{id}', 'restore');
         Route::delete('/{id}', 'destroy');
     });
 
@@ -224,13 +227,24 @@ Auth::routes();
 
 	// ASISTENCIAS
 	Route::controller(AttendanceController::class)->prefix('attendance')->group(function(){
-		// Route::get('restore/{id}', 'restore');
-		// Route::get('columns', 'columns');
-		// Route::get('tables', 'tables');
 		Route::get('',  'index')->name('attendance.index');
 		Route::post('import', 'import');
 		Route::get('/records', 'records');
 		Route::put('/update', 'update');
-		// Route::delete('{id}', 'destroy');
+		Route::get('records/pdf', 'pdf');
+		Route::get('records/excel', 'excel');
 	});
+
+	Route::controller(ApiServiceController::class)->prefix('apiservices')->group(function(){
+		Route::get('{type}/{number}', 'ApiServices');
+	});
+
+	//HORARIOS
+    Route::controller(ScheduleController::class)->prefix('schedule')->group(function(){
+        Route::get('', 'index')->name('schedule');
+        Route::post('', 'store');
+        Route::get('/records', 'records');
+		Route::get('restore/{id}', 'restore');
+        Route::delete('/{id}', 'destroy');
+    });
 

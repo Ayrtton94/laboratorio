@@ -16,6 +16,7 @@ class CreateScheduleTable extends Migration
 		if(!Schema::hasTable('schedule')){
 			Schema::create('schedule', function (Blueprint $table) {
 				$table->id();
+				$table->string('description')->nullable();
 				$table->time('hour_start')->nullable();
 				$table->time('hour_end')->nullable();
 				$table->boolean('status')->default(1);

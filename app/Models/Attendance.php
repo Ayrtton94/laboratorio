@@ -22,11 +22,17 @@ class Attendance extends Model
 		'extra_hours',
 		'justification_hours_cg',
 		'justification_hours_sg',
-		'comp_hours'
+		'comp_hours',
+		'schedule_id'
 	];
 
 	public function persons()
     {
 		return $this->hasMany(Person::class, 'id');
+    }
+
+	public function schedule()
+    {
+		return $this->hasMany(Schedule::class, 'id');
     }
 }

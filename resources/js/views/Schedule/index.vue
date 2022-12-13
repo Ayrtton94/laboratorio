@@ -4,9 +4,9 @@
           <div class="card">
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-baseline mb-4">
-                <h6 class="card-title mb-0">GESTIÓN DE AREAS</h6>
+                <h6 class="card-title mb-0">GESTIÓN DE HORARIOS</h6>
                   <div class="dropdown">
-					<button @click.prevent="clickCreate()" type="button" class="btn btn-sm btn-success btn-icon-text text-light mx-1">Nueva Area</button>
+					<button @click.prevent="clickCreate()" type="button" class="btn btn-sm btn-success btn-icon-text text-light mx-1">Nuevo Horario</button>
                 </div>
               </div>
               <div class="row">
@@ -16,27 +16,29 @@
               	<table class="table table-striped dt-responsive nowrap" cellspacing="0" width="100%">
                   <thead>
                     <tr>
-					<th class="pt-0">#</th>
-                      <th class="pt-0">Nombre</th>
-					  <th class="pt-0">Descripción</th>
-					  <th class="pt-0">Registro</th>
-                      <th class="pt-0">Opciones</th>
+						<th class="pt-0">#</th>
+						<th class="pt-0">Nombre</th>
+						<th class="pt-0">Hora Ingreso</th>
+						<th class="pt-0">Hora Salida</th>
+						<th class="pt-0">Registro</th>
+						<th class="pt-0">Opciones</th>
                     </tr>
                   </thead>
                   <tbody>
 					<tr v-for="(row, index) in records" :key="index">
 						<td>{{ row.id }}</td>
-						<td>{{ row.name }}</td>
 						<td>{{ row.description }}</td>
+						<td>{{ row.hour_start }}</td>
+						<td>{{ row.hour_end }}</td>
 						<td>{{ (row.created_at).split('T')[0] }}</td>
 						<td>
-							<a v-if="row.estado!=0" class="btn text-danger" @click="clickDelete(row.id)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Eliminar" aria-label="Eliminar">
+							<a v-if="row.status!=0" class="btn text-danger" @click="clickDelete(row.id)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Eliminar" aria-label="Eliminar">
 									<vue-feather type="delete" class="fs-vue-feather-18"></vue-feather>
 								</a>
-								<a v-if="row.estado!=0" @click.prevent="clickUpdate(row)" class="btn text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Editar" aria-label="Editar">
+								<a v-if="row.status!=0" @click.prevent="clickUpdate(row)" class="btn text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Editar" aria-label="Editar">
 									<vue-feather type="edit" class="fs-vue-feather-18"></vue-feather>
 								</a>
-								<a class="btn text-success" v-if="row.estado==0" @click="clickRestore(row.id)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Restaurar" aria-label="Restaurar">
+								<a class="btn text-success" v-if="row.status==0" @click="clickRestore(row.id)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Restaurar" aria-label="Restaurar">
 									<vue-feather type="rotate-cw" class="fs-vue-feather-18"></vue-feather>
 								</a>
 						</td>
@@ -48,19 +50,19 @@
           </div>
         </div>
     </div>
-	<area-modal v-if="showDialog" :form="form" :errors="errors" @closeModal="closeModal" @saveAppt="saveAppt"/>
+	<schedule-modal v-if="showDialog" :form="form" :errors="errors" @closeModal="closeModal" @saveAppt="saveAppt"/>
 </template>
 <script>
 	import { deletable } from "../../mixins/deletable"
-	import AreaModal from "../Area/form.vue"
+	import ScheduleModal from "../Schedule/form.vue"
 	export default {
 		mixins: [deletable],
 		components: {
-			AreaModal
+			ScheduleModal
 		},
 		data(){
 			return {
-				resource: 'areas',
+				resource: 'schedule',
 				records: [],
 				showDialog: false,
 				form: {},
@@ -77,15 +79,16 @@
 			initForm(){
 				this.form = {
 					id: '',
-					name : '',
-					description: ''
+					description: '',
+					hour_start : '',
+					hour_end: ''
 				},
 				this.errors = {}
 			},
 			getData(){
 				axios.get(`/${this.resource}/records`)
 				.then(res => {
-					this.records = res.data.areas
+					this.records = res.data.schedules
 				})
 			},
 			clickCreate(){
@@ -97,8 +100,9 @@
 			},
 			getDataMoal(info){
 				this.form.id = info.id
-				this.form.name = info.name
-				this.form.description = info.description
+				this.form.description = info.description,
+				this.form.hour_start = info.hour_start
+				this.form.hour_end = info.hour_end
 			},
 			closeModal(){
 				this.showDialog = false;

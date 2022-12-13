@@ -119,6 +119,22 @@
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-4 col-md-4" v-if="this.form.type=='staff'">
+								<label class="control-label">Areas</label>
+								<div class="form-group">
+									<el-select v-model="form.area_id" filterable clearable placeholder="Seleccione">
+										<el-option v-for="option in areas" :key="option.id" :value="option.id" :label="option.name" />
+									</el-select>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-4 col-md-4" v-if="this.form.type=='staff'">
+								<label class="control-label">Horario</label>
+								<div class="form-group">
+									<el-select v-model="form.schedule_id" filterable clearable placeholder="Seleccione">
+										<el-option v-for="option in schedules" :key="option.id" :value="option.id" :label="option.description" />
+									</el-select>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-4 col-md-4" v-if="this.form.type=='staff'">
 								<el-checkbox v-model="form.user_account">Cuenta de usuario</el-checkbox>
 							</div>
 							<div class="col-xs-12 col-sm-4 col-md-4" v-if="this.form.type=='staff' && this.form.user_account">
@@ -180,13 +196,17 @@
                 all_provinces: [],
                 all_districts: [],
 				identity_document_types: [],
-				roles: []
+				roles: [],
+				schedules: [],
+				areas: []
 			}
 		},
 		created(){
 			this.getCustomerData();
 			this.title = (this.form.type === 'customers')?'Nuevo Cliente':(this.form.type === 'staff')? 'Nuevo Personal' :((this.form.type === 'suppliers'? 'Nuevo Proveedor': ''));
 			if(this.form.type === 'staff') this.getRoles()
+			if(this.form.type === 'staff') this.getSchedules()
+			if(this.form.type === 'staff') this.getAreas()
 		},
 		methods: {
 			getCustomerData(){
@@ -202,6 +222,18 @@
 				axios.get(`/roles/records`)
 				.then(response => {
 					this.roles = response.data.roles
+				})
+			},
+			getSchedules(){
+				axios.get(`/schedule/records`)
+				.then(response => {
+					this.schedules = response.data.schedules
+				})
+			},
+			getAreas(){
+				axios.get(`/areas/records`)
+				.then(response => {
+					this.areas = response.data.areas
 				})
 			},
 			store(form){

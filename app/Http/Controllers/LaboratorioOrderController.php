@@ -1,21 +1,24 @@
 <?php
 
-    namespace App\Http\Controllers;
+ namespace App\Http\Controllers;
 
-    use App\Models\Catalogs\IdentityDocumentType;
-    use App\Models\Especie;
-    use App\Models\Matriz;
-    use App\Models\Muestra;
-    use App\Models\Person;
-    use App\Models\presentacion;
-    use App\Models\Prueba;
-    use App\Models\SubEspecie;
-    use Barryvdh\DomPDF\Facade as PDF;
-    use Mpdf\Mpdf;
-    use Nexmo\Account\Price;
-    use Illuminate\Http\Request;
-    use Illuminate\Support\Facades\DB;
-    use App\Models\LaboratorioOrder;
+use App\Models\Catalogs\IdentityDocumentType;
+use App\Models\Especie;
+use App\Models\Matriz;
+use App\Models\Muestra;
+use App\Models\Person;
+use App\Models\presentacion;
+use App\Models\Prueba;
+use App\Models\SubEspecie;
+use Barryvdh\DomPDF\Facade as PDF;
+use Mpdf\Mpdf;
+use Nexmo\Account\Price;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\LaboratorioOrder;
+use App\Models\District;
+use App\Models\Province;
+use App\Models\Department;
 
 class LaboratorioOrderController extends Controller
 {
@@ -123,10 +126,13 @@ class LaboratorioOrderController extends Controller
         $especies = Especie::all();
         $subespecies = SubEspecie::all();
         $presentaciones = Presentacion::all();
+		$departments = Department::where('active',1)->orderBy('description')->get();
+        $provinces = Province::where('active',1)->orderBy('description')->get();
+        $districts = District::where('active',1)->orderBy('description')->get();
 
         return compact('staffs','identity_document_types',
                 'matrices','muestras','pruebas',
-                'especies','subespecies','presentaciones');
+                'especies','subespecies','presentaciones','departments', 'provinces', 'districts');
     }
 
     public function record($id)

@@ -3,7 +3,7 @@
 @section('content')
 {{-- <div class="container"> --}}
 
-<dashboard />
+<dashboard :user_auth="{{ $user_auth }}"/>
 
 {{-- </div> --}}
 @endsection

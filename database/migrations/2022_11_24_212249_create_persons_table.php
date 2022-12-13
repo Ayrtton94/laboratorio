@@ -36,6 +36,7 @@ class CreatePersonsTable extends Migration
 			$table->string('signature')->nullable();
 			$table->boolean('status')->default(1);
 			$table->boolean('user_account')->default(0);
+			$table->unsignedBigInteger('schedule_id');
             $table->timestamps();
 			$table->softDeletes();
 			

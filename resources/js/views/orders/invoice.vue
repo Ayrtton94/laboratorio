@@ -1,33 +1,30 @@
 <template>
     <div class="container-fluid m-0 pb-0 mt-1">
-		<div class="page-header d-flex bd-highlight">
-			<div class="ml-4 mt-2 p-2 flex-grow-1">
-				<h4 >Nueva Orden de Laboratorio</h4>
+        <div class="card mb-0 w-100">
+			<div class="page-header d-flex bd-highlight">
+				<div class="ml-4 mt-2 p-2 flex-grow-1">
+					<h4 >Nueva Orden de Laboratorio</h4>
+				</div>
 			</div>
-        </div>
-
-        <div class="card mb-0 w-100 mt-3">
-<!--            v-if="loading_form"-->
+			<hr class="mt-0 mb-0">
             <div class="card-body">
-
                 <form autocomplete="off" @submit.prevent="submit">
-
-                    <div class="row d-flex justify-content-end">
-                        <div class="col-xs-12 col-sm-6 col-md-6">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-4 col-md-4">
                             <div class="form-group" :class="{'has-danger': errors.num_orden}">
                                 <label class="control-label">Número de Orden</label>
                                 <el-input v-model="form.num_orden"></el-input>
                                 <small class="form-control-feedback" v-if="errors.num_orden" v-text="errors.num_orden[0]"></small>
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-6 col-md-6">
+                        <div class="col-xs-12 col-sm-4 col-md-4">
                             <div class="form-group" :class="{'has-danger': errors.date_of_issue}">
                                 <label class="control-label">Fecha de Emisión</label>
                                 <el-date-picker v-model="form.date_of_issue" type="date" value-format="yyyy-MM-dd" :clearable="false" @change="changeDateOfIssue"></el-date-picker>
                                 <small class="form-control-feedback" v-if="errors.date_of_issue" v-text="errors.date_of_issue[0]"></small>
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-6 col-md-6">
+                        <div class="col-xs-12 col-sm-4 col-md-4">
                             <div class="form-group" :class="{'has-danger': errors.tporden_id}">
                                 <label class="control-label">(*)Tipo de Orden:</label>
                                 <el-select v-model="form.tporden_id">
@@ -37,40 +34,62 @@
                             </div>
                         </div>
                     </div>
-
-
-                    <div class="row d-flex justify-content-end">
-                        <div class="col-xs-12 col-sm-6 col-md-6">
+				
+                    <div class="row">
+						<div class="col-xs-12 col-sm-3 col-md-3">
                             <label class="control-label">(*)Tipo Documento</label>
                             <div class="form-group">
-                                <el-select v-model="form.identity_document_id" placeholder="Tipo Documento" >
+                                <el-select v-model="form.identity_document_id" placeholder="Tipo Documento">
                                     <el-option v-for="option in identity_document_types" :value="option.id" :key="option.id" :label="option.description"/>
                                 </el-select>
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-6 col-md-6">
+                        <div class="col-xs-12 col-sm-3 col-md-3">
                             <div class="form-group">
                                 <label class="control-label">(*)Documento</label>
-                                <el-input v-model="form.number" placeholder="Documento" :maxlength="maxlength">
-                                    <template #append>
-                                        <el-button @click.prevent="searchDocument">Buscar</el-button>
-                                    </template>
-                                </el-input>
+                                <el-input v-model="form.number" placeholder="Documento" :maxlength="maxlength" v-on:keypress.enter="queryDocumentApi"/>
                                 <small class="form-control-feedback text-danger" v-if="errors.number" v-text="errors.number[0]"></small>
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-4 col-md-4">
+                        <div class="col-xs-12 col-sm-3 col-md-3">
                             <div class="form-group">
-                                <label class="control-label">
-                                    <span v-if="this.form.type=='staff'">(*)Nombres/Razón Social</span>
-                                    <span v-else>Nombre</span>
-                                </label>
+                                <label class="control-label">(*)Nombre / Razón Social</label>
                                 <el-input v-model="form.name" type="text" placeholder="Nombre"/>
                                 <small class="form-control-feedback text-danger" v-if="errors.name" v-text="errors.name[0]"></small>
                             </div>
                         </div>
-
-                        <div class="col-lg-2">
+						<div class="col-xs-12 col-sm-3 col-md-3">
+							<label class="control-label">Departamento</label>
+							<div class="form-group">
+								<el-select v-model="form.department_id" filterable clearable @change="filterProvince" placeholder="Seleccione">
+									<el-option v-for="option in all_departments" :key="option.id" :value="option.id" :label="option.description" />
+								</el-select>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-3 col-md-3">
+							<label class="control-label">Provincia</label>
+							<div class="form-group">
+								<el-select v-model="form.province_id" filterable clearable @change="filterDistrict" placeholder="Seleccione">
+									<el-option v-for="option in provinces" :key="option.id" :value="option.id" :label="option.description" />
+								</el-select>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-3 col-md-3">
+							<label class="control-label">Distrito</label>
+							<div class="form-group">
+								<el-select v-model="form.district_id" filterable clearable placeholder="Seleccione">
+									<el-option v-for="option in districts" :key="option.id" :value="option.id" :label="option.description" />
+								</el-select>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-3 col-md-3">
+							<div class="form-group">
+								<label class="control-label">Dirección</label>
+								<el-input v-model="form.address" type="text" placeholder="Dirección"/>
+								<small class="form-control-feedback text-danger" v-if="errors.address" v-text="errors.address[0]"></small>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-3 col-md-3">
                             <div class="form-group" :class="{'has-danger': errors.responsable_id}">
                                 <label class="control-label">(*)Responsable</label>
                                 <el-select v-model="form.responsable_id">
@@ -79,7 +98,7 @@
                                 <small class="form-control-feedback" v-if="errors.responsable_id" v-text="errors.responsable_id[0]"></small>
                             </div>
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-xs-12 col-sm-3 col-md-3">
                             <div class="form-group" :class="{'has-danger': errors.num_orden}">
                                 <label class="control-label">(*)Referencia</label>
                                 <el-input v-model="form.num_orden"></el-input>
@@ -88,7 +107,7 @@
                         </div>
                     </div>
                     <br>
-                    <div class="row d-flex justify-content-end">
+                    <div class="row">
                         <h4>Pruebas</h4>
                         <br>
                         <div class="col-lg-2">
@@ -268,9 +287,11 @@
 </template>
 
 <script>
-
-    import moment from 'moment'
+import { allDepartments } from "../../mixins/deletable" 
+import { searchDcumentType } from "../../mixins/searchApi"
+import moment from 'moment'
 export default {
+	mixins: [allDepartments, searchDcumentType],
     props: {
     },
     data() {
@@ -293,8 +314,13 @@ export default {
             especies: [],
             subespecies: [],
             presentaciones: [],
-            staffs: []
-
+            staffs: [],
+			departments: [],
+			provinces: [],
+			districts: [],
+			all_departments: [],
+			all_provinces: [],
+			all_districts: []
         }
     },
     created() {
@@ -315,6 +341,9 @@ export default {
                     this.subespecies = response.data.subespecies
                     this.presentaciones = response.data.presentaciones
                     this.staffs = response.data.staffs
+					this.all_departments = response.data.departments
+					this.all_provinces = response.data.provinces
+					this.all_districts = response.data.districts
 
                 })
         },
@@ -361,12 +390,14 @@ export default {
         initForm() {
             this.errors = {}
             this.form = {
-
+				address: null,
+				province_id: null,
+				district_id: null,
                 document_type_id: null,
                 series_id: null,
-                number: '#',
+                number: null,
                 customer_id: null,
-                identity_document_id: null,
+                identity_document_id: '1',
                 num_orden: null,
                 responsable_id: null,
                 referencia: null,
@@ -387,9 +418,7 @@ export default {
                 total_value: 0,
                 total_igv: 0,
                 total: 0
-
             }
-
         },
         AddTest(){
 
@@ -411,9 +440,10 @@ export default {
                 date_of_result: this.form.date_of_result,
                 temperatura: this.form.temperatura
             });
-
-
         },
+		queryDocumentApi(){
+           this.queryDocument()
+		},
         async submit() {
 
             this.loading_submit = true
@@ -450,7 +480,15 @@ export default {
         total_pagar(){
             return  parseFloat(this.form.quantity * this.form.quantity).toFixed(2)
         },
+		maxlength: function(){
+			if(this.form.identity_document_id === '6'){
+				return 11;
+			}
 
+			if(this.form.identity_document_id === '1'){
+				return 8;
+			}
+		}
     },
     watch :{
 
