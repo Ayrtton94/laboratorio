@@ -134,7 +134,7 @@
                             <div class="form-group" :class="{'has-danger': errors.muestra_id}">
                                 <label class="control-label">(*)Muestra</label>
                                 <el-select v-model="form.muestra_id">
-                                    <el-option v-for="option in muestras" :key="option.id" :value="option.id" :label="option.description"></el-option>
+                                    <el-option v-for="option in this.matrizFilter" :key="option.id" :value="option.id" :label="option.description"></el-option>
                                 </el-select>
                                 <small class="form-control-feedback" v-if="errors.muestra_id" v-text="errors.muestra_id[0]"></small>
                             </div>
@@ -162,7 +162,7 @@
                             <div class="form-group" :class="{'has-danger': errors.subespecie_id}">
                                 <label class="control-label">Sub-Especie</label>
                                 <el-select v-model="form.subespecie_id">
-                                    <el-option v-for="option in subespecies" :key="option.id" :value="option.id" :label="option.description"></el-option>
+                                    <el-option v-for="option in this.subespecieFilter" :key="option.id" :value="option.id" :label="option.description"></el-option>
                                 </el-select>
                                 <small class="form-control-feedback" v-if="errors.subespecie_id" v-text="errors.subespecie_id[0]"></small>
                             </div>
@@ -403,27 +403,36 @@ export default {
         initForm() {
             this.errors = {}
             this.form = {
-				address: null,
-				province_id: null,
-				district_id: null,
-                document_type_id: null,
-                series_id: null,
-                number: null,
-                customer_id: null,
-                identity_document_id: '1',
-                num_orden: null,
-                responsable_id: null,
-                referencia: null,
-                quantity: 0,
-                tporden_id: null,
-                date_of_issue: moment().format('YYYY-MM-DD'),
-                date_of_muestra: moment().format('YYYY-MM-DD'),
-                date_of_recepcion: moment().format('YYYY-MM-DD'),
-                date_of_result: moment().format('YYYY-MM-DD'),
+
                 tests: [],
+
+                user_id: null,
+                establishment_id: null,
+                establishment: null,
+                state_type_id: null,
+                group_id: null,
+                document_type_id: null,
+                series: null,
+                number: null,
+                date_of_issue: moment().format('YYYY-MM-DD'),
+                time_of_issue: moment().format('HH:mm:ss'),
+
+                customer_id: null,
+                customer: null,
+                currency_type_id: null,
+                tporden_id: null,
+                responsable_id: null,
+                documento_referencia: null,
+
                 total_value: 0,
                 total_igv: 0,
-                total: 0
+                total: 0,
+
+                legends: null,
+                filename: null,
+                estado: null,
+                type_document_fact: '03',
+                tipo: null
             }
         },
         AddTest(){
@@ -500,7 +509,15 @@ export default {
 			if(this.form.identity_document_id === '1'){
 				return 8;
 			}
-		}
+		},
+        matrizFilter(){
+            return this.muestras.filter(el=> el.matriz_id == this.form.matriz_id);
+        },
+        subespecieFilter(){
+            return this.subespecies.filter(el=> el.especie_id == this.form.especie_id);
+        },
+
+
     },
     watch :{
 
