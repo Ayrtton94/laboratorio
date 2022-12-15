@@ -60,6 +60,7 @@ import attendance from './views/Attendance/index.vue'
 
 import orders from './views/orders/index.vue'
 import ordersinvoice from './views/orders/invoice.vue'
+import ordersedit from './views/orders/edit.vue'
 
 import schedules from './views/Schedule/index.vue'
 import programabrucellas from './views/programabrucellas/index.vue'
@@ -138,6 +139,7 @@ app.component('attendance', attendance)
 //ORDENES
 app.component('orders', orders);
 app.component('orders-invoice', ordersinvoice);
+app.component('orders-edit', ordersedit);
 
 //HORARIO
 app.component('programabrucellas', programabrucellas);

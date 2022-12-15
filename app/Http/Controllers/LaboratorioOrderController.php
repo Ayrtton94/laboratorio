@@ -3,14 +3,19 @@
  namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderRequest;
+use App\Http\Resources\OrderLaboratorioCollection;
+use App\Models\Catalogs\DocumentType;
 use App\Models\Catalogs\IdentityDocumentType;
 use App\Models\Especie;
+use App\Models\Laboratorio;
 use App\Models\LaboratorioOrderDetail;
 use App\Models\Matriz;
+use App\Models\Metodo;
 use App\Models\Muestra;
 use App\Models\Person;
 use App\Models\presentacion;
 use App\Models\Prueba;
+use App\Models\Serie;
 use App\Models\SubEspecie;
 use Barryvdh\DomPDF\Facade as PDF;
 use Mpdf\Mpdf;
@@ -46,54 +51,15 @@ class LaboratorioOrderController extends Controller
         ];
     }
 
-	public function recordsAll()
-    {
-		$idOrder = request('order_id')==1 ? 1 : (request('order_id')==2 ? 2 : (request('order_id')==3 ? 0 : null));
-		$records = LaboratorioOrder::without('state_type', 'document_type', 'currency_type', 'group', 'items')
-		->with('user','document_type','state_type')->where('estado', $idOrder)
-		->whereBetween('date_of_issue', [request('fecha_inicio'), request('fecha_fin')]);
-		if(! auth()->user()->hasRole('administrador'))
-		{
-			$records = $records->where('establishment_id',auth()->user()->establishment_id);
-		}
-        return new OrderCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
-    }
-
 
 
     public function records(Request $request)
     {
-		$records = LaboratorioOrder::without('state_type', 'document_type', 'currency_type', 'group', 'items')
-		->with('user','document_type','state_type');
-		if(! auth()->user()->hasRole('administrador'))
-		{
-
-			$records = $records->where('establishment_id',auth()->user()->establishment_id);
-		}
-
-		$records  = $records->where(function ($query) use($request) {
-
-
-
-			if(filter_var($request->eliminados, FILTER_VALIDATE_BOOLEAN))
-			{
-				$query->whereIn('estado',['0','1']);
-			}
-			else{
-				$query->whereIn('estado',['1']);
-			}
-
-			if(filter_var($request->atendidos, FILTER_VALIDATE_BOOLEAN))
-			{
-				$query->whereIn('estado',['1','2']);
-			}
-
-			if($request->column == 'number') return $query->where(DB::raw("CONCAT(`series`, '-', `number`)"), 'like', "%{$request->value}%")->orWhere(DB::raw("CONCAT(`series`, '-', `number`)"), $request->value);
-			else if($request->column == 'customer_id') return $query->where(DB::raw("JSON_UNQUOTE(JSON_EXTRACT(orders.customer,'$.name') )"), 'like', "%{$request->value}%");
-			else if($request->column == 'customer_number') return $query->where(DB::raw("JSON_UNQUOTE(JSON_EXTRACT(orders.customer,'$.number') )"), 'like', "%{$request->value}%");
-			else  $query->where($request->column, 'like', "%{$request->value}%")->orWhereNull($request->column);
-		})->latest();
-        return new OrderCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
+		$records = LaboratorioOrder::with('items')->get();
+        return response()->json([
+            'records' => $records
+        ]);
+//        return new OrderLaboratorioCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
     }
 
 
@@ -122,18 +88,22 @@ class LaboratorioOrderController extends Controller
             ];
         });
         $identity_document_types = IdentityDocumentType::where('active',1)->get();
+        $documentTypes = DocumentType::where('active',1)->get();
+        $serieDocument = Serie::where('document_type_id',104)->get();
         $matrices = Matriz::all();
         $muestras = Muestra::all();
         $pruebas = Prueba::all();
         $especies = Especie::all();
         $subespecies = SubEspecie::all();
         $presentaciones = Presentacion::all();
+        $laboratorios = Laboratorio::all();
+        $metodos = Metodo::all();
 		$departments = Department::where('active',1)->orderBy('description')->get();
         $provinces = Province::where('active',1)->orderBy('description')->get();
         $districts = District::where('active',1)->orderBy('description')->get();
 
         return compact('staffs','identity_document_types',
-                'matrices','muestras','pruebas',
+                'matrices','muestras','pruebas','serieDocument','laboratorios','metodos',
                 'especies','subespecies','presentaciones','departments', 'provinces', 'districts');
     }
 
@@ -148,12 +118,23 @@ class LaboratorioOrderController extends Controller
     {
         $orderLaboratorio = DB::transaction(function () use ($request) {
 
-            $orderLaboratorio = new LaboratorioOrder();
-            $orderLaboratorio->save($request->all()+['user_id'=>auth()->id()]);
+            $id = $request->input('id');
+            $series = Serie::where('document_type_id',104)->first();
+
+            $laboratorioOrder = LaboratorioOrder::firstOrNew(['id' => $id]);
+
+            $laboratorioOrder->fill($request->all()+[
+                'user_id'=>auth()->id(),
+                'series'=>$request->series_id,
+                'number'=> $series->number + 1
+            ]);
+
+            $laboratorioOrder->save();
+
 
             if(count($request['tests']) > 0){
                 foreach ($request['tests'] as $test) {
-//                    dd($orderLaboratorio->id);
+
                     LaboratorioOrderDetail::query()->create(
                         [
                         'laboratorio_order_id' => $orderLaboratorio->id,
@@ -179,6 +160,9 @@ class LaboratorioOrderController extends Controller
                     );
                 }
             }
+            $series->update([
+                'number'=> $laboratorioOrder->number + 1
+            ]);
 
 
 
@@ -224,6 +208,69 @@ class LaboratorioOrderController extends Controller
             ],
         ];
 	}
+
+    public function tables3($order_id = false)
+    {
+        if(strlen(stristr($order_id, 'e')) == 0)
+        {
+            $document_types_invoice = DocumentType::whereIn('id', ['104'])->get();
+        }
+        else
+        {
+            $document_types_invoice = DocumentType::whereIn('id', ['104'])->get();
+        }
+
+        $order_id = (int)$order_id;
+
+        $order = Order::whereId($order_id)->first();
+
+
+        $customers = Person::whereType('customers')->without('country', 'department', 'province', 'district')->limit(5)->get()->transform(function ($row) {
+            return [
+                'id' => $row->id,
+                'description' => $row->number . ' - ' . $row->name,
+                'name' => $row->name,
+                'number' => $row->number,
+                'identity_document_type_id' => $row->identity_document_type_id,
+                'identity_document_type_code' => $row->identity_document_type->code
+            ];
+        });
+
+        //if(auth()->user()->hasRole('administrador'))
+        if(auth()->user()->hasRole('administrador') || auth()->user()->hasRole('administrador-tienda'))
+        {
+            $establishments = Establishment::all();
+        }
+        else
+        {
+            $establishments = Establishment::where('id', auth()->user()->establishment_id)->get();
+        }
+        $sellers = $this->table('sellers');
+        $warehouse = Warehouse::where('establishment_id', auth()->user()->establishment_id)->first();
+        $warehouse_id = is_null($warehouse)?null:$warehouse->id;
+
+        $warehouses = Warehouse::get();
+        $series = Series::all();
+
+
+        $currency_types = CurrencyType::whereActive()->get();
+        $operation_types = OperationType::whereActive()->get();
+        $discount_types = ChargeDiscountType::whereType('discount')->whereLevel('item')->get();
+        $charge_types = ChargeDiscountType::whereType('charge')->whereLevel('item')->get();
+        $company = Company::active();
+        $document_type_03_filter = env('DOCUMENT_TYPE_03_FILTER', true);
+        $config = Configuration::first();
+        $inventoryConfig = InventoryConfiguration::first();
+        $decimal = $config->decimal;
+        $exchange_rate = $config->exchange_rate;
+        $control_stock = $inventoryConfig->stock_control;
+        $payment_methods = PaymentMethod::whereActive()->get();
+        $accounts = Account::all();
+        return compact('order','payment_methods','accounts' ,'customers', 'establishments', 'warehouse_id', 'warehouses','series',
+            'document_types_invoice','control_stock'
+            , 'currency_types', 'operation_types','sellers',
+            'discount_types', 'charge_types', 'company', 'document_type_03_filter','exchange_rate' ,'decimal');
+    }
 
 	public function destroy($documet_id)
     {
