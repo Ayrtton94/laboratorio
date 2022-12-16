@@ -30,31 +30,24 @@ class LaboratorioOrder extends Model
         'number',
         'date_of_issue',
         'time_of_issue',
+
         'customer_id',
         'customer',
         'currency_type_id',
+        'tporden_id',
         'responsable_id',
         'documento_referencia',
-        'total_igv',
+
         'total_value',
+        'total_igv',
         'total',
-		'estado',
-        'charges',
-        'discounts',
-        'prepayments',
-        'guides',
-        'related',
-        'perception',
-        'detraction',
+
         'legends',
         'filename',
-		'created_at',
-		'nombre_cliente',
+		'estado',
 		'type_document_fact',
-
-		'observaciones',
-		'recomendaciones',
 		'tipo'
+
     ];
 
     protected $casts = [
@@ -79,76 +72,6 @@ class LaboratorioOrder extends Model
     public function setCustomerAttribute($value)
     {
         $this->attributes['customer'] = (is_null($value))?null:json_encode($value);
-    }
-
-    public function getChargesAttribute($value)
-    {
-        return (is_null($value))?null:(object) json_decode($value);
-    }
-
-    public function setChargesAttribute($value)
-    {
-        $this->attributes['charges'] = (is_null($value))?null:json_encode($value);
-    }
-
-    public function getDiscountsAttribute($value)
-    {
-        return (is_null($value))?null:(object) json_decode($value);
-    }
-
-    public function setDiscountsAttribute($value)
-    {
-        $this->attributes['discounts'] = (is_null($value))?null:json_encode($value);
-    }
-
-    public function getPrepaymentsAttribute($value)
-    {
-        return (is_null($value))?null:(object) json_decode($value);
-    }
-
-    public function setPrepaymentsAttribute($value)
-    {
-        $this->attributes['prepayments'] = (is_null($value))?null:json_encode($value);
-    }
-
-    public function getGuidesAttribute($value)
-    {
-        return (is_null($value))?null:(object) json_decode($value);
-    }
-
-    public function setGuidesAttribute($value)
-    {
-        $this->attributes['guides'] = (is_null($value))?null:json_encode($value);
-    }
-
-    public function getRelatedAttribute($value)
-    {
-        return (is_null($value))?null:(object) json_decode($value);
-    }
-
-    public function setRelatedDocumentsAttribute($value)
-    {
-        $this->attributes['related'] = (is_null($value))?null:json_encode($value);
-    }
-
-    public function getPerceptionAttribute($value)
-    {
-        return (is_null($value))?null:(object) json_decode($value);
-    }
-
-    public function setPerceptionAttribute($value)
-    {
-        $this->attributes['perception'] = (is_null($value))?null:json_encode($value);
-    }
-
-    public function getDetractionAttribute($value)
-    {
-        return (is_null($value))?null:(object) json_decode($value);
-    }
-
-    public function setDetractionAttribute($value)
-    {
-        $this->attributes['detraction'] = (is_null($value))?null:json_encode($value);
     }
 
     public function getLegendsAttribute($value)
@@ -196,19 +119,9 @@ class LaboratorioOrder extends Model
         return $this->belongsTo(CurrencyType::class, 'currency_type_id');
     }
 
-    // public function invoice()
-    // {
-    //     return $this->hasOne(Invoice::class);
-    // }
-
     public function items()
     {
-        return $this->hasMany(OrderDetail::class);
-    }
-
-    public function kardex()
-    {
-        return $this->hasMany(Kardex::class);
+        return $this->hasMany(LaboratorioOrderDetail::class);
     }
 
     public function getNumberFullAttribute()
