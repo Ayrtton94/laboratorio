@@ -111,16 +111,8 @@ class LaboratorioOrderController extends Controller
 
     public function tables()
     {
-
-        $staffs = Person::whereType('staff')->without('country', 'department', 'province', 'district')->limit(5)->get()->transform(function ($row) {
-            return [
-                'id' => $row->id,
-                'description' => $row->number . ' - ' . $row->name,
-                'name' => $row->name,
-                'number' => $row->number,
-                'identity_document_type_id' => $row->identity_document_type_id
-            ];
-        });
+		$customers = $this->table('customers');
+        $staffs = $this->table('staffs');
         $identity_document_types = IdentityDocumentType::where('active',1)->get();
         $matrices = Matriz::all();
         $muestras = Muestra::all();
@@ -132,9 +124,38 @@ class LaboratorioOrderController extends Controller
         $provinces = Province::where('active',1)->orderBy('description')->get();
         $districts = District::where('active',1)->orderBy('description')->get();
 
-        return compact('staffs','identity_document_types',
+        return compact('customers','staffs','identity_document_types',
                 'matrices','muestras','pruebas',
                 'especies','subespecies','presentaciones','departments', 'provinces', 'districts');
+    }
+
+	public function table($table)
+    {
+        if ($table === 'staffs') {
+			 $staffs = Person::whereType('staff')->without('country', 'department', 'province', 'district')->limit(5)->get()->transform(function ($row) {
+				return [
+					'id' => $row->id,
+					'description' => $row->number . ' - ' . $row->name,
+					'name' => $row->name,
+					'number' => $row->number,
+					'identity_document_id' => $row->identity_document_id
+				];
+			});
+            return $staffs;
+        }
+        if ($table === 'customers') {
+			$customers = Person::whereType('customers')->without( 'country', 'department', 'province', 'district')->limit(5)->get()->transform(function ($row) {
+				return [
+					'id' => $row->id,
+					'description' => $row->number . ' - ' . $row->name,
+					'name' => $row->name,
+					'number' => $row->number,
+					'identity_document_id' => $row->identity_document_id
+				];
+			});
+            return $customers;
+        }
+        return [];
     }
 
     public function record($id)
@@ -147,13 +168,11 @@ class LaboratorioOrderController extends Controller
     public function store(OrderRequest $request)
     {
         $orderLaboratorio = DB::transaction(function () use ($request) {
-
-            $orderLaboratorio = new LaboratorioOrder();
-            $orderLaboratorio->save($request->all()+['user_id'=>auth()->id()]);
-
+			
+            $orderLaboratorio = LaboratorioOrder::create($request->all()+['user_id'=>auth()->id()]);
+			
             if(count($request['tests']) > 0){
                 foreach ($request['tests'] as $test) {
-//                    dd($orderLaboratorio->id);
                     LaboratorioOrderDetail::query()->create(
                         [
                         'laboratorio_order_id' => $orderLaboratorio->id,

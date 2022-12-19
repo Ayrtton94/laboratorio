@@ -177,10 +177,12 @@ Auth::routes();
 		Route::get('restore/{id}', 'restore');
 	});
 	// PERSONAS
+	Route::post('/search/persons/{type}', [PersonController::class, 'search']);
 	Route::controller(PersonController::class)->prefix('persons')->group(function(){
 		Route::get('restore/{id}', 'restore');
 		Route::get('columns', 'columns');
 		Route::get('tables', 'tables');
+		Route::get('table/{table}', 'table');
 		Route::get('{type}',  'index')->name('persons.index');
 		Route::get('{type}/records', 'records');
 		Route::post('', 'store');
