@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
-
+use App\Models\Tenant\Group;
+use App\Models\Tenant\Person;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -48,9 +50,9 @@ class LaboratorioOrder extends Model
 
     ];
 
-    protected $casts = [
-        'date_of_issue' => 'date',
-    ];
+    // protected $casts = [
+    //     'date_of_issue' => 'date',
+    // ];
 
     public function getEstablishmentAttribute($value)
     {
