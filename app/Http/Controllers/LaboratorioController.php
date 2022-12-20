@@ -21,6 +21,7 @@ class LaboratorioController extends Controller
             'description' => 'Descripción'
         ];
     }
+
     public function records()
     {        
 		$laboratorios = Laboratorio::all();

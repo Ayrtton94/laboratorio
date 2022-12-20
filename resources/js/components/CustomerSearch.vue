@@ -21,7 +21,7 @@
 		            typecustomer="customers"
                     :document_type_id="document_type_id"
                     :recordId="customer" @saveAppt="saveAppt"></person-form> -->
-		
+
     </div>
 	<person-form type="customers" :recordId="customer" @closeModal="closeModal" v-if="showModal"/>
 
@@ -47,10 +47,10 @@ export default {
 
     },
     async created() {
-		
+
         this.personsBack = this.customersList ? this.customersList : [];
         this.persons = this.customersList ? this.customersList : [];
-        
+
 		this.emitter.on('reloadDataCustomers',(customer_id)=>{
 			this.reloadDataCustomers(customer_id)
 		});
@@ -68,7 +68,7 @@ export default {
             if (query && query.length > 2) {
                 axios.post(`/search/${this.resource}/customers`, {search: query})
                     .then(({data}) => {
-						
+
                         this.persons = data;
 
                         this.filterCustomers();
@@ -78,7 +78,7 @@ export default {
             }
         },
         changeCustomer() {
-            this.emitter.emit('update:customer_id', this.customer)
+            this.$emit('update:customer_id', this.customer)
             let per = this.persons.find(el => el.id == this.customer);
             this.customerSelect = per;
         },
@@ -139,7 +139,7 @@ export default {
             this.changeCustomer();
         },
         'customersList': function () {
-			
+
             this.personsBack = this.customersList ? this.customersList : [];
             this.persons = this.customersList ? this.customersList : [];
             this.filterCustomers();

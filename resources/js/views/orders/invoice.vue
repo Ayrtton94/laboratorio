@@ -10,11 +10,20 @@
             <div class="card-body">
                 <form autocomplete="off" @submit.prevent="submit">
                     <div class="row">
+<!--                        <div class="col-xs-12 col-sm-4 col-md-4">-->
+<!--                            <div class="form-group" :class="{'has-danger': errors.num_orden}">-->
+<!--                                <label class="control-label">Número de Orden</label>-->
+<!--                                <el-input v-model="form.num_orden"></el-input>-->
+<!--                                <small class="form-control-feedback" v-if="errors.num_orden" v-text="errors.num_orden[0]"></small>-->
+<!--                            </div>-->
+<!--                        </div>-->
                         <div class="col-xs-12 col-sm-4 col-md-4">
-                            <div class="form-group" :class="{'has-danger': errors.num_orden}">
-                                <label class="control-label">Número de Orden</label>
-                                <el-input v-model="form.num_orden"></el-input>
-                                <small class="form-control-feedback" v-if="errors.num_orden" v-text="errors.num_orden[0]"></small>
+                            <div class="form-group" :class="{'has-danger': errors.series_id}">
+                                <label class="control-label">Serie</label>
+                                <el-select v-model="form.series_id">
+                                    <el-option v-for="option in serieDocument" :key="option.id" :value="option.id" :label="option.serie"></el-option>
+                                </el-select>
+                                <small class="form-control-feedback" v-if="errors.series_id" v-text="errors.series_id[0]"></small>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-4 col-md-4">
@@ -38,6 +47,7 @@
                     <div class="row">
 						<customer-search :showLabel="true" v-model:customer_id="form.customer_id" class="col-xs-12 col-sm-3 col-md-3"
 						:customersList="customers" :errors="errors" ></customer-search>
+
 						<div class="col-xs-12 col-sm-3 col-md-3">
                             <div class="form-group" :class="{'has-danger': errors.responsable_id}">
                                 <label class="control-label">(*)Responsable</label>
@@ -197,7 +207,7 @@
                                             <td class="text-center">{{ row.quantity }}</td>
                                             <td class="text-center">{{ getPruebaPrice(row.prueba_id) }}</td>
                                             <td class="text-center">{{ getTotal(row.prueba_id) }}</td>
-                                            <td class="text-center">{{ getPruebaTime(row.time_entrega) }}</td>
+                                            <td class="text-center">{{ getPruebaTime(row.prueba_id) }}</td>
                                             <td class="text-center">{{ getPruebaCondition(row.condicion) }}</td>
                                             <td class="text-center">{{ row.date_of_muestra }}</td>
                                             <td class="text-center">{{ row.date_of_recepcion }}</td>
@@ -260,12 +270,15 @@ export default {
                 {"id":3,"description":"Otros"}
             ],
             identity_document_types: [],
+            serieDocument: [],
             matrices: [],
             muestras: [],
             pruebas: [],
             especies: [],
             subespecies: [],
             presentaciones: [],
+            laboratorios: [],
+            metodos: [],
             staffs: [],
 			departments: [],
 			provinces: [],
@@ -287,6 +300,7 @@ export default {
                 .then(response => {
 
                     this.identity_document_types = response.data.identity_document_types
+                    this.serieDocument = response.data.serieDocument
                     this.tpordenes = response.data.tpordenes
                     this.matrices = response.data.matrices
                     this.muestras = response.data.muestras
@@ -294,6 +308,8 @@ export default {
                     this.especies = response.data.especies
                     this.subespecies = response.data.subespecies
                     this.presentaciones = response.data.presentaciones
+                    this.laboratorios = response.data.laboratorios
+                    this.metodos = response.data.metodos
                     this.staffs = response.data.staffs
 					this.all_customers = response.data.customers
 					this.customers = response.data.customers
@@ -304,48 +320,49 @@ export default {
                 })
         },
         getNameMuestra(id){
-            const itemMuestra = _.find(this.muestras, {id: id})
+            let itemMuestra = _.find(this.muestras, {id: id})
             if(itemMuestra) return itemMuestra.description;
             return '';
         },
         getNamePrueba(id){
-            const itemPrueba = _.find(this.pruebas, {id: id})
-            if(itemPrueba) return itemPrueba.description;
+            let itemPrueba = _.find(this.pruebas, {id: id})
+            if(itemPrueba) return itemPrueba.name;
             return '';
         },
         getNameEspecie(id){
-            const itemEspecie = _.find(this.especies, {id: id})
+            let itemEspecie = _.find(this.especies, {id: id})
             if(itemEspecie) return itemEspecie.description;
             return '';
         },
         getNamePresentacion(id){
-            const itemPresentacion = _.find(this.presentaciones, {id: id})
+            let itemPresentacion = _.find(this.presentaciones, {id: id})
             if(itemPresentacion) return itemPresentacion.description;
             return '';
         },
         getNameLaboratorio(id){
-            const itemPresentacion = _.find(this.presentaciones, {id: id})
-            if(itemPresentacion) return itemPresentacion.description;
+            let Labo = _.find(this.pruebas, {id: id})
+            let itemlabo = _.find(this.laboratorios, {id: Labo.laboratorio_id})
+            if(itemlabo) return itemlabo.name;
             return '';
         },
         getPruebaCondition(id){
-            const itemPrueba = _.find(this.pruebas, {id: id})
+            let itemPrueba = _.find(this.pruebas, {id: id})
             if(itemPrueba) return itemPrueba.condicion;
             return '';
         },
         getPruebaTime(id){
-            const itemPrueba = _.find(this.pruebas, {id: id})
+            let itemPrueba = _.find(this.pruebas, {id: id})
             if(itemPrueba) return itemPrueba.time_entrega;
             return '';
         },
         getPruebaPrice(id){
-            const itemPrueba = _.find(this.pruebas, {id: id})
+            let itemPrueba = _.find(this.pruebas, {id: id})
             if(itemPrueba) return itemPrueba.price;
             return '';
         },
         getTotal(id){
 
-            const itemTotal = _.find(this.pruebas, {id: id})
+            let itemTotal = _.find(this.pruebas, {id: id})
             if(itemTotal) return itemTotal.price * this.form.quantity;
             return '';
         },
@@ -356,17 +373,16 @@ export default {
                 tests: [],
 
                 user_id: null,
-                establishment_id: null,
-                establishment: null,
-                state_type_id: null,
-                group_id: null,
-                document_type_id: null,
-                series: null,
+                establishment_id: 1,
+                state_type_id: '01',
+                group_id: '01',
+                document_type_id: 104,
+                series_id: null,
                 date_of_issue: moment().format('YYYY-MM-DD'),
                 time_of_issue: moment().format('HH:mm:ss'),
 				customer_id: null,
                 customer: null,
-                currency_type_id: null,
+                currency_type_id: 'PEN',
                 tporden_id: null,
                 responsable_id: null,
                 documento_referencia: null,
@@ -418,19 +434,37 @@ export default {
                 date_of_result: this.form.date_of_result,
                 temperatura: this.form.temperatura
             });
+
+            this.calculateTotal()
         },
 		queryDocumentApi(){
            this.queryDocument()
 		},
+        calculateTotal() {
+
+            let montoGlobal = this.total_pagar
+            let total_igv = montoGlobal * 0.18
+            let total_value = montoGlobal - total_igv
+            let total = this.total_pagar
+
+
+            this.form.total_igv = total_igv
+            this.form.total_value = total_value
+            this.form.total = total
+
+        },
         async submit() {
 
             this.loading_submit = true
+
+            this.calculateTotal();
 
             axios.post(`/${this.resource}`, this.form)
                 .then(async response => {
                     console.log(response.data)
                     if (response.data.success) {
                         this.resetForm();
+                        this.close();
                     }
                     else {
                         this.$message.error(response.data.message);

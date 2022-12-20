@@ -34,20 +34,21 @@
                             <tr v-for="(row, index) in records" :key="index">
                                 <td>{{ index + 1 }}</td>
                                 <td>{{ row.date_of_issue }}</td>
-<!--                                <td>{{ row.muestra.description }}</td>-->
-<!--                                <td>{{ row.name }}</td>-->
-<!--                                <td>{{ row.price }}</td>-->
-<!--                                <td>{{ row.laboratorio.name }}</td>-->
-<!--                                <td>{{ row.metodo.name }}</td>-->
-<!--                                <td>{{ row.condicion }}</td>-->
-<!--                                <td>{{ row.time_entrega }}</td>-->
+                                <td>{{ row.time_of_issue }}</td>
+                                <td>{{ row.usuario }}</td>
+                                <td>{{ row.price }}</td>
+                                <td>{{ row.total }}</td>
+                                <td>{{ row.total }}</td>
+                                <td>{{ row.total }}</td>
+                                <td>{{ row.total }}</td>
                                 <td>
                                     <a v-if="row.estado!=0" class="btn text-danger" @click="clickDelete(row.id)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Eliminar" aria-label="Eliminar">
                                         <vue-feather type="delete" class="fs-vue-feather-18"></vue-feather>
                                     </a>
-                                    <a v-if="row.estado!=0" @click.prevent="clickUpdate(row)" class="btn text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Editar" aria-label="Editar">
+                                    <a v-if="row.estado!=0" :href="`/${resource}/editar/${row.id}`" class="btn text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Editar" aria-label="Editar">
                                         <vue-feather type="edit" class="fs-vue-feather-18"></vue-feather>
                                     </a>
+
                                     <a class="btn text-success" v-if="row.estado==0" @click="clickRestore(row.id)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Restaurar" aria-label="Restaurar">
                                         <vue-feather type="rotate-cw" class="fs-vue-feather-18"></vue-feather>
                                     </a>
@@ -86,60 +87,10 @@ export default {
         this.getData();
     },
     methods: {
-        initForm(){
-            this.form = {
-                id: '',
-                establishment_id : null,
-                warehouse_id :  null,
-                document_type_id: null,
-                series_id: null,
-                series: null,
-                number: '#',
-                date_of_issue: moment().format('YYYY-MM-DD'),
-                time_of_issue: moment().format('HH:mm:ss'),
-                customer_id: null,
-                currency_type_id: null,
-                purchase_order: null,
-                exchange_rate_sale: 0,
-                total_prepayment: 0,
-                total_charge: 0,
-                total_discount: 0,
-                total_exportation: 0,
-                total_free: 0,
-                total_taxed: 0,
-                total_unaffected: 0,
-                total_exonerated: 0,
-                total_igv: 0,
-                total_base_isc: 0,
-                total_isc: 0,
-                total_base_other_taxes: 0,
-                total_other_taxes: 0,
-                total_taxes: 0,
-                total_value: 0,
-                total: 0,
-                operation_type_id: null,
-                date_of_due: moment().format('YYYY-MM-DD'),
-                items: [],
-                charges: [],
-                discounts: [],
-                attributes: [],
-                guides: [],
-                type_document_fact : '03',
-                informacion_adicional: "",
-                actions: {
-                    format_pdf: 'ticket',
-                },
-                equivalencia_id: '',
-                quantity: 1,
-                status_paid : 1,
-                order_id : '',
-            },
-                this.errors = {}
-        },
         getData(){
             axios.get(`/${this.resource}/records`)
                 .then(res => {
-                    this.records = res.data.pruebas
+                    this.records = res.data.records
                 })
         },
         clickCreate(){

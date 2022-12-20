@@ -2,25 +2,33 @@
 
  namespace App\Http\Controllers;
 
-use App\Http\Requests\OrderRequest;
-use App\Models\Catalogs\IdentityDocumentType;
-use App\Models\Especie;
-use App\Models\LaboratorioOrderDetail;
-use App\Models\Matriz;
-use App\Models\Muestra;
-use App\Models\Person;
-use App\Models\presentacion;
-use App\Models\Prueba;
-use App\Models\SubEspecie;
-use Barryvdh\DomPDF\Facade as PDF;
 use Mpdf\Mpdf;
-use Nexmo\Account\Price;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Models\LaboratorioOrder;
+use App\Models\Serie;
+use App\Models\Matriz;
+use App\Models\Metodo;
+use App\Models\Person;
+use App\Models\Prueba;
+use App\Models\Especie;
+use App\Models\Muestra;
 use App\Models\District;
 use App\Models\Province;
+use Nexmo\Account\Price;
 use App\Models\Department;
+use App\Models\SubEspecie;
+use App\Inputs\PersonInput;
+use App\Models\Laboratorio;
+use App\Models\presentacion;
+use Illuminate\Http\Request;
+use App\Models\IdentityDocument;
+use App\Models\LaboratorioOrder;
+use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\OrderRequest;
+use App\Models\Catalogs\CurrencyType;
+use App\Models\Catalogs\DocumentType;
+use App\Models\LaboratorioOrderDetail;
+use App\Models\Catalogs\IdentityDocumentType;
+use App\Http\Resources\OrderLaboratorioCollection;
 
 class LaboratorioOrderController extends Controller
 {
@@ -46,54 +54,15 @@ class LaboratorioOrderController extends Controller
         ];
     }
 
-	public function recordsAll()
-    {
-		$idOrder = request('order_id')==1 ? 1 : (request('order_id')==2 ? 2 : (request('order_id')==3 ? 0 : null));
-		$records = LaboratorioOrder::without('state_type', 'document_type', 'currency_type', 'group', 'items')
-		->with('user','document_type','state_type')->where('estado', $idOrder)
-		->whereBetween('date_of_issue', [request('fecha_inicio'), request('fecha_fin')]);
-		if(! auth()->user()->hasRole('administrador'))
-		{
-			$records = $records->where('establishment_id',auth()->user()->establishment_id);
-		}
-        return new OrderCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
-    }
-
 
 
     public function records(Request $request)
     {
-		$records = LaboratorioOrder::without('state_type', 'document_type', 'currency_type', 'group', 'items')
-		->with('user','document_type','state_type');
-		if(! auth()->user()->hasRole('administrador'))
-		{
-
-			$records = $records->where('establishment_id',auth()->user()->establishment_id);
-		}
-
-		$records  = $records->where(function ($query) use($request) {
-
-
-
-			if(filter_var($request->eliminados, FILTER_VALIDATE_BOOLEAN))
-			{
-				$query->whereIn('estado',['0','1']);
-			}
-			else{
-				$query->whereIn('estado',['1']);
-			}
-
-			if(filter_var($request->atendidos, FILTER_VALIDATE_BOOLEAN))
-			{
-				$query->whereIn('estado',['1','2']);
-			}
-
-			if($request->column == 'number') return $query->where(DB::raw("CONCAT(`series`, '-', `number`)"), 'like', "%{$request->value}%")->orWhere(DB::raw("CONCAT(`series`, '-', `number`)"), $request->value);
-			else if($request->column == 'customer_id') return $query->where(DB::raw("JSON_UNQUOTE(JSON_EXTRACT(orders.customer,'$.name') )"), 'like', "%{$request->value}%");
-			else if($request->column == 'customer_number') return $query->where(DB::raw("JSON_UNQUOTE(JSON_EXTRACT(orders.customer,'$.number') )"), 'like', "%{$request->value}%");
-			else  $query->where($request->column, 'like', "%{$request->value}%")->orWhereNull($request->column);
-		})->latest();
-        return new OrderCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
+		$records = LaboratorioOrder::with('items')->get();
+        return response()->json([
+            'records' => $records
+        ]);
+//        return new OrderLaboratorioCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
     }
 
 
@@ -109,23 +78,50 @@ class LaboratorioOrderController extends Controller
        return view('orders.edit', compact('order_id'));
     }
 
+	public function tables3($order_id = false)
+    {
+       
+        $document_types_invoice = DocumentType::whereIn('id', ['104'])->get();
+        $order_id = (int)$order_id;
+        $order = LaboratorioOrder::with('items')->whereId($order_id)->first();
+
+        $customers = Person::whereType('customers')->without('country', 'department', 'province', 'district')->limit(5)->get()->transform(function ($row) {
+            return [
+                'id' => $row->id,
+                'description' => $row->number . ' - ' . $row->name,
+                'name' => $row->name,
+                'number' => $row->number,
+                'identity_document_type_id' => $row->identity_document_type_id
+            ];
+        });
+        $series = Serie::all();
+        $currency_types = CurrencyType::all();
+        $document_type_03_filter = env('DOCUMENT_TYPE_03_FILTER', true);
+
+        return compact('order','customers', 'series', 'document_types_invoice', 'currency_types',  'document_type_03_filter');
+    }
+
     public function tables()
     {
 		$customers = $this->table('customers');
         $staffs = $this->table('staffs');
         $identity_document_types = IdentityDocumentType::where('active',1)->get();
+        $documentTypes = DocumentType::where('active',1)->get();
+        $serieDocument = Serie::where('document_type_id',104)->get();
         $matrices = Matriz::all();
         $muestras = Muestra::all();
         $pruebas = Prueba::all();
         $especies = Especie::all();
         $subespecies = SubEspecie::all();
         $presentaciones = Presentacion::all();
+        $laboratorios = Laboratorio::all();
+        $metodos = Metodo::all();
 		$departments = Department::where('active',1)->orderBy('description')->get();
         $provinces = Province::where('active',1)->orderBy('description')->get();
         $districts = District::where('active',1)->orderBy('description')->get();
 
         return compact('customers','staffs','identity_document_types',
-                'matrices','muestras','pruebas',
+                'matrices','muestras','pruebas','serieDocument','laboratorios','metodos',
                 'especies','subespecies','presentaciones','departments', 'provinces', 'districts');
     }
 
@@ -167,27 +163,35 @@ class LaboratorioOrderController extends Controller
 
     public function store(OrderRequest $request)
     {
+//        dd($request->all());
+
         $orderLaboratorio = DB::transaction(function () use ($request) {
-			
+
+
+            $customer = PersonInput::set($request->input('customer_id'));
+            $serieDocument = Serie::query()->where('document_type_id',104)->first();
+            $request['customer'] = $customer;
+            $request['series'] = $serieDocument->serie;
+            $request['number'] = $serieDocument->number;
             $orderLaboratorio = LaboratorioOrder::create($request->all()+['user_id'=>auth()->id()]);
-			
+
             if(count($request['tests']) > 0){
                 foreach ($request['tests'] as $test) {
                     LaboratorioOrderDetail::query()->create(
                         [
                         'laboratorio_order_id' => $orderLaboratorio->id,
-                        'matriz_id' => $test['muestra_id'],
-                        'muestra_id' => $test['muestra_id'],
-                        'prueba_id' => $test['prueba_id'],
-                        'especie_id' => $test['especie_id'],
-                        'subespecie_id' => $test['especie_id'],
-                        'presentacion_id' => $test['presentacion_id'],
+                        'matriz_id' => $test['muestra_id']??null,
+                        'muestra_id' => $test['muestra_id']??null,
+                        'prueba_id' => $test['prueba_id']??null,
+                        'especie_id' => $test['especie_id']??null,
+                        'subespecie_id' => $test['especie_id']??null,
+                        'presentacion_id' => $test['presentacion_id']??null,
                         'quantity' => $test['quantity'],
-                        'observacion' => $test['observacion'],
+                        'observacion' => $test['observacion']??null,
                         'date_of_muestra' => $test['date_of_muestra'],
                         'date_of_recepcion' => $test['date_of_recepcion'],
                         'date_of_resultado' => $test['date_of_result'],
-                        'temperatura' => $test['temperatura'],
+                        'temperatura' => $test['temperatura'] ??0,
                         'unit_value' => 0,
                         'unit_price' => 0,
                         'total_igv' => 0,
@@ -198,6 +202,9 @@ class LaboratorioOrderController extends Controller
                     );
                 }
             }
+            $serieDocument->update([
+                'number'=> $orderLaboratorio->number + 1
+            ]);
 
 
 

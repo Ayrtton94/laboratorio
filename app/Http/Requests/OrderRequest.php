@@ -15,7 +15,17 @@ class OrderRequest extends FormRequest
     public function rules()
     {
         return [
-			'date_of_issue' => 'required'
+//            'series' => 'required',
+            'date_of_issue'=> 'required',
+//            'time_of_issue'=> 'required',
+
+            'customer_id',
+//            'customer',
+            'tporden_id' => 'required',
+            'responsable_id' => 'required',
+//            'documento_referencia',
+
+
         ];
     }
 }

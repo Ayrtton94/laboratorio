@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PersonResource;
 use App\Models\User;
 use App\Models\Person;
 use App\Models\Country;
@@ -19,7 +20,7 @@ use App\Http\Resources\PersonCollection;
 
 class PersonController extends Controller
 {
-	
+
     public function index($type)
     {
 		return view('persons.index', compact('type'));
@@ -30,9 +31,9 @@ class PersonController extends Controller
         $id = $request->input('id');
         $person = Person::firstOrNew(['id' => $id]);
         $person->fill($request->all());
-		
+
         $person->save();
-		
+
 		if($request->type == 'staff' && !!$request->user_account)
 		{
 			if($id)
@@ -60,7 +61,7 @@ class PersonController extends Controller
 				$user->assignRole($request->rol);
 			}
 		}
-		
+
         return [
             'success' => true,
             'message' => ($id) ? 'Datos Actualizados' : 'Registrado con éxito',
@@ -71,7 +72,7 @@ class PersonController extends Controller
 	public function search()
 	{
 		$search = request('search');
-		
+
 		$persons = Person::whereType('customers')->with('identity_document')->without('country', 'department', 'province', 'district')
 				->where('name', 'like', '%'. $search.'%')
 				->orWhere('number',$search)
@@ -86,7 +87,7 @@ class PersonController extends Controller
 						'number' => $row->number
 					];
 				});
-				
+
 		return $persons;
 	}
 
@@ -101,22 +102,30 @@ class PersonController extends Controller
         ];
     }
 
-	public function records($type, Request $request)
+    public function record($id)
     {
-		
+        $record = new PersonResource(Person::findOrFail($id));
+
+        return $record;
+    }
+
+
+    public function records($type, Request $request)
+    {
+
 		$records = Person::with('user.roles')->withTrashed()->where('type', $type);
 		if(!!$request->column && !!$request->value){
 			$records->where($request->column, 'like', "%{$request->value}%");
 		}
 		$records = 	$records->without('country', 'department', 'province', 'district')
                             ->orderBy('name');
-		
+
         return new PersonCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
-        
+
     }
 
 	public function totals(){
-		
+
 	}
 
 	public function tables()

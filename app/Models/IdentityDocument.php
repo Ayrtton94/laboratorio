@@ -10,4 +10,6 @@ class IdentityDocument extends Model
     use HasFactory;
 	protected $table = 'identity_document';
 	public $incremening = false;
+
+
 }

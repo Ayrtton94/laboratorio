@@ -6,13 +6,12 @@ use App\Models\Tenant\Group;
 use App\Models\Tenant\Person;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Tenant\Catalogs\CurrencyType;
-use App\Models\Tenant\Catalogs\DocumentType;
+
 
 class LaboratorioOrder extends Model
 {
 
-	protected $with = ['user', 'state_type', 'document_type', 'currency_type', 'group', 'items'];
+	protected $with = ['user', 'items'];
 
 	/**
 	 * The table associated with the model.
@@ -45,7 +44,6 @@ class LaboratorioOrder extends Model
 
         'legends',
         'filename',
-		'estado',
 		'type_document_fact',
 		'tipo'
 
@@ -96,13 +94,13 @@ class LaboratorioOrder extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function state_type()
-    {
-        return $this->belongsTo(StateType::class);
-    }
 
     public function person() {
         return $this->belongsTo(Person::class, 'customer_id');
+    }
+
+    public function staff() {
+        return $this->belongsTo(Person::class, 'responsable_id');
     }
 
     public function group()
