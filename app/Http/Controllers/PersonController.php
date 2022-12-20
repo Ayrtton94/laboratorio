@@ -68,6 +68,28 @@ class PersonController extends Controller
         ];
     }
 
+	public function search()
+	{
+		$search = request('search');
+		
+		$persons = Person::whereType('customers')->with('identity_document')->without('country', 'department', 'province', 'district')
+				->where('name', 'like', '%'. $search.'%')
+				->orWhere('number',$search)
+				->orWhere('number', 'like', '%'. $search.'%')
+				->orderBy('name')
+				->get()
+				->transform(function ($row) {
+					return [
+						'id' => $row->id,
+						'description' => $row->number . ' - ' . $row->name,
+						'name' => $row->name,
+						'number' => $row->number
+					];
+				});
+				
+		return $persons;
+	}
+
 	public function columns()
     {
         return [

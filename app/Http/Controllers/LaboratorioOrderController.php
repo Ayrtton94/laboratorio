@@ -2,8 +2,10 @@
 
  namespace App\Http\Controllers;
 
+use App\Http\Requests\OrderRequest;
 use App\Models\Catalogs\IdentityDocumentType;
 use App\Models\Especie;
+use App\Models\LaboratorioOrderDetail;
 use App\Models\Matriz;
 use App\Models\Muestra;
 use App\Models\Person;
@@ -24,7 +26,7 @@ class LaboratorioOrderController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('input.request:order,web', ['only' => ['store', 'update']]);
+//        $this->middleware('input.request:order,web', ['only' => ['store', 'update']]);
     }
 
     public function index()
@@ -109,16 +111,8 @@ class LaboratorioOrderController extends Controller
 
     public function tables()
     {
-
-        $staffs = Person::whereType('staff')->without('country', 'department', 'province', 'district')->limit(5)->get()->transform(function ($row) {
-            return [
-                'id' => $row->id,
-                'description' => $row->number . ' - ' . $row->name,
-                'name' => $row->name,
-                'number' => $row->number,
-                'identity_document_type_id' => $row->identity_document_type_id
-            ];
-        });
+		$customers = $this->table('customers');
+        $staffs = $this->table('staffs');
         $identity_document_types = IdentityDocumentType::where('active',1)->get();
         $matrices = Matriz::all();
         $muestras = Muestra::all();
@@ -130,9 +124,38 @@ class LaboratorioOrderController extends Controller
         $provinces = Province::where('active',1)->orderBy('description')->get();
         $districts = District::where('active',1)->orderBy('description')->get();
 
-        return compact('staffs','identity_document_types',
+        return compact('customers','staffs','identity_document_types',
                 'matrices','muestras','pruebas',
                 'especies','subespecies','presentaciones','departments', 'provinces', 'districts');
+    }
+
+	public function table($table)
+    {
+        if ($table === 'staffs') {
+			 $staffs = Person::whereType('staff')->without('country', 'department', 'province', 'district')->limit(5)->get()->transform(function ($row) {
+				return [
+					'id' => $row->id,
+					'description' => $row->number . ' - ' . $row->name,
+					'name' => $row->name,
+					'number' => $row->number,
+					'identity_document_id' => $row->identity_document_id
+				];
+			});
+            return $staffs;
+        }
+        if ($table === 'customers') {
+			$customers = Person::whereType('customers')->without( 'country', 'department', 'province', 'district')->limit(5)->get()->transform(function ($row) {
+				return [
+					'id' => $row->id,
+					'description' => $row->number . ' - ' . $row->name,
+					'name' => $row->name,
+					'number' => $row->number,
+					'identity_document_id' => $row->identity_document_id
+				];
+			});
+            return $customers;
+        }
+        return [];
     }
 
     public function record($id)
@@ -144,25 +167,47 @@ class LaboratorioOrderController extends Controller
 
     public function store(OrderRequest $request)
     {
-        try {
+        $orderLaboratorio = DB::transaction(function () use ($request) {
+			
+            $orderLaboratorio = LaboratorioOrder::create($request->all()+['user_id'=>auth()->id()]);
+			
+            if(count($request['tests']) > 0){
+                foreach ($request['tests'] as $test) {
+                    LaboratorioOrderDetail::query()->create(
+                        [
+                        'laboratorio_order_id' => $orderLaboratorio->id,
+                        'matriz_id' => $test['muestra_id'],
+                        'muestra_id' => $test['muestra_id'],
+                        'prueba_id' => $test['prueba_id'],
+                        'especie_id' => $test['especie_id'],
+                        'subespecie_id' => $test['especie_id'],
+                        'presentacion_id' => $test['presentacion_id'],
+                        'quantity' => $test['quantity'],
+                        'observacion' => $test['observacion'],
+                        'date_of_muestra' => $test['date_of_muestra'],
+                        'date_of_recepcion' => $test['date_of_recepcion'],
+                        'date_of_resultado' => $test['date_of_result'],
+                        'temperatura' => $test['temperatura'],
+                        'unit_value' => 0,
+                        'unit_price' => 0,
+                        'total_igv' => 0,
+                        'total_value' => 0,
+                        'total' => $test['price_total'],
+                        'attributes' => null
+                    ]
+                    );
+                }
+            }
 
-            $orderLaboratorio = new LaboratorioOrder();
-            $orderLaboratorio->save($request->all());
+
+
+        });
 
             return [
                 'success' => true,
                 'message'=> "Orden Generada Correctamente",
                 'id'=> $orderLaboratorio,
             ];
-
-        }catch (\Exception $e) {
-            return [
-                'success' => true,
-                'message'=> $e->getMessage()
-            ];
-        }
-
-
     }
 
     public function update(OrderRequest $request, $order_id)

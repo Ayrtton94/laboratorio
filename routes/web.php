@@ -177,10 +177,12 @@ Auth::routes();
 		Route::get('restore/{id}', 'restore');
 	});
 	// PERSONAS
+	Route::post('/search/persons/{type}', [PersonController::class, 'search']);
 	Route::controller(PersonController::class)->prefix('persons')->group(function(){
 		Route::get('restore/{id}', 'restore');
 		Route::get('columns', 'columns');
 		Route::get('tables', 'tables');
+		Route::get('table/{table}', 'table');
 		Route::get('{type}',  'index')->name('persons.index');
 		Route::get('{type}/records', 'records');
 		Route::post('', 'store');
@@ -204,8 +206,8 @@ Auth::routes();
 	// LABORATORIO ORDERS
 	Route::controller(LaboratorioOrderController::class)->prefix('orders')->group(function(){
 		Route::get('', 'index')->name('orders.index');
-		Route::post('/orderall', 'recordsAll');
-		Route::post('/AllOrder', 'AllOrder');
+//		Route::post('/orderall', 'recordsAll');
+//		Route::post('/AllOrder', 'AllOrder');
 		Route::get('/columns', 'columns');
 		Route::get('/records', 'records');
 		Route::get('/totals', 'totals');
@@ -219,7 +221,7 @@ Auth::routes();
 		Route::get('/send/{order}', 'send');
 		Route::post('/email', 'email');
 		Route::get('/table/{table}', 'table');
-		Route::post('/items', 'items');
+		Route::get('/items', 'items');
 		Route::delete('/{order}', 'destroy');
 		Route::get('/imprimir/{order}/{format}', 'imprimir');
 

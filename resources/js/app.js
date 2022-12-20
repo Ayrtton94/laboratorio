@@ -140,10 +140,6 @@ app.component('orders', orders);
 app.component('orders-invoice', ordersinvoice);
 
 //HORARIO
-app.component('schedule', schedules)
-
-//PROGRAMA BRUCELLAS
 app.component('programabrucellas', programabrucellas);
-app.component('programabrucellas-create', programabrucellasform)
 
 app.mount('#app')

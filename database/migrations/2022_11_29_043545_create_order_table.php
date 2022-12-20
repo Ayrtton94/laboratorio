@@ -79,6 +79,7 @@ class CreateOrderTable extends Migration
 				$table->unsignedBigInteger('customer_id');
 				$table->json('customer');
 				$table->string('currency_type_id', 4);
+                $table->unsignedInteger('tporden_id')->nullable();
 				$table->unsignedInteger('responsable_id')->nullable();
 				$table->string('documento_referencia')->nullable();
 				$table->decimal('total_value', 12, 2)->default(0);
@@ -95,8 +96,6 @@ class CreateOrderTable extends Migration
 				$table->foreign('user_id')->references('id')->on('users');
 				$table->foreign('establishment_id')->references('id')->on('establishments');
 				$table->foreign('customer_id')->references('id')->on('persons');
-//				$table->foreign('state_type_id')->references('id')->on('state_types');
-//				$table->foreign('group_id')->references('id')->on('groups');
 				$table->foreign('document_type_id')->references('id')->on('cat_document_types');
 				$table->foreign('currency_type_id')->references('id')->on('cat_currency_types');
 			});
