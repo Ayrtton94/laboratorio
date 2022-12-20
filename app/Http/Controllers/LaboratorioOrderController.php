@@ -2,32 +2,33 @@
 
  namespace App\Http\Controllers;
 
-use App\Http\Requests\OrderRequest;
-use App\Http\Resources\OrderLaboratorioCollection;
-use App\Inputs\PersonInput;
-use App\Models\Catalogs\DocumentType;
-use App\Models\Catalogs\IdentityDocumentType;
-use App\Models\Especie;
-use App\Models\IdentityDocument;
-use App\Models\Laboratorio;
-use App\Models\LaboratorioOrderDetail;
+use Mpdf\Mpdf;
+use App\Models\Serie;
 use App\Models\Matriz;
 use App\Models\Metodo;
-use App\Models\Muestra;
 use App\Models\Person;
-use App\Models\presentacion;
 use App\Models\Prueba;
-use App\Models\Serie;
-use App\Models\SubEspecie;
-use Barryvdh\DomPDF\Facade as PDF;
-use Mpdf\Mpdf;
-use Nexmo\Account\Price;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Models\LaboratorioOrder;
+use App\Models\Especie;
+use App\Models\Muestra;
 use App\Models\District;
 use App\Models\Province;
+use Nexmo\Account\Price;
 use App\Models\Department;
+use App\Models\SubEspecie;
+use App\Inputs\PersonInput;
+use App\Models\Laboratorio;
+use App\Models\presentacion;
+use Illuminate\Http\Request;
+use App\Models\IdentityDocument;
+use App\Models\LaboratorioOrder;
+use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\OrderRequest;
+use App\Models\Catalogs\CurrencyType;
+use App\Models\Catalogs\DocumentType;
+use App\Models\LaboratorioOrderDetail;
+use App\Models\Catalogs\IdentityDocumentType;
+use App\Http\Resources\OrderLaboratorioCollection;
 
 class LaboratorioOrderController extends Controller
 {
@@ -75,6 +76,29 @@ class LaboratorioOrderController extends Controller
     public function edit($order_id)
     {
        return view('orders.edit', compact('order_id'));
+    }
+
+	public function tables3($order_id = false)
+    {
+       
+        $document_types_invoice = DocumentType::whereIn('id', ['104'])->get();
+        $order_id = (int)$order_id;
+        $order = LaboratorioOrder::with('items')->whereId($order_id)->first();
+
+        $customers = Person::whereType('customers')->without('country', 'department', 'province', 'district')->limit(5)->get()->transform(function ($row) {
+            return [
+                'id' => $row->id,
+                'description' => $row->number . ' - ' . $row->name,
+                'name' => $row->name,
+                'number' => $row->number,
+                'identity_document_type_id' => $row->identity_document_type_id
+            ];
+        });
+        $series = Serie::all();
+        $currency_types = CurrencyType::all();
+        $document_type_03_filter = env('DOCUMENT_TYPE_03_FILTER', true);
+
+        return compact('order','customers', 'series', 'document_types_invoice', 'currency_types',  'document_type_03_filter');
     }
 
     public function tables()
@@ -226,69 +250,6 @@ class LaboratorioOrderController extends Controller
             ],
         ];
 	}
-
-    public function tables3($order_id = false)
-    {
-        if(strlen(stristr($order_id, 'e')) == 0)
-        {
-            $document_types_invoice = DocumentType::whereIn('id', ['104'])->get();
-        }
-        else
-        {
-            $document_types_invoice = DocumentType::whereIn('id', ['104'])->get();
-        }
-
-        $order_id = (int)$order_id;
-
-        $order = Order::whereId($order_id)->first();
-
-
-        $customers = Person::whereType('customers')->without('country', 'department', 'province', 'district')->limit(5)->get()->transform(function ($row) {
-            return [
-                'id' => $row->id,
-                'description' => $row->number . ' - ' . $row->name,
-                'name' => $row->name,
-                'number' => $row->number,
-                'identity_document_type_id' => $row->identity_document_type_id,
-                'identity_document_type_code' => $row->identity_document_type->code
-            ];
-        });
-
-        //if(auth()->user()->hasRole('administrador'))
-        if(auth()->user()->hasRole('administrador') || auth()->user()->hasRole('administrador-tienda'))
-        {
-            $establishments = Establishment::all();
-        }
-        else
-        {
-            $establishments = Establishment::where('id', auth()->user()->establishment_id)->get();
-        }
-        $sellers = $this->table('sellers');
-        $warehouse = Warehouse::where('establishment_id', auth()->user()->establishment_id)->first();
-        $warehouse_id = is_null($warehouse)?null:$warehouse->id;
-
-        $warehouses = Warehouse::get();
-        $series = Series::all();
-
-
-        $currency_types = CurrencyType::whereActive()->get();
-        $operation_types = OperationType::whereActive()->get();
-        $discount_types = ChargeDiscountType::whereType('discount')->whereLevel('item')->get();
-        $charge_types = ChargeDiscountType::whereType('charge')->whereLevel('item')->get();
-        $company = Company::active();
-        $document_type_03_filter = env('DOCUMENT_TYPE_03_FILTER', true);
-        $config = Configuration::first();
-        $inventoryConfig = InventoryConfiguration::first();
-        $decimal = $config->decimal;
-        $exchange_rate = $config->exchange_rate;
-        $control_stock = $inventoryConfig->stock_control;
-        $payment_methods = PaymentMethod::whereActive()->get();
-        $accounts = Account::all();
-        return compact('order','payment_methods','accounts' ,'customers', 'establishments', 'warehouse_id', 'warehouses','series',
-            'document_types_invoice','control_stock'
-            , 'currency_types', 'operation_types','sellers',
-            'discount_types', 'charge_types', 'company', 'document_type_03_filter','exchange_rate' ,'decimal');
-    }
 
 	public function destroy($documet_id)
     {

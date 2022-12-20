@@ -252,6 +252,7 @@
 import CustomerSearch from '../../components/CustomerSearch.vue'
 import moment from 'moment'
 export default {
+	props:['order_id'],
     mixins: [],
     components: {
         CustomerSearch
@@ -290,16 +291,56 @@ export default {
             customers: []
         }
     },
-    created() {
+    async created() {
         this.getDataTables();
         this.initForm();
-        this.edit();
+        await axios.get(`/${this.resource}/tables3/${this.order_id}`)
+                .then(response => {
+					debugger
+                    this.all_series = response.data.order.series
+                    this.all_customers = response.data.customers
+                    this.document_type_03_filter = response.data.document_type_03_filter
+                    this.form.responsable_id = response.data.order.responsable_id
+                    this.order = response.data.order;
+
+                    // this.form.currency_type_id = (this.currency_types.length > 0)?this.currency_types[0].id:null
+                    this.form.currency_type_id = (this.currency_types.length > 0) ? response.data.order.currency_type_id:null
+                    this.form.establishment_id = (this.establishments.length > 0)? this.order.establishment_id:null
+                    this.form.document_type_id = (this.document_types.length > 0)?this.document_types[0].id:null
+                    this.form.operation_type_id = (this.operation_types.length > 0)?this.operation_types[0].id:null
+
+                    this.identity_document_id = response.data.order.customer.identity_document_id
+                    this.form.type_document_fact = response.data.order.type_document_fact
+                    this.form.customer_id = response.data.order.customer_id
+
+                    if(this.form.customer_id == 1 && response.data.order.customer.name !== 'CLIENTES VARIOS'){
+                        setTimeout(()=> {
+                            this.isNewCustomerName = response.data.order.customer.name;
+                        }, 2000)
+                    }
+        
+
+                })
+            // await this.$http.get(`/${this.resource}/productos/tables33/${this.order_id}`)
+            // .then(response => {
+            //     this.form.items = response.data.items
+			// 	this.form.total_exportation = response.data.order.total_exportation
+			// 	this.form.nombre_cliente = response.data.order.nombre_cliente
+            //     this.operation_types = response.data.operation_types
+            //     this.all_affectation_igv_types = response.data.affectation_igv_types
+            //     this.system_isc_types = response.data.system_isc_types
+            //     this.discount_types = response.data.discount_types
+            //     this.charge_types = response.data.charge_types
+            //     this.attribute_types = response.data.attribute_types
+            // })
+            // this.loading_form = true
+            this.form.order_id = this.order_id
+            this.calculateTotal()
     },
     methods: {
         getDataTables(){
             axios.get(`/${this.resource}/tables`)
                 .then(response => {
-
                     this.identity_document_types = response.data.identity_document_types
                     this.serieDocument = response.data.serieDocument
                     this.tpordenes = response.data.tpordenes
@@ -319,67 +360,6 @@ export default {
                     this.all_districts = response.data.districts
 
                 })
-        },
-        edit(){
-            let me = this
-
-            me.form.establishment_id = me.document.establishment_id
-            me.form.document_type_id = me.document.document_type_id
-
-            me.form.number = me.document.number
-            me.form.series_id = me.document.series
-
-            me.form.currency_type_id = me.document.currency_type_id
-
-            me.form.date_of_issue = me.document.date_of_issue
-
-            me.form.total_igv = me.document.total_igv
-            me.form.total_value = me.document.total_value
-            me.form.total = me.document.total
-
-            //
-            // me.$http.get(`/${this.resource}/productos/tables3/${me.document.id}`).then(response => {
-            //     let items = response.data.items
-            //     me.operation_types = response.data.operation_types
-            //     me.all_affectation_igv_types = response.data.affectation_igv_types
-            //
-            //     let operation_type = _.find(this.operation_types, {id: this.form.operation_type_id})
-            //     me.affectation_igv_types = _.filter(this.all_affectation_igv_types, {exportation: operation_type.exportation})
-            //
-            //
-            //     for (let index = 0; index < items.length; index++) {
-            //         const item = items[index];
-            //         me.form.item = item
-            //
-            //         me.form.charges = item.charges ?  Object.keys(item.charges).map(i => item.charges[i]): []
-            //         me.form.discounts =  item.discounts ? Object.keys(item.discounts).map(i => item.discounts[i]) : []
-            //         me.form.attributes = item.attributes?  Object.keys(item.attributes).map(i => item.attributes[i]) : []
-            //
-            //         me.form.unit_type_id = item.unit_type_id;
-            //         me.form.item.unit_price = (item.unit_price)
-            //         me.form.quantity = item.quantity
-            //
-            //         me.form.affectation_igv_type_id = item.affectation_igv_type_id
-            //         me.form.item.included_igv = 1
-            //         me.form.affectation_igv_type = _.find(me.affectation_igv_types, {'id': item.affectation_igv_type_id})
-            //
-            //         me.row = calculateRowItem(me.form, me.form.currency_type_id, me.form.exchangeRateSale)
-            //         me.row.equivalencia_id =  item.equivalencia_id
-            //         me.row.description_unidad =  item.description_unidad
-            //         me.row.total_igv = item.total_igv
-            //         me.row.total_value = item.total_value
-            //         me.row.total_taxes = item.total_igv
-            //         me.row.total = item.total
-            //         me.row.unit_price = item.unit_price
-            //
-            //         me.row.warehouse_id = item.warehouse_id
-            //         me.row.warehouseDescription = item.warehouseDescription
-            //         me.addRow(me.row)
-            //     }
-            // })
-
-
-
         },
         getNameMuestra(id){
             let itemMuestra = _.find(this.muestras, {id: id})
