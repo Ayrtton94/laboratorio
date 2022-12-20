@@ -10,7 +10,13 @@
             <div class="card-body">
                 <form autocomplete="off" @submit.prevent="submit">
                     <div class="row">
-
+                        <!--                        <div class="col-xs-12 col-sm-4 col-md-4">-->
+                        <!--                            <div class="form-group" :class="{'has-danger': errors.num_orden}">-->
+                        <!--                                <label class="control-label">Número de Orden</label>-->
+                        <!--                                <el-input v-model="form.num_orden"></el-input>-->
+                        <!--                                <small class="form-control-feedback" v-if="errors.num_orden" v-text="errors.num_orden[0]"></small>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
                         <div class="col-xs-12 col-sm-4 col-md-4">
                             <div class="form-group" :class="{'has-danger': errors.series_id}">
                                 <label class="control-label">Serie</label>
@@ -23,7 +29,7 @@
                         <div class="col-xs-12 col-sm-4 col-md-4">
                             <div class="form-group" :class="{'has-danger': errors.date_of_issue}">
                                 <label class="control-label">Fecha de Emisión</label>
-                                <el-date-picker v-model="form.date_of_issue" type="date" value-format="yyyy-MM-dd" :clearable="false"></el-date-picker>
+                                <el-date-picker v-model="form.date_of_issue" type="date" value-format="YYYY-MM-DD" :clearable="false"></el-date-picker>
                                 <small class="form-control-feedback" v-if="errors.date_of_issue" v-text="errors.date_of_issue[0]"></small>
                             </div>
                         </div>
@@ -39,63 +45,9 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-xs-12 col-sm-3 col-md-3">
-                            <label class="control-label">(*)Tipo Documento</label>
-                            <div class="form-group">
-                                <el-select v-model="form.identity_document_id" placeholder="Tipo Documento">
-                                    <el-option v-for="option in identity_document_types" :value="option.id" :key="option.id" :label="option.description"/>
-                                </el-select>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-3 col-md-3">
-                            <div class="form-group">
-                                <label class="control-label">(*)Documento</label>
-                                <el-input v-model="form.number" placeholder="Documento" :maxlength="maxlength">
-                                    <template #append>
-                                        <el-button @click.prevent="queryDocumentApi">Buscar</el-button>
-                                    </template>
-                                </el-input>
-                                <small class="form-control-feedback text-danger" v-if="errors.number" v-text="errors.number[0]"></small>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-3 col-md-3">
-                            <div class="form-group">
-                                <label class="control-label">(*)Nombre / Razón Social</label>
-                                <el-input v-model="form.name" type="text" placeholder="Nombre"/>
-                                <small class="form-control-feedback text-danger" v-if="errors.name" v-text="errors.name[0]"></small>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-3 col-md-3">
-                            <label class="control-label">Departamento</label>
-                            <div class="form-group">
-                                <el-select v-model="form.department_id" filterable clearable @change="filterProvince" placeholder="Seleccione">
-                                    <el-option v-for="option in all_departments" :key="option.id" :value="option.id" :label="option.description" />
-                                </el-select>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-3 col-md-3">
-                            <label class="control-label">Provincia</label>
-                            <div class="form-group">
-                                <el-select v-model="form.province_id" filterable clearable @change="filterDistrict" placeholder="Seleccione">
-                                    <el-option v-for="option in provinces" :key="option.id" :value="option.id" :label="option.description" />
-                                </el-select>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-3 col-md-3">
-                            <label class="control-label">Distrito</label>
-                            <div class="form-group">
-                                <el-select v-model="form.district_id" filterable clearable placeholder="Seleccione">
-                                    <el-option v-for="option in districts" :key="option.id" :value="option.id" :label="option.description" />
-                                </el-select>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-3 col-md-3">
-                            <div class="form-group">
-                                <label class="control-label">Dirección</label>
-                                <el-input v-model="form.address" type="text" placeholder="Dirección"/>
-                                <small class="form-control-feedback text-danger" v-if="errors.address" v-text="errors.address[0]"></small>
-                            </div>
-                        </div>
+                        <customer-search :showLabel="true" v-model:customer_id="form.customer_id" class="col-xs-12 col-sm-3 col-md-3"
+                                         :customersList="customers" :errors="errors" ></customer-search>
+
                         <div class="col-xs-12 col-sm-3 col-md-3">
                             <div class="form-group" :class="{'has-danger': errors.responsable_id}">
                                 <label class="control-label">(*)Responsable</label>
@@ -190,21 +142,21 @@
                         <div class="col-lg-2">
                             <div class="form-group" :class="{'has-danger': errors.date_of_muestra}">
                                 <label class="control-label">(*)Fecha de Muestra</label>
-                                <el-date-picker v-model="form.date_of_muestra" type="date" value-format="yyyy-MM-dd" :clearable="false"></el-date-picker>
+                                <el-date-picker v-model="form.date_of_muestra" type="date" value-format="YYYY-MM-DD" :clearable="false"></el-date-picker>
                                 <small class="form-control-feedback" v-if="errors.date_of_muestra" v-text="errors.date_of_muestra[0]"></small>
                             </div>
                         </div>
                         <div class="col-lg-2">
                             <div class="form-group" :class="{'has-danger': errors.date_of_recepcion}">
                                 <label class="control-label">(*)Fecha de Recepción</label>
-                                <el-date-picker v-model="form.date_of_recepcion" type="date" value-format="yyyy-MM-dd" :clearable="false"></el-date-picker>
+                                <el-date-picker v-model="form.date_of_recepcion" type="date" value-format="YYYY-MM-DD" :clearable="false"></el-date-picker>
                                 <small class="form-control-feedback" v-if="errors.date_of_recepcion" v-text="errors.date_of_recepcion[0]"></small>
                             </div>
                         </div>
                         <div class="col-lg-2">
                             <div class="form-group" :class="{'has-danger': errors.date_of_result}">
                                 <label class="control-label">(*)Fecha de Resultados</label>
-                                <el-date-picker v-model="form.date_of_result" type="date" value-format="yyyy-MM-dd" :clearable="false"></el-date-picker>
+                                <el-date-picker v-model="form.date_of_result" type="date" value-format="YYYY-MM-DD" :clearable="false"></el-date-picker>
                                 <small class="form-control-feedback" v-if="errors.date_of_result" v-text="errors.date_of_result[0]"></small>
                             </div>
                         </div>
@@ -297,12 +249,12 @@
 </template>
 
 <script>
-import { allDepartments } from "../../mixins/deletable"
-import { searchDcumentType } from "../../mixins/searchApi"
+import CustomerSearch from '../../components/CustomerSearch.vue'
 import moment from 'moment'
 export default {
-    mixins: [allDepartments, searchDcumentType],
-    props: {
+    mixins: [],
+    components: {
+        CustomerSearch
     },
     data() {
         return {
@@ -333,12 +285,15 @@ export default {
             districts: [],
             all_departments: [],
             all_provinces: [],
-            all_districts: []
+            all_districts: [],
+            all_customers: [],
+            customers: []
         }
     },
     created() {
         this.getDataTables();
         this.initForm();
+        this.edit();
     },
     methods: {
         getDataTables(){
@@ -357,13 +312,74 @@ export default {
                     this.laboratorios = response.data.laboratorios
                     this.metodos = response.data.metodos
                     this.staffs = response.data.staffs
+                    this.all_customers = response.data.customers
+                    this.customers = response.data.customers
                     this.all_departments = response.data.departments
                     this.all_provinces = response.data.provinces
                     this.all_districts = response.data.districts
 
                 })
+        },
+        edit(){
+            let me = this
 
-            this.edit()
+            me.form.establishment_id = me.document.establishment_id
+            me.form.document_type_id = me.document.document_type_id
+
+            me.form.number = me.document.number
+            me.form.series_id = me.document.series
+
+            me.form.currency_type_id = me.document.currency_type_id
+
+            me.form.date_of_issue = me.document.date_of_issue
+
+            me.form.total_igv = me.document.total_igv
+            me.form.total_value = me.document.total_value
+            me.form.total = me.document.total
+
+            //
+            // me.$http.get(`/${this.resource}/productos/tables3/${me.document.id}`).then(response => {
+            //     let items = response.data.items
+            //     me.operation_types = response.data.operation_types
+            //     me.all_affectation_igv_types = response.data.affectation_igv_types
+            //
+            //     let operation_type = _.find(this.operation_types, {id: this.form.operation_type_id})
+            //     me.affectation_igv_types = _.filter(this.all_affectation_igv_types, {exportation: operation_type.exportation})
+            //
+            //
+            //     for (let index = 0; index < items.length; index++) {
+            //         const item = items[index];
+            //         me.form.item = item
+            //
+            //         me.form.charges = item.charges ?  Object.keys(item.charges).map(i => item.charges[i]): []
+            //         me.form.discounts =  item.discounts ? Object.keys(item.discounts).map(i => item.discounts[i]) : []
+            //         me.form.attributes = item.attributes?  Object.keys(item.attributes).map(i => item.attributes[i]) : []
+            //
+            //         me.form.unit_type_id = item.unit_type_id;
+            //         me.form.item.unit_price = (item.unit_price)
+            //         me.form.quantity = item.quantity
+            //
+            //         me.form.affectation_igv_type_id = item.affectation_igv_type_id
+            //         me.form.item.included_igv = 1
+            //         me.form.affectation_igv_type = _.find(me.affectation_igv_types, {'id': item.affectation_igv_type_id})
+            //
+            //         me.row = calculateRowItem(me.form, me.form.currency_type_id, me.form.exchangeRateSale)
+            //         me.row.equivalencia_id =  item.equivalencia_id
+            //         me.row.description_unidad =  item.description_unidad
+            //         me.row.total_igv = item.total_igv
+            //         me.row.total_value = item.total_value
+            //         me.row.total_taxes = item.total_igv
+            //         me.row.total = item.total
+            //         me.row.unit_price = item.unit_price
+            //
+            //         me.row.warehouse_id = item.warehouse_id
+            //         me.row.warehouseDescription = item.warehouseDescription
+            //         me.addRow(me.row)
+            //     }
+            // })
+
+
+
         },
         getNameMuestra(id){
             let itemMuestra = _.find(this.muestras, {id: id})
@@ -412,72 +428,6 @@ export default {
             if(itemTotal) return itemTotal.price * this.form.quantity;
             return '';
         },
-        edit(){
-            let me = this
-
-            me.form.establishment_id = me.document.establishment_id
-            me.form.document_type_id = me.document.document_type_id
-
-            me.form.number = me.document.number
-            me.form.series_id = me.document.series
-
-            me.form.dias_credito = me.document.dias_credito
-            me.form.num_cuotas = me.document.num_cuota
-            me.form.currency_type_id = me.document.currency_type_id
-
-            me.form.date_of_issue = me.document.date_of_issue
-            me.form.date_of_due = me.document.invoice.date_of_due
-            me.form.warehouse_id= me.document.warehouse_id
-            me.form.exchange_rate_sale = me.document.exchange_rate_sale
-
-            me.form.total_igv = me.document.total_igv
-            me.form.total_value = me.document.total_value
-            me.form.total = me.document.total
-
-
-            me.$http.get(`/${this.resource}/productos/tables3/${me.document.id}`).then(response => {
-                let items = response.data.items
-                me.operation_types = response.data.operation_types
-                me.all_affectation_igv_types = response.data.affectation_igv_types
-
-                let operation_type = _.find(this.operation_types, {id: this.form.operation_type_id})
-                me.affectation_igv_types = _.filter(this.all_affectation_igv_types, {exportation: operation_type.exportation})
-
-
-                for (let index = 0; index < items.length; index++) {
-                    const item = items[index];
-                    me.form.item = item
-
-                    me.form.charges = item.charges ?  Object.keys(item.charges).map(i => item.charges[i]): []
-                    me.form.discounts =  item.discounts ? Object.keys(item.discounts).map(i => item.discounts[i]) : []
-                    me.form.attributes = item.attributes?  Object.keys(item.attributes).map(i => item.attributes[i]) : []
-
-                    me.form.unit_type_id = item.unit_type_id;
-                    me.form.item.unit_price = (item.unit_price)
-                    me.form.quantity = item.quantity
-
-                    me.form.affectation_igv_type_id = item.affectation_igv_type_id
-                    me.form.item.included_igv = 1
-                    me.form.affectation_igv_type = _.find(me.affectation_igv_types, {'id': item.affectation_igv_type_id})
-
-                    me.row = calculateRowItem(me.form, me.form.currency_type_id, me.form.exchangeRateSale)
-                    me.row.equivalencia_id =  item.equivalencia_id
-                    me.row.description_unidad =  item.description_unidad
-                    me.row.total_igv = item.total_igv
-                    me.row.total_value = item.total_value
-                    me.row.total_taxes = item.total_igv
-                    me.row.total = item.total
-                    me.row.unit_price = item.unit_price
-
-                    me.row.warehouse_id = item.warehouse_id
-                    me.row.warehouseDescription = item.warehouseDescription
-                    me.addRow(me.row)
-                }
-            })
-
-
-
-        },
         initForm() {
             this.errors = {}
             this.form = {
@@ -485,19 +435,16 @@ export default {
                 tests: [],
 
                 user_id: null,
-                establishment_id: null,
-                establishment: null,
-                state_type_id: null,
-                group_id: null,
-                document_type_id: null,
+                establishment_id: 1,
+                state_type_id: '01',
+                group_id: '01',
+                document_type_id: 104,
                 series_id: null,
-                number: null,
                 date_of_issue: moment().format('YYYY-MM-DD'),
                 time_of_issue: moment().format('HH:mm:ss'),
-
                 customer_id: null,
                 customer: null,
-                currency_type_id: null,
+                currency_type_id: 'PEN',
                 tporden_id: null,
                 responsable_id: null,
                 documento_referencia: null,
@@ -511,6 +458,22 @@ export default {
                 estado: null,
                 type_document_fact: '03',
                 tipo: null
+            }
+        },
+        reloadDataCustomers(customer_id) {
+            axios.get(`/${this.resource}/table/customers`).then((response) => {
+                this.customers = response.data
+                this.all_customers = response.data
+                this.form.customer_id  = customer_id
+            })
+        },
+        filterCustomers() {
+            this.form.customer_id = null
+            this.customers = this.all_customers
+
+            if(this.customers.length >0){
+                let per = this.customers.find(el=> el.id == 1);
+                if(per) this.form.customer_id = per.id;
             }
         },
         AddTest(){
@@ -533,19 +496,37 @@ export default {
                 date_of_result: this.form.date_of_result,
                 temperatura: this.form.temperatura
             });
+
+            this.calculateTotal()
         },
         queryDocumentApi(){
             this.queryDocument()
         },
+        calculateTotal() {
+
+            let montoGlobal = this.total_pagar
+            let total_igv = montoGlobal * 0.18
+            let total_value = montoGlobal - total_igv
+            let total = this.total_pagar
+
+
+            this.form.total_igv = total_igv
+            this.form.total_value = total_value
+            this.form.total = total
+
+        },
         async submit() {
 
             this.loading_submit = true
+
+            this.calculateTotal();
 
             axios.post(`/${this.resource}`, this.form)
                 .then(async response => {
                     console.log(response.data)
                     if (response.data.success) {
                         this.resetForm();
+                        this.close();
                     }
                     else {
                         this.$message.error(response.data.message);
@@ -578,15 +559,6 @@ export default {
             }
 
 
-        },
-        maxlength: function(){
-            if(this.form.identity_document_id === '6'){
-                return 11;
-            }
-
-            if(this.form.identity_document_id === '1'){
-                return 8;
-            }
         },
         matrizFilter(){
             return this.muestras.filter(el=> el.matriz_id == this.form.matriz_id);

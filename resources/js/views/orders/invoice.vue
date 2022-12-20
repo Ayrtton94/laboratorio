@@ -47,6 +47,7 @@
                     <div class="row">
 						<customer-search :showLabel="true" v-model:customer_id="form.customer_id" class="col-xs-12 col-sm-3 col-md-3"
 						:customersList="customers" :errors="errors" ></customer-search>
+
 						<div class="col-xs-12 col-sm-3 col-md-3">
                             <div class="form-group" :class="{'has-danger': errors.responsable_id}">
                                 <label class="control-label">(*)Responsable</label>
@@ -372,17 +373,16 @@ export default {
                 tests: [],
 
                 user_id: null,
-                establishment_id: null,
-                establishment: null,
-                state_type_id: null,
-                group_id: null,
-                document_type_id: null,
-                series: null,
+                establishment_id: 1,
+                state_type_id: '01',
+                group_id: '01',
+                document_type_id: 104,
+                series_id: null,
                 date_of_issue: moment().format('YYYY-MM-DD'),
                 time_of_issue: moment().format('HH:mm:ss'),
 				customer_id: null,
                 customer: null,
-                currency_type_id: null,
+                currency_type_id: 'PEN',
                 tporden_id: null,
                 responsable_id: null,
                 documento_referencia: null,
@@ -434,19 +434,37 @@ export default {
                 date_of_result: this.form.date_of_result,
                 temperatura: this.form.temperatura
             });
+
+            this.calculateTotal()
         },
 		queryDocumentApi(){
            this.queryDocument()
 		},
+        calculateTotal() {
+
+            let montoGlobal = this.total_pagar
+            let total_igv = montoGlobal * 0.18
+            let total_value = montoGlobal - total_igv
+            let total = this.total_pagar
+
+
+            this.form.total_igv = total_igv
+            this.form.total_value = total_value
+            this.form.total = total
+
+        },
         async submit() {
 
             this.loading_submit = true
+
+            this.calculateTotal();
 
             axios.post(`/${this.resource}`, this.form)
                 .then(async response => {
                     console.log(response.data)
                     if (response.data.success) {
                         this.resetForm();
+                        this.close();
                     }
                     else {
                         this.$message.error(response.data.message);

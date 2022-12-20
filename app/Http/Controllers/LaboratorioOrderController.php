@@ -4,9 +4,11 @@
 
 use App\Http\Requests\OrderRequest;
 use App\Http\Resources\OrderLaboratorioCollection;
+use App\Inputs\PersonInput;
 use App\Models\Catalogs\DocumentType;
 use App\Models\Catalogs\IdentityDocumentType;
 use App\Models\Especie;
+use App\Models\IdentityDocument;
 use App\Models\Laboratorio;
 use App\Models\LaboratorioOrderDetail;
 use App\Models\Matriz;
@@ -137,27 +139,35 @@ class LaboratorioOrderController extends Controller
 
     public function store(OrderRequest $request)
     {
+//        dd($request->all());
+
         $orderLaboratorio = DB::transaction(function () use ($request) {
-			
+
+
+            $customer = PersonInput::set($request->input('customer_id'));
+            $serieDocument = Serie::query()->where('document_type_id',104)->first();
+            $request['customer'] = $customer;
+            $request['series'] = $serieDocument->serie;
+            $request['number'] = $serieDocument->number;
             $orderLaboratorio = LaboratorioOrder::create($request->all()+['user_id'=>auth()->id()]);
-			
+
             if(count($request['tests']) > 0){
                 foreach ($request['tests'] as $test) {
                     LaboratorioOrderDetail::query()->create(
                         [
                         'laboratorio_order_id' => $orderLaboratorio->id,
-                        'matriz_id' => $test['muestra_id'],
-                        'muestra_id' => $test['muestra_id'],
-                        'prueba_id' => $test['prueba_id'],
-                        'especie_id' => $test['especie_id'],
-                        'subespecie_id' => $test['especie_id'],
-                        'presentacion_id' => $test['presentacion_id'],
+                        'matriz_id' => $test['muestra_id']??null,
+                        'muestra_id' => $test['muestra_id']??null,
+                        'prueba_id' => $test['prueba_id']??null,
+                        'especie_id' => $test['especie_id']??null,
+                        'subespecie_id' => $test['especie_id']??null,
+                        'presentacion_id' => $test['presentacion_id']??null,
                         'quantity' => $test['quantity'],
-                        'observacion' => $test['observacion'],
+                        'observacion' => $test['observacion']??null,
                         'date_of_muestra' => $test['date_of_muestra'],
                         'date_of_recepcion' => $test['date_of_recepcion'],
                         'date_of_resultado' => $test['date_of_result'],
-                        'temperatura' => $test['temperatura'],
+                        'temperatura' => $test['temperatura'] ??0,
                         'unit_value' => 0,
                         'unit_price' => 0,
                         'total_igv' => 0,
@@ -168,8 +178,8 @@ class LaboratorioOrderController extends Controller
                     );
                 }
             }
-            $series->update([
-                'number'=> $laboratorioOrder->number + 1
+            $serieDocument->update([
+                'number'=> $orderLaboratorio->number + 1
             ]);
 
 

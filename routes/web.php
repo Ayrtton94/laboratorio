@@ -185,6 +185,7 @@ Auth::routes();
 		Route::get('table/{table}', 'table');
 		Route::get('{type}',  'index')->name('persons.index');
 		Route::get('{type}/records', 'records');
+        Route::get('record/{id}', 'record');
 		Route::post('', 'store');
 		Route::delete('{id}', 'destroy');
 	});
