@@ -1,5 +1,5 @@
 <template>
-    <el-dialog :title="titleDialog" model-value="showDialog" @close="close" @open="create">
+    <el-dialog :title="titleDialog" model-value="showModal" @close="closeModal" @open="create">
         <form autocomplete="off" @submit.prevent="submit">
             <div class="form-body">
                 <div class="row">
@@ -79,7 +79,7 @@
 					</div>
 				</div>
 				<div class="form-actions text-right mt-4">
-					<el-button @click.prevent="close()">Cancelar</el-button>
+					<el-button @click.prevent="closeModal">Cancelar</el-button>
 					<el-button type="primary" native-type="submit" :loading="loading_submit">Guardar</el-button>
 				</div>
 			</div>
@@ -94,7 +94,7 @@
 
     export default {
         mixins: [allDepartments, searchDcumentType],
-        props: ['showDialog', 'recordId', 'external'],
+        props: ['showModal', 'recordId', 'external'],
         data() {
             return {
                 loading_submit: false,
@@ -119,16 +119,6 @@
                     this.all_districts = response.data.districts
                     this.identity_document_types = response.data.identity_document_types
                 })
-        },
-        computed: {
-            maxLength: function () {
-                if (this.form.identity_document_id === 6) {
-                    return 11
-                }
-                if (this.form.identity_document_id === 1) {
-                    return 8
-                }
-            }
         },
         methods: {
             initForm() {
@@ -168,26 +158,36 @@
                                 // this.emitter.emit('reloadData')
 								this.emitter.emit('reloadDataCustomers', response.data.id)
                             // }
-                            this.close()
+                            this.closeModal()
                         } else {
                             this.$message.error(response.data.message)
                         }
                     })
                     .catch(error => {
-                        if (error.response.status === 422) {
-                            this.errors = error.response.data
-                        } else {
-                            console.log(error)
-                        }
+                        if(error.response.status === 422){
+							this.errors = error.response.data.errors
+						}else{
+							console.log(error);
+						}
                     })
                     .then(() => {
                         this.loading_submit = false
                     })
             },
-            close() {
-                this.$emit('update:showDialog', false)
-                this.initForm()
-            }
-        }
+            closeModal(){
+				this.$emit('closeModal');
+			}
+        },
+		computed:{
+			maxlength: function(){
+				if(this.form.identity_document_id === 6){
+					return 11;
+				}
+
+				if(this.form.identity_document_id === 1){
+					return 8;
+				}
+			}
+		}
     }
 </script>
