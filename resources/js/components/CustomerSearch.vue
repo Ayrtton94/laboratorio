@@ -23,7 +23,7 @@
                     :recordId="customer" @saveAppt="saveAppt"></person-form> -->
 		
     </div>
-	<person-form type="customers" :recordId="customer" v-if="showModal"/>
+	<person-form type="customers" :recordId="customer" @closeModal="closeModal" v-if="showModal"/>
 
 </template>
 
@@ -40,7 +40,6 @@ export default {
             resource: 'persons',
             persons: [],
             personsBack: [],
-            showDialogNewItem: false,
             showModal: false,
             customer: this.customer_id,
             customerSelect: {}
@@ -52,7 +51,7 @@ export default {
         this.personsBack = this.customersList ? this.customersList : [];
         this.persons = this.customersList ? this.customersList : [];
         
-		this.emitter.on('reloadDataPersons',(customer_id)=>{
+		this.emitter.on('reloadDataCustomers',(customer_id)=>{
 			this.reloadDataCustomers(customer_id)
 		});
 
@@ -129,7 +128,11 @@ export default {
         newPerson() {
             this.customer = null;
             this.showModal = true;
-        }
+        },
+		closeModal(){
+			this.showModal = false
+			// this.initForm()
+		}
     },
     watch: {
         'document_type_id': function () {
