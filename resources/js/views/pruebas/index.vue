@@ -45,7 +45,7 @@
 							</a>
 							<a v-if="row.estado!=0" @click.prevent="clickUpdate(row)" class="btn text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Editar" aria-label="Editar">
 								<vue-feather type="edit" class="fs-vue-feather-18"></vue-feather>
-							</a>
+							</a>	
 							<a class="btn text-success" v-if="row.estado==0" @click="clickRestore(row.id)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Restaurar" aria-label="Restaurar">
 								<vue-feather type="rotate-cw" class="fs-vue-feather-18"></vue-feather>
 							</a>

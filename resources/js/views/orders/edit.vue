@@ -301,15 +301,10 @@ export default {
                     this.all_customers = response.data.customers
                     this.document_type_03_filter = response.data.document_type_03_filter
                     this.form.responsable_id = response.data.order.responsable_id
+					this.form.tporden_id = response.data.order.tporden_id
+					this.form.series_id = response.data.order.series_id
                     this.order = response.data.order;
 
-                    // this.form.currency_type_id = (this.currency_types.length > 0)?this.currency_types[0].id:null
-                    this.form.currency_type_id = (this.currency_types.length > 0) ? response.data.order.currency_type_id:null
-                    this.form.establishment_id = (this.establishments.length > 0)? this.order.establishment_id:null
-                    this.form.document_type_id = (this.document_types.length > 0)?this.document_types[0].id:null
-                    this.form.operation_type_id = (this.operation_types.length > 0)?this.operation_types[0].id:null
-
-                    this.identity_document_id = response.data.order.customer.identity_document_id
                     this.form.type_document_fact = response.data.order.type_document_fact
                     this.form.customer_id = response.data.order.customer_id
 
@@ -318,6 +313,12 @@ export default {
                             this.isNewCustomerName = response.data.order.customer.name;
                         }, 2000)
                     }
+
+					if(response.data.order.items.length > 0) {
+
+						this.form.tests = response.data.order.items
+						
+					}
         
 
                 })

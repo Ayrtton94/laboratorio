@@ -36,6 +36,8 @@
                                 <td>{{ row.date_of_issue }}</td>
                                 <td>{{ row.time_of_issue }}</td>
                                 <td>{{ row.usuario }}</td>
+								<td>{{ row.price }}</td>
+								<td>{{ row.price }}</td>
                                 <td>{{ row.price }}</td>
                                 <td>{{ row.total }}</td>
                                 <td>{{ row.total }}</td>
@@ -48,6 +50,13 @@
                                     <a v-if="row.estado!=0" :href="`/${resource}/editar/${row.id}`" class="btn text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Editar" aria-label="Editar">
                                         <vue-feather type="edit" class="fs-vue-feather-18"></vue-feather>
                                     </a>
+						
+									<a v-if="row.estado!=0" @click.prevent="evaluateOrder(row)" class="btn text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Evaluar Order" aria-label="Evaluar Order">
+										<vue-feather type="archive" class="fs-vue-feather-18"></vue-feather>
+									</a>		
+									<a v-if="row.estado!=0" @click.prevent="modoPayment(row)" class="btn text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Evaluar Order" aria-label="Evaluar Order">
+										<vue-feather type="credit-card" class="fs-vue-feather-18"></vue-feather>
+									</a>
 
                                     <a class="btn text-success" v-if="row.estado==0" @click="clickRestore(row.id)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Restaurar" aria-label="Restaurar">
                                         <vue-feather type="rotate-cw" class="fs-vue-feather-18"></vue-feather>
@@ -61,21 +70,26 @@
             </div>
         </div>
     </div>
-<!--    <order-modal v-if="showDialog" :form="form" :errors="errors" @closeModal="closeModal" @saveAppt="saveAppt"/>-->
+   <evaluar-order v-if="showDialogEvaluarOrder" :form="form" :errors="errors" @closeModal="closeModal" @saveAppt="saveAppt"/>
+   <payment v-if="showDialogEvaluarOrder" :form="form" :errors="errors" @closeModalPayment="closeModalPayment" @saveAppt="saveAppt"/>
+		
 </template>
 <script>
     import { deletable } from "../../mixins/deletable"
-    import OrderModal from "../orders/invoice.vue"
+	import EvaluarOrder from "../orders/partials/evaluar.vue"
+	import Payment from "../orders/partials/evaluar.vue"
 export default {
     mixins: [deletable],
-    // components: {
-    //     OrderModal
-    // },
+    components: {
+        EvaluarOrder, Payment
+    },
     data(){
         return {
             resource: 'orders',
             records: [],
             showDialog: false,
+			showDialogEvaluarOrder :false,
+			showDialogPayment: false,
             form: {},
             errors: {},
         }
@@ -96,10 +110,18 @@ export default {
         clickCreate(){
             this.showDialog = true;
         },
-        clickUpdate(info){
-            this.showDialog = true;
+        // clickUpdate(info){
+        //     this.showDialog = true;
+        //     this.getDataMoal(info);
+        // },
+		evaluateOrder(info){
+			this.showDialogEvaluarOrder = true;
             this.getDataMoal(info);
-        },
+		},
+		modoPayment(info){
+			this.showDialogPayment = true;
+            this.getDataMoalPayment(info);
+		},
         getDataMoal(info){
             this.form.id = info.id
             this.form.matriz_id = info.matriz_id
@@ -112,7 +134,15 @@ export default {
             this.form.time_entrega = info.time_entrega
         },
         closeModal(){
-            this.showDialog = false;
+            this.showDialogEvaluarOrder = false;
+            this.initForm();
+        },
+		getDataMoalPayment(info){
+            this.form.id = info.id
+            this.form.status_paid = info.status_paid
+        },
+		closeModalPayment(){
+            this.showDialogPayment = false;
             this.initForm();
         },
         saveAppt(form){

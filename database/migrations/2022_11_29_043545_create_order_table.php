@@ -90,6 +90,9 @@ class CreateOrderTable extends Migration
 				$table->string('filename')->nullable();
 				$table->boolean('estado')->default(1);
 				$table->string('type_document_fact',3)->nullable();
+				$table->tinyInteger('status_paid')->default(0);
+				$table->tinyInteger('status_order')->default(0);
+				$table->text('comentario')->nullable();
 				$table->smallInteger('tipo')->default(1);
 
 				$table->timestamps();
