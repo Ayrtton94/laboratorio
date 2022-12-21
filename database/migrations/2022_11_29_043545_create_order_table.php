@@ -23,7 +23,9 @@ class CreateOrderTable extends Migration
 				$table->string('soap_username')->nullable();
 				$table->string('soap_password')->nullable();
 				$table->string('certificate')->nullable();
-				$table->string('logo')->nullable();
+				$table->string('address')->nullable();
+				$table->string('telephone')->nullable();
+				$table->string('phone')->nullable();
 				$table->timestamps();
 
 				$table->foreign('identity_document_type_id')->references('id')->on('cat_identity_document_types');
@@ -56,7 +58,7 @@ class CreateOrderTable extends Migration
 				$table->id();
 				$table->unsignedBigInteger('establishment_id');
 				$table->char('document_type_id',3);
-				$table->integer('serie');
+				$table->string('serie');
 				$table->integer('number');
 				$table->tinyInteger('estado')->default(1);
 				$table->timestamps();
@@ -66,19 +68,19 @@ class CreateOrderTable extends Migration
 		if (!Schema::hasTable('laboratorio_orders')) {
 			Schema::create('laboratorio_orders', function (Blueprint $table) {
 				$table->increments('id');
-				$table->unsignedBigInteger('user_id');
-				$table->unsignedBigInteger('establishment_id');
-            	$table->json('establishment');
-				$table->char('state_type_id', 2);
-				$table->char('group_id', 2);
-				$table->string('document_type_id', 3);
+				$table->unsignedBigInteger('user_id')->nullable();
+				$table->unsignedBigInteger('establishment_id')->nullable();
+            	$table->json('establishment')->nullable();
+				$table->char('state_type_id', 2)->nullable();
+				$table->char('group_id', 2)->nullable();
+				$table->string('document_type_id', 3)->nullable();
 				$table->char('series', 4);
 				$table->integer('number');
 				$table->date('date_of_issue');
 				$table->time('time_of_issue');
-				$table->unsignedBigInteger('customer_id');
-				$table->json('customer');
-				$table->string('currency_type_id', 4);
+				$table->unsignedBigInteger('customer_id')->nullable();
+				$table->json('customer')->nullable();
+				$table->string('currency_type_id', 4)->nullable();
                 $table->unsignedInteger('tporden_id')->nullable();
 				$table->unsignedInteger('responsable_id')->nullable();
 				$table->string('documento_referencia')->nullable();
@@ -93,7 +95,7 @@ class CreateOrderTable extends Migration
 				$table->tinyInteger('status_paid')->default(0);
 				$table->tinyInteger('status_order')->default(0);
 				$table->text('comentario')->nullable();
-				$table->smallInteger('tipo')->default(1);
+				$table->smallInteger('tipo')->default(1)->nullable();
 
 				$table->timestamps();
 				$table->foreign('user_id')->references('id')->on('users');

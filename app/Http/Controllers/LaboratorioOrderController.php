@@ -8,6 +8,7 @@ use App\Models\Matriz;
 use App\Models\Metodo;
 use App\Models\Person;
 use App\Models\Prueba;
+use App\Models\Company;
 use App\Models\Especie;
 use App\Models\Muestra;
 use App\Models\District;
@@ -19,11 +20,13 @@ use App\Inputs\PersonInput;
 use App\Models\Laboratorio;
 use App\Models\presentacion;
 use Illuminate\Http\Request;
+use App\Models\Establishment;
 use App\Models\IdentityDocument;
 use App\Models\LaboratorioOrder;
-use Barryvdh\DomPDF\Facade as PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\OrderRequest;
+use App\Http\Resources\OrderResource;
 use App\Models\Catalogs\CurrencyType;
 use App\Models\Catalogs\DocumentType;
 use App\Models\LaboratorioOrderDetail;
@@ -54,8 +57,6 @@ class LaboratorioOrderController extends Controller
         ];
     }
 
-
-
     public function records(Request $request)
     {
 		$records = LaboratorioOrder::with('items')->get();
@@ -64,8 +65,6 @@ class LaboratorioOrderController extends Controller
         ]);
 //        return new OrderLaboratorioCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
     }
-
-
 
     public function create()
     {
@@ -163,10 +162,7 @@ class LaboratorioOrderController extends Controller
 
     public function store(OrderRequest $request)
     {
-//        dd($request->all());
-
         $orderLaboratorio = DB::transaction(function () use ($request) {
-
 
             $customer = PersonInput::set($request->input('customer_id'));
             $serieDocument = Serie::query()->where('document_type_id',104)->first();
@@ -270,21 +266,21 @@ class LaboratorioOrderController extends Controller
         ];
     }
 
-    public function imprimir(Request $request, Order $order, $format)
+    public function imprimir(Request $request, LaboratorioOrder $order, $format)
     {
-
+		
         $company = Company::first();
-        $establishment = Establishment::where('id', auth()->user()->establishment_id)->first();
+        $establishment = Establishment::where('id', 1)->first();
 
         if($format=='a4'){
-            $pdf = PDF::loadView('tenant.orders.order_a4', compact( "company", "order","establishment","format"));
+            $pdf = Pdf::loadView('orders.order_a4', compact( "company", "order","establishment","format"));
             return $pdf->stream();
         }
 
-        if($format=='ticket' || $format == 'despacho'){
+        if($format=='ticket'){
 
             ini_set("pcre.backtrack_limit", "5000000");
-            $html =  view('tenant.orders.order_ticket',  compact(  "company", "order","establishment","format"))->render();
+            $html =  view('orders.order_ticket',  compact(  "company", "order","establishment","format"))->render();
             $company_name = (strlen($company->name) / 20) * 10;
             $company_address = (strlen($establishment->address) / 30) * 10;
             $company_number = $establishment->telephone != '' ? '10' : '0';
@@ -298,8 +294,7 @@ class LaboratorioOrderController extends Controller
                     $company_name +
                     $company_address +
                     $company_number+
-                    $orderItemsCount+
-                    35
+                    $orderItemsCount
                 ],
                 'margin_top' => 2,
                 'margin_right' => 5,
@@ -309,7 +304,7 @@ class LaboratorioOrderController extends Controller
 
             $pdf->WriteHTML($html);
             return $pdf->Output();
+			return $pdf->stream();
         }
-        return $pdf->stream();
     }
 }

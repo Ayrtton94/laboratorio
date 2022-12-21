@@ -13,75 +13,77 @@
 				</div>
 				<div class="modal-body">
 					<form id="signupForm" autocomplete="off" @submit.prevent="submit">
-						<div class="form-group">
-							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Matrices</label>
-							<div class="col-md-12 col-sm-12 col-xs-12">
-								<el-select v-model="form.matriz_id" class="w-100" dusk="matriz_id" filterable>
-									<el-option v-for="option in matrices" :key="option.id" :label="option.description"  :value="option.id"></el-option>
-								</el-select>
-								<small class="form-control-feedback text-danger" v-if="errors.matriz_id" v-text="errors.matriz_id[0]"></small>
+						<div class="row">
+							<div class="col-xs-12 col-sm-6 col-md-6">
+								<div class="form-group">
+									<label class="control-label">Matrices</label>
+									<el-select v-model="form.matriz_id" class="w-100" dusk="matriz_id" filterable>
+										<el-option v-for="option in matrices" :key="option.id" :label="option.description"  :value="option.id"></el-option>
+									</el-select>
+									<small class="form-control-feedback text-danger" v-if="errors.matriz_id" v-text="errors.matriz_id[0]"></small>
+								</div>
 							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Muestras</label>
-							<div class="col-md-12 col-sm-12 col-xs-12">
-								<el-select v-model="form.muestra_id" class="w-100" dusk="muestra_id" filterable>
-									<el-option v-for="option in muestras" :key="option.id" :label="option.description"  :value="option.id"></el-option>
-								</el-select>
-								<small class="form-control-feedback text-danger" v-if="errors.muestra_id" v-text="errors.muestra_id[0]"></small>
+							<div class="col-xs-12 col-sm-6 col-md-6">
+								<div class="form-group">
+									<label class="control-label">(*)Muestras</label>
+									<el-select v-model="form.muestra_id" class="w-100" dusk="muestra_id" filterable>
+										<el-option v-for="option in muestras" :key="option.id" :label="option.description"  :value="option.id"></el-option>
+									</el-select>
+									<small class="form-control-feedback text-danger" v-if="errors.muestra_id" v-text="errors.muestra_id[0]"></small>
+								</div>
 							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Nombre</label>
-							<div class="col-md-12 col-sm-12 col-xs-12">
-								<input id="name" v-model="form.name" class="form-control" name="name" type="text" placeholder="Descripción">
-								<small class="form-control-feedback text-danger" v-if="errors.name" v-text="errors.name[0]"></small>
+							<div class="col-xs-12 col-sm-6 col-md-6">
+								<div class="form-group">
+									<label class="control-label">(*)Nombre</label>
+									<input id="name" v-model="form.name" class="form-control" name="name" type="text" placeholder="Descripción">
+									<small class="form-control-feedback text-danger" v-if="errors.name" v-text="errors.name[0]"></small>
+								</div>
 							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Precio</label>
-							<div class="col-md-12 col-sm-12 col-xs-12">
-								<input id="name" v-model="form.price" class="form-control" name="price" type="text" placeholder="Descripción">
-								<small class="form-control-feedback text-danger" v-if="errors.price" v-text="errors.price[0]"></small>
+							<div class="col-xs-12 col-sm-6 col-md-6">
+								<div class="form-group">
+									<label class="control-label">(*)Precio</label>
+									<input id="name" v-model="form.price" class="form-control" name="price" type="text" placeholder="Descripción">
+									<small class="form-control-feedback text-danger" v-if="errors.price" v-text="errors.price[0]"></small>
+								</div>
 							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Laboratorios</label>
-							<div class="col-md-12 col-sm-12 col-xs-12">
-								<el-select v-model="form.laboratorio_id" class="w-100" dusk="laboratorio_id" filterable>
-									<el-option v-for="option in laboratorios" :key="option.id" :label="option.name"  :value="option.id"></el-option>
-								</el-select>
-								<small class="form-control-feedback text-danger" v-if="errors.laboratorio_id" v-text="errors.laboratorio_id[0]"></small>
+							<div class="col-xs-12 col-sm-6 col-md-6">
+								<div class="form-group">
+									<label class="control-label">(*)Laboratorios</label>
+									<el-select v-model="form.laboratorio_id" class="w-100" dusk="laboratorio_id" filterable>
+										<el-option v-for="option in laboratorios" :key="option.id" :label="option.name"  :value="option.id"></el-option>
+									</el-select>
+									<small class="form-control-feedback text-danger" v-if="errors.laboratorio_id" v-text="errors.laboratorio_id[0]"></small>
+								</div>
 							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Metodos</label>
-							<div class="col-md-12 col-sm-12 col-xs-12">
-								<el-select v-model="form.metodo_id" class="w-100" dusk="metodo_id" filterable>
-									<el-option v-for="option in metodos" :key="option.id" :label="option.name"  :value="option.id"></el-option>
-								</el-select>
-								<small class="form-control-feedback text-danger" v-if="errors.metodo_id" v-text="errors.metodo_id[0]"></small>
+							<div class="col-xs-12 col-sm-6 col-md-6">
+								<div class="form-group">
+									<label class="control-label">(*)Metodos</label>
+									<el-select v-model="form.metodo_id" class="w-100" dusk="metodo_id" filterable>
+										<el-option v-for="option in metodos" :key="option.id" :label="option.name"  :value="option.id"></el-option>
+									</el-select>
+									<small class="form-control-feedback text-danger" v-if="errors.metodo_id" v-text="errors.metodo_id[0]"></small>
+								</div>
 							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Condición</label>
-							<div class="col-md-12 col-sm-12 col-xs-12">
-								<input id="name" v-model="form.condicion" class="form-control" name="condicion" type="text" placeholder="Descripción">
+							<div class="col-xs-12 col-sm-6 col-md-6">
+								<div class="form-group">
+									<label class="control-label">(*)Condición</label>
+									<input id="name" v-model="form.condicion" class="form-control" name="condicion" type="text" placeholder="Descripción">
+								</div>
 							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Tiempo de Entrega</label>
-							<div class="col-md-12 col-sm-12 col-xs-12">
-								<input id="name" v-model="form.time_entrega" class="form-control" name="time_entrega" type="text" placeholder="Descripción">
-								<small class="form-control-feedback text-danger" v-if="errors.time_entrega" v-text="errors.time_entrega[0]"></small>
+							<div class="col-xs-12 col-sm-6 col-md-6">
+								<div class="form-group">
+									<label class="control-label">(*)Tiempo de Entrega</label>
+									<input id="name" v-model="form.time_entrega" class="form-control" name="time_entrega" type="text" placeholder="Descripción">
+									<small class="form-control-feedback text-danger" v-if="errors.time_entrega" v-text="errors.time_entrega[0]"></small>
+								</div>
 							</div>
-						</div>
-						<div class="modal-footer">
-							<button @click.prevent="closeModal" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-							<button @click.prevent="store(form)" type="submit" class="btn btn-sm btn-success">
-								<span v-if="!form.id">Registrar</span>
-								<span v-else>Actualizar</span>
-							</button>
+							<div class="modal-footer">
+								<button @click.prevent="closeModal" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+								<button @click.prevent="store(form)" type="submit" class="btn btn-sm btn-success">
+									<span v-if="!form.id">Registrar</span>
+									<span v-else>Actualizar</span>
+								</button>
+							</div>
 						</div>
 					</form>
 				</div>

@@ -1,8 +1,5 @@
 @php
-    use App\Models\Tenant\Catalogs\UnitType;use App\Models\Tenant\Configuration;use App\Models\Tenant\DocumentConfiguration;
-    use App\Models\Tenant\Establishment;use App\Models\Tenant\UnidadEquivalente;use App\Models\Tenant\User;$establishment = $order->establishment;
     $customer = $order->customer;
-    // $invoice = $order->invoice;
     $path_style = app_path('CoreDevPro'.DIRECTORY_SEPARATOR.'Templates'.DIRECTORY_SEPARATOR.'pdf'.DIRECTORY_SEPARATOR.'style.css');
     $order_number = $order->series.'-'.str_pad($order->number, 8, '0', STR_PAD_LEFT);
     $establishment2 = Establishment::without('country', 'department', 'province', 'district','almacenes')->find($order->establishment_id);
@@ -12,7 +9,6 @@
 @endphp
 <html>
 <head>
-    {{-- <title>{{ $order_number }}</title> --}}
     <title>PEDIDO</title>
     <link href="{{ $path_style }}" rel="stylesheet"/>
     <style>
@@ -39,8 +35,6 @@
     </style>
 </head>
 <body>
-
-
 @if($format =='ticket')
     @if($company->logo_ticket  ||$company->logo)
         <div class="text-center company_logo_box pt-4">
@@ -156,11 +150,11 @@
         <tr>
             @php
                 $decimal = 0;
-				$itemFind = \App\Models\Tenant\Item::find($row->item_id);
+				$itemFind = \App\Models\Item::find($row->item_id);
 					$marca = '';
 					if(optional($itemFind)->trademark_id)
 					{
-						$marcaModel = \App\Models\Tenant\Trademarks::find($itemFind->trademark_id);
+						$marcaModel = \App\Models\Trademarks::find($itemFind->trademark_id);
 						if($marcaModel)
 						{
 							$marca = $marcaModel->name;
@@ -176,7 +170,7 @@
             <td class="text-center desc-9 align-top">{{ number_format($row->quantity, $decimal) }}</td>
             <td class="text-center desc-9 align-top">
                 @php
-                    $unidad = \App\Models\Tenant\Catalogs\UnitType::where('id',$row->unit_type_id)->first();
+                    $unidad = \App\Models\Catalogs\UnitType::where('id',$row->unit_type_id)->first();
                     if($unidad) echo (empty($unidad->symbol) ? $row->unit_type_id :$unidad->symbol);
                     else echo $row->unit_type_id;
                 @endphp
@@ -186,7 +180,7 @@
                 @php
                     if(session('SHOW_PRESENTACION_DOCUMENTO')->valor==1)
                     {
-                        $presentacion = \App\Models\Tenant\UnidadEquivalente::where('id', $row->equivalencia_id)->without('tipoprecio','moneda','almacen','unidad_equivalente')->first();
+                        $presentacion = \App\Models\UnidadEquivalente::where('id', $row->equivalencia_id)->without('tipoprecio','moneda','almacen','unidad_equivalente')->first();
                         if($presentacion) echo "<br><small>{$presentacion->descripcion}</small>";
                     }
 
@@ -309,7 +303,7 @@
 
                     @php
 
-                        $est = \App\Models\Tenant\Establishment::without('country', 'department', 'province', 'district')->find($order->establishment_id);
+                        $est = \App\Models\Establishment::without('country', 'department', 'province', 'district')->find($order->establishment_id);
                         $pie_pagina = $est ? $est->pie_pagina : '';
                     @endphp
 
