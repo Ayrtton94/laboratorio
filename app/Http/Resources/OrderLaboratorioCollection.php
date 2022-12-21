@@ -2,16 +2,10 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class OrderLaboratorioCollection extends JsonResource
+class OrderLaboratorioCollection extends ResourceCollection
 {
-    /**
-     * Transform the resource collection into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     *  @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
-     */
     public function toArray($request)
     {
         return $this->collection->transform(function($row, $key) {
@@ -19,9 +13,11 @@ class OrderLaboratorioCollection extends JsonResource
             return [
                 'id' => $row->id,
                 'usuario' => optional($row->user)->name,
-                'date_of_issue' => $row->date_of_issue->format('Y-m-d'),
+                'date_of_issue' => $row->date_of_issue,
                 'time_of_issue' => $row->time_of_issue,
                 'number' => $row->number_full,
+				'tipo_orden' => $row->tipoorden->name,
+				'referencia' => $row->referencia,
                 'customer_name' => $row->customer->name,
                 'customer_number' => $row->customer->number,
                 'currency_type_id' => $row->currency_type_id,
@@ -29,12 +25,11 @@ class OrderLaboratorioCollection extends JsonResource
                 'total_value' => $row->total_value,
                 'total_igv' => $row->total_igv,
                 'total' => $row->total,
-
-                'created_at' => $row->created_at->format('Y-m-d H:i:s'),
-                'updated_at' => $row->updated_at->format('Y-m-d H:i:s'),
-                'estado' => $row->estado
-
-
+                'created_at' => optional($row->created_at)->format('Y-m-d H:i:s'),
+                'updated_at' => optional($row->updated_at)->format('Y-m-d H:i:s'),
+                'estado' => $row->estado,
+				'status_paid' => $row->status_paid,
+				'status_order' => $row->status_order
             ];
         });
     }

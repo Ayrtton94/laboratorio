@@ -60,10 +60,9 @@ class LaboratorioOrderController extends Controller
     public function records(Request $request)
     {
 		$records = LaboratorioOrder::with('items')->get();
-        return response()->json([
-            'records' => $records
-        ]);
-//        return new OrderLaboratorioCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
+		
+		return new OrderLaboratorioCollection($records);
+    //    return new OrderLaboratorioCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
     }
 
     public function create()

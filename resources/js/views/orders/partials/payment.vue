@@ -6,7 +6,7 @@
 					<h4 class="modal-title">
 						<span>MODALIDAD DE PAGO</span>
 					</h4>
-					<button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" @click.prevent="closeModal">
+					<button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" @click.prevent="closeModalPayment">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
@@ -27,7 +27,7 @@
 						
 
 						<div class="modal-footer">
-							<button @click.prevent="closeModal" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+							<button @click.prevent="closeModalPayment" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
 							<button @click.prevent="store(form)" type="submit" class="btn btn-sm btn-success">
 								<span v-if="!form.id">Registrar</span>
 								<span v-else>Actualizar</span>
@@ -66,8 +66,8 @@
 			store(form){
 				this.$emit('saveAppt', form);
 			},
-			closeModal(){
-				this.$emit('closeModal');
+			closeModalPayment(){
+				this.$emit('closeModalPayment');
 			},
 			tables(){
 				axios.get(`/${this.resource}/tables`)

@@ -36,7 +36,7 @@ class LaboratorioOrder extends Model
         'currency_type_id',
         'tporden_id',
         'responsable_id',
-        'documento_referencia',
+        'referencia',
 
         'total_value',
         'total_igv',
@@ -103,6 +103,11 @@ class LaboratorioOrder extends Model
 	{
         return $this->belongsTo(Person::class, 'responsable_id');
     }
+
+	public function tipoorden()
+	{
+		return $this->belongsTo(TipoOrden::class, 'tporden_id');
+	}
 
     public function group()
     {
