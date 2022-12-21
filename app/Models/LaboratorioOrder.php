@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\Tenant\Group;
-use App\Models\Tenant\Person;
+use App\Models\Group;
+use App\Models\Person;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
@@ -94,12 +94,13 @@ class LaboratorioOrder extends Model
         return $this->belongsTo(User::class);
     }
 
-
-    public function person() {
+    public function person()
+	{
         return $this->belongsTo(Person::class, 'customer_id');
     }
 
-    public function staff() {
+    public function staff()
+	{
         return $this->belongsTo(Person::class, 'responsable_id');
     }
 
@@ -137,12 +138,12 @@ class LaboratorioOrder extends Model
 
     public function getDownloadExternalPdfAttribute()
     {
-        return route('tenant.download.external_id', ['model' => 'document', 'type' => 'pdf', 'external_id' => $this->external_id]);
+        return route('download.external_id', ['model' => 'document', 'type' => 'pdf', 'external_id' => $this->external_id]);
     }
 
     public static function getItems($order_id)
     {
-        $query = DB::connection('tenant')->table('order_items as qui')
+        $query = DB::table('order_items as qui')
           ->select('ite.*')
           ->join('items as ite', 'ite.id', '=', 'qui.item_id')
           ->where('qui.order_id', $order_id)

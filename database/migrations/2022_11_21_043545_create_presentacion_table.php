@@ -62,7 +62,7 @@ class CreatePresentacionTable extends Migration
 			Schema::create('laboratorios', function (Blueprint $table) {
 				$table->id();
 				$table->string('name');
-				$table->string('description');
+				$table->string('description')->nullable();
 				$table->tinyInteger('estado')->default(1);
 				$table->timestamps();
 			});
@@ -72,7 +72,7 @@ class CreatePresentacionTable extends Migration
 			Schema::create('metodos', function (Blueprint $table) {
 				$table->id();
 				$table->string('name');
-				$table->string('description');
+				$table->string('description')->nullable();
 				$table->tinyInteger('estado')->default(1);
 				$table->timestamps();
 			});

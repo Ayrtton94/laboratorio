@@ -31,12 +31,16 @@ class CreateCatalogsTable extends Migration
             ['id' => '03', 'active' => true, 'short' => 'BV', 'description' => 'BOLETA DE VENTA ELECTRÓNICA'],
             ['id' => '07', 'active' => true, 'short' => 'NC', 'description' => 'NOTA DE CRÉDITO'],
             ['id' => '08', 'active' => true, 'short' => 'ND', 'description' => 'NOTA DE DÉBITO'],
-            ['id' => '09', 'active' => true, 'short' => null, 'description' => 'GUIA DE REMISIÓN REMITENTE'],
-            ['id' => '20', 'active' => true, 'short' => null, 'description' => 'COMPROBANTE DE RETENCIÓN ELECTRÓNICA'],
-            ['id' => '31', 'active' => true, 'short' => null, 'description' => 'Guía de remisión transportista'],
-            ['id' => '40', 'active' => true, 'short' => null, 'description' => 'COMPROBANTE DE PERCEPCIÓN ELECTRÓNICA'],
+            ['id' => '09', 'active' => false, 'short' => null, 'description' => 'GUIA DE REMISIÓN REMITENTE'],
+            ['id' => '20', 'active' => false, 'short' => null, 'description' => 'COMPROBANTE DE RETENCIÓN ELECTRÓNICA'],
+            ['id' => '31', 'active' => false, 'short' => null, 'description' => 'Guía de remisión transportista'],
+            ['id' => '40', 'active' => false, 'short' => null, 'description' => 'COMPROBANTE DE PERCEPCIÓN ELECTRÓNICA'],
             ['id' => '71', 'active' => false, 'short' => null, 'description' => 'Guia de remisión remitente complementaria'],
             ['id' => '72', 'active' => false, 'short' => null, 'description' => 'Guia de remisión transportista complementaria'],
+			['id' => '100', 'active' => false, 'short' => 'NV', 'description' => 'NOTA DE VENTA'],
+            ['id' => '101', 'active' => false, 'short' => 'TR', 'description' => 'TRANSFERENCIA'],
+			['id' => '103', 'active' => false, 'short' => 'AJ', 'description' => 'AJUSTE ALMACEN'],
+			['id' => '104', 'active' => true, 'short' => 'OL', 'description' => 'ÓRDEN DE LABORATORIO']
         ]);
 
         /*

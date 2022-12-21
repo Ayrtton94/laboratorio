@@ -369,24 +369,21 @@ export default {
         initForm() {
             this.errors = {}
             this.form = {
-
                 tests: [],
-
                 user_id: null,
                 establishment_id: 1,
                 state_type_id: '01',
                 group_id: '01',
                 document_type_id: 104,
-                series_id: null,
+                series_id: 13,
                 date_of_issue: moment().format('YYYY-MM-DD'),
                 time_of_issue: moment().format('HH:mm:ss'),
 				customer_id: null,
                 customer: null,
                 currency_type_id: 'PEN',
-                tporden_id: null,
+                tporden_id: 1,
                 responsable_id: null,
                 documento_referencia: null,
-
                 total_value: 0,
                 total_igv: 0,
                 total: 0,

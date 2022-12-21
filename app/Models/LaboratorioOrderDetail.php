@@ -33,6 +33,18 @@ class LaboratorioOrderDetail extends Model
 		'attributes'
     ];
 
+	public function muestra()
+	{
+		return $this->belongsTo(Muestra::class, 'muestra_id');
+	}
 
+	public function ensayo()
+	{
+		return $this->belongsTo(Prueba::class, 'prueba_id');
+	}
 
+	public function laboratorio()
+	{
+		return $this->belongsTo(Laboratorio::class, 'prueba_id');
+	}
 }

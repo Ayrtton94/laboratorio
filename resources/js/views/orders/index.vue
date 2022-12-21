@@ -37,31 +37,36 @@
                                 <td>{{ row.time_of_issue }}</td>
                                 <td>{{ row.usuario }}</td>
 								<td>{{ row.price }}</td>
-								<td>{{ row.price }}</td>
                                 <td>{{ row.price }}</td>
                                 <td>{{ row.total }}</td>
                                 <td>{{ row.total }}</td>
                                 <td>{{ row.total }}</td>
                                 <td>{{ row.total }}</td>
                                 <td>
-                                    <a v-if="row.estado!=0" class="btn text-danger" @click="clickDelete(row.id)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Eliminar" aria-label="Eliminar">
-                                        <vue-feather type="delete" class="fs-vue-feather-18"></vue-feather>
-                                    </a>
-                                    <a v-if="row.estado!=0" :href="`/${resource}/editar/${row.id}`" class="btn text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Editar" aria-label="Editar">
-                                        <vue-feather type="edit" class="fs-vue-feather-18"></vue-feather>
-                                    </a>
-						
 									<a v-if="row.estado!=0" @click.prevent="evaluateOrder(row)" class="btn text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Evaluar Order" aria-label="Evaluar Order">
 										<vue-feather type="archive" class="fs-vue-feather-18"></vue-feather>
 									</a>		
 									<a v-if="row.estado!=0" @click.prevent="modoPayment(row)" class="btn text-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Evaluar Order" aria-label="Evaluar Order">
 										<vue-feather type="credit-card" class="fs-vue-feather-18"></vue-feather>
 									</a>
-
-                                    <a class="btn text-success" v-if="row.estado==0" @click="clickRestore(row.id)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Restaurar" aria-label="Restaurar">
-                                        <vue-feather type="rotate-cw" class="fs-vue-feather-18"></vue-feather>
-                                    </a>
                                 </td>
+								<td class="text-right">
+									<div class="btn-group" role="group">
+										<button id="btnGroupDrop2" type="button" class="btn btn-sm  btn-success dropdown-toggle dropdown-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												Opciones
+										</button>
+										<div class="dropdown-menu" aria-labelledby="btnGroupDrop2">
+										
+											<a v-if="row.estado!=0" :href="`/${resource}/editar/${row.id}`" class="dropdown-item btn"> <vue-feather type="edit" class="fs-vue-feather-14"></vue-feather> Editar</a>
+											<a class="dropdown-item btn" :href="`/${resource}/imprimir/${row.id}/a4`" target="_blank"> <vue-feather type="printer" class="fs-vue-feather-14"></vue-feather> Imprimir</a>
+											<a v-if="row.estado!=0" @click="clickDelete(row.id)" class="dropdown-item btn"> <vue-feather type="delete" class="fs-vue-feather-14"></vue-feather> Eliminar</a>
+
+											<a class="dropdown-item btn" v-if="row.estado==0" @click="clickRestore(row.id)">
+												<vue-feather type="rotate-cw" class="fs-vue-feather-18"></vue-feather>
+											</a>
+										</div>
+									</div>
+								</td>
                             </tr>
                             </tbody>
                         </table>
@@ -72,16 +77,19 @@
     </div>
    <evaluar-order v-if="showDialogEvaluarOrder" :form="form" :errors="errors" @closeModal="closeModal" @saveAppt="saveAppt"/>
    <payment v-if="showDialogEvaluarOrder" :form="form" :errors="errors" @closeModalPayment="closeModalPayment" @saveAppt="saveAppt"/>
-		
+   <modal-options v-if="showDialogOptions" :recordId="recordId" @showClose="showClose" :showError="false"/>
+   
 </template>
 <script>
     import { deletable } from "../../mixins/deletable"
 	import EvaluarOrder from "../orders/partials/evaluar.vue"
 	import Payment from "../orders/partials/evaluar.vue"
+	import ModalOptions from "./partials/options.vue"
+
 export default {
     mixins: [deletable],
     components: {
-        EvaluarOrder, Payment
+        EvaluarOrder, Payment, ModalOptions
     },
     data(){
         return {
@@ -90,6 +98,7 @@ export default {
             showDialog: false,
 			showDialogEvaluarOrder :false,
 			showDialogPayment: false,
+			showDialogOptions: false,
             form: {},
             errors: {},
         }
@@ -110,10 +119,6 @@ export default {
         clickCreate(){
             this.showDialog = true;
         },
-        // clickUpdate(info){
-        //     this.showDialog = true;
-        //     this.getDataMoal(info);
-        // },
 		evaluateOrder(info){
 			this.showDialogEvaluarOrder = true;
             this.getDataMoal(info);
@@ -145,6 +150,9 @@ export default {
             this.showDialogPayment = false;
             this.initForm();
         },
+		showClose(){
+			this.showDialogOptions = false;
+		},
         saveAppt(form){
             axios.post(`/${this.resource}`, form)
                 .then(res => {
@@ -176,6 +184,10 @@ export default {
                 this.emitter.emit('reloadData')
             )
         },
+		clickOptions(recordId = null) {
+			this.recordId = recordId
+			this.showDialogOptions = true
+		}
     }
 }
 </script>

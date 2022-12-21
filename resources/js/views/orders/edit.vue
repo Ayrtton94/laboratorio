@@ -547,8 +547,6 @@ export default {
         subespecieFilter(){
             return this.subespecies.filter(el=> el.especie_id == this.form.especie_id);
         },
-
-
     },
     watch :{
 

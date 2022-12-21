@@ -225,7 +225,6 @@ Auth::routes();
 		Route::get('/items', 'items');
 		Route::delete('/{order}', 'destroy');
 		Route::get('/imprimir/{order}/{format}', 'imprimir');
-
 	});
 
 	// ASISTENCIAS
