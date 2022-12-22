@@ -207,12 +207,10 @@ Auth::routes();
 	// LABORATORIO ORDERS
 	Route::controller(LaboratorioOrderController::class)->prefix('orders')->group(function(){
 		Route::get('', 'index')->name('orders.index');
-//		Route::post('/orderall', 'recordsAll');
-//		Route::post('/AllOrder', 'AllOrder');
-		Route::get('/columns', 'columns');
+		Route::get('columns', 'columns');
 		Route::get('/records', 'records');
 		Route::get('/totals', 'totals');
-		Route::get('/crear', 'create');
+		Route::get('/crear', 'create')->name('orders.create');
 		Route::get('/editar/{order}', 'edit');
 		Route::get('tables', 'tables');
 		Route::get('/record/{order}', 'record');

@@ -50,19 +50,26 @@ class LaboratorioOrderController extends Controller
         return [
             'number' => 'Número / Serie-Número',
 			'date_of_issue' => 'Fecha de emisión',
-			'nombre_cliente' => 'Nombre Identificador',
 			'customer_id' => 'Nombre / Razón Social',
-			'customer_number' => 'Documento Cliente',
-			'user_id' => 'Usuario',
+			'tporden_id' => 'Tipo Orden'
         ];
     }
 
     public function records(Request $request)
     {
-		$records = LaboratorioOrder::with('items')->get();
+		$records = LaboratorioOrder::with('items');
 		
-		return new OrderLaboratorioCollection($records);
-    //    return new OrderLaboratorioCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
+		$records  = $records->where(function ($query) use($request) {
+			if($request->value)
+			{
+				if($request->column == 'number') return $query->where(DB::raw("CONCAT(`series`, '-', `number`)"), $request->value);
+				else if($request->column == 'customer_id') return $query->where('customer_id', $request->value);
+				else if($request->column == 'tporden_id') return $query->where('tporden_id', $request->value);
+				else  $query->where($request->column, 'like', "%{$request->value}%")->orWhereNull($request->column);
+			}
+		});
+		
+		return new OrderLaboratorioCollection($records->paginate(env('ITEMS_PER_PAGE', request('per_page'))));
     }
 
     public function create()

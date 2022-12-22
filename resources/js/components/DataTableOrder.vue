@@ -2,27 +2,7 @@
     <div>
         <div class="row mt-2 mb-2">
             <div class="col-md-12 col-lg-12 col-xl-12 mb-3 mt-2">
-				<div class="row">
-					<div class="col-lg-3 col-md-3 col-sm-12 pb-2 ml-2">
-                        <div class="d-flex">
-                            <div style="width:120px;padding-top:5px;font-weight:800">
-                                <strong>Ordenar por:</strong>
-                            </div>
-                            <el-select v-model="search.order"  placeholder="Select" @change="changeClearInput">
-								<el-option v-for="(label, key) in orders" :key="key" :value="key" :label="label"></el-option>
-							</el-select>
-                        </div>
-                    </div>
-					<div class="col-lg-2 col-md-3 col-sm-12 pb-2">
-						<el-select v-model="search.sort"  placeholder="Select" @change="changeClearInput">
-							<el-option value="ASC" label="Ascendente"></el-option>
-							<el-option value="DESC" label="Descendente"></el-option>
-
-						</el-select>
-					</div>
-				</div>
                 <div class="row">
-
                     <div class="col-lg-3 col-md-3 col-sm-12 pb-2 ml-2">
                         <div class="d-flex">
                             <div style="width:120px;padding-top:5px;font-weight:800">
@@ -33,38 +13,22 @@
                             </el-select>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-4 col-sm-12 pb-2">
-						<!-- <template v-else-if="search.column=='usuario_id'|| search.column=='user_id'">
-                            <el-select v-model="search.value" filterable clearable>
-								<el-option v-for="option in users" :key="option.id" :value="option.id" :label="option.name"></el-option>
-							</el-select>
-                        </template>
-						<template v-else-if="search.column=='sucursal_id'|| search.column=='establishment_id'">
-                            <el-select v-model="search.value" filterable clearable>
-								<el-option v-for="option in sucursales" :key="option.id" :value="option.id" :label="option.description"></el-option>
-							</el-select>
-                        </template>
-						<template v-else-if="search.column=='presentacion_id'">
-                            <el-select v-model="search.value" filterable clearable>
-								<el-option v-for="option in presentaciones" :key="option.id" :value="option.id" :label="option.description"></el-option>
-							</el-select>
-                        </template>
-						<template v-else-if="search.column=='warehouse_id'|| search.column=='almacen'">
-                            <el-select v-model="search.value" filterable clearable>
-								<el-option v-for="option in almacenes" :key="option.id" :value="option.id" :label="option.description"></el-option>
-							</el-select>
-                        </template>
-                        <template v-else>
-                            <el-input placeholder="Buscar"
-                                v-model="search.value"
-                                style="width: 100%;"
-                                prefix-icon="el-icon-search"
-								clearable
-                                @input="getRecords2">
-                            </el-input>
-                        </template> -->
-                    </div>
-					<div class="col-lg-3 col-sm-12 pb-2" v-if="showAtendidos || showEliminados || showAnulados || showStatusPaid " >
+					<div class="col-lg-3 col-md-4 col-sm-12 pb-2" v-if="search.column=='date_of_issue'">
+						<el-date-picker v-model="search.value" style="width: 100%;" placeholder="Fecha Emisión" value-format="YYYY-MM-DD"/>
+					</div>
+					<customer-search v-else-if="search.column=='customer_id'" :showLabel="false" v-model:customer_id="search.value" class="col-lg-3 col-md-4 col-sm-12 pb-2"
+						:customersList=[] :errors="[]" ></customer-search>
+					
+					<div class="col-lg-3 col-md-4 col-sm-12 pb-2" v-else-if="search.column=='tporden_id'">
+						<el-select v-model="search.value" filterable clearable placeholder="Tipo Orden">
+							<el-option v-for="option in services" :key="option.id" :value="option.id" :label="option.name"></el-option>
+						</el-select>
+					</div>	
+					<div class="col-lg-3 col-md-4 col-sm-12 pb-2" v-else>
+						<el-input placeholder="Buscar" v-model="search.value" style="width: 100%;" :size="mini" :prefix-icon="Search" clearable filterable @input="getRecords2" />
+					</div>
+					
+					<div class="col-lg-3 col-sm-12 pb-2" v-if="showAtendidos || showEliminados || showStatusPaid " >
 						<div class="form-group col-12" v-if="showAtendidos">
 							<label class="control-label mr-2">Incluir Atendidos</label>
 							<el-checkbox v-model="search.atendidos"  @change="getRecords2"></el-checkbox>
@@ -72,10 +36,6 @@
 						<div class="form-group col-12"  v-if="showEliminados">
 							<label class="control-label mr-2">Incluir Eliminadas</label>
 							<el-checkbox v-model="search.eliminados"  @change="getRecords2"></el-checkbox>
-						</div>
-						<div class="form-group col-12"  v-if="showAnulados">
-							<label class="control-label mr-2">Incluir Anuladas</label>
-							<el-checkbox v-model="search.anulados"  @change="getRecords2"></el-checkbox>
 						</div>
                     </div>
 					<div class="col-xl-2">
@@ -95,10 +55,9 @@
                 </div>
             </div>
             <div class="col-md-12">
-                <div class="table-responsive tableFixHead  ">
-
-					<table class="table table-head-purple header-fixed my-table-scroll"  >
-						<thead class="red">
+                <div class="table-responsive">
+					<table class="table table-striped dt-responsive nowrap" cellspacing="0" width="100%">
+						<thead>
 							<slot name="heading"></slot>
 						</thead>
 						<tbody>
@@ -114,9 +73,9 @@
 							@current-change="getRecords2"
 							layout="total, prev, pager, next"
 							:total="pagination.total"
-							:current-page="pagination.current_page"
-							:page-size="pagination.per_page">
-						</el-pagination>
+							v-model:current-page="pagination.current_page"
+							:page-size="pagination.per_page"/>
+						
 					</div>
 
                 </div>
@@ -124,11 +83,10 @@
         </div>
     </div>
 </template>
-
 <script>
 
-    import moment from 'moment'
     import queryString from 'query-string'
+	import CustomerSearch from './CustomerSearch'
     export default {
         props: {
             resource: String,
@@ -137,10 +95,6 @@
                 default : true
 			},
 			showEliminados :{
-				type : Boolean,
-				default : false
-			},
-			showAnulados :{
 				type : Boolean,
 				default : false
 			},
@@ -184,12 +138,11 @@
 					sort : 'DESC'
 
                 },
-				orders  : [],
                 columns: [],
                 records: [],
                 totals: [],
 				pagination: {},
-				users  : [],
+				services  : [],
 				sucursales : [],
 				almacenes : [],
 				presentaciones : []
@@ -200,22 +153,19 @@
         created() {
             this.emitter.on('reloadData', () => {
                 this.getRecords()
-
-                this.getTotals()
+                // this.getTotals()
             })
         },
         async mounted () {
 			let column_resource = _.split(this.resource, '/')
 
             await axios.get(`/${_.head(column_resource)}/columns`).then(({data}) => {
-                this.columns = data.columns
-				this.orders = data.orders
-				this.search.order = Object.keys(this.orders)[0];
+                this.columns = data
                 this.search.column = _.head(Object.keys(this.columns))
             });
 			await this.getRecords()
 
-            await this.getTotals()
+            // await this.getTotals()
         },
         methods: {
             customIndex(index) {
@@ -233,14 +183,13 @@
 			{
 				window.open(`/${this.resource}/records/excel?${this.getQueryParameters()}`,'_blank');
 			},
-            getTotals(){
-                if(this.showTotals){
-                    return axios.get(`/${this.resource}/totals?${this.getQueryParameters()}`).then((response) => {
-                        this.totals = response.data.data
-                    });
-                }
-
-            },
+            // getTotals(){
+            //     if(this.showTotals){
+            //         return axios.get(`/${this.resource}/totals?${this.getQueryParameters()}`).then((response) => {
+            //             this.totals = response.data.data
+            //         });
+            //     }
+            // },
             getQueryParameters() {
                 return queryString.stringify({
                     page: this.pagination.current_page,
@@ -251,31 +200,16 @@
             },
             getRecords2(){
                 this.getRecords()
-                this.getTotals()
+                // this.getTotals()
             },
             changeClearInput(){
                 this.search.value = ''
                 this.getRecords()
-                this.getTotals()
+                // this.getTotals()
 			},
-			getUsuarios(){
-				axios.get(`/users/records`).then(({data}) => {
-					this.users = data.data;
-				});
-			},
-			getSucursales(){
-				axios.get(`/sucursales/records`).then(({data}) => {
-					this.sucursales = data.data;
-				});
-			},
-			getPresentaciones(){
-				axios.get(`/presentaciones/todos`).then(({data}) => {
-					this.presentaciones = data.data;
-				});
-			},
-			getAlmacenes(){
-				axios.get(`/warehouses/todos`).then(({data}) => {
-					this.almacenes = data.data;
+			getServices(){
+				axios.get(`/tipodeorden/records`).then(({data}) => {
+					this.services = data.tipoorden;
 				});
 			}
 		},
@@ -286,27 +220,14 @@
 			},
 			'search.column': function(oldVal,newVal){
 
-				if(this.search.column == 'usuario_id' || this.search.column == 'user_id'){
-					this.getUsuarios();
-				}
-				else if(this.search.column == 'sucursal_id' || this.search.column == 'establishment_id'){
-					this.getSucursales();
-				}
-				else if(this.search.column == 'presentacion_id' ){
-					this.getPresentaciones();
-				}
-				else if(this.search.column == 'warehouse_id' || this.search.column =='almacen' ){
-					this.getAlmacenes();
+				if(this.search.column == 'tporden_id'){
+					this.getServices();
 				}
 			},
 			'search.value': function(){
 				this.getRecords();
-				this.getTotals()
+				// this.getTotals()
 			}
 		}
     }
 </script>
-<style lang="scss" >
-
-
-</style>
