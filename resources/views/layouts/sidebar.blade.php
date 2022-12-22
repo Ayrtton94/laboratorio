@@ -99,12 +99,12 @@
                         <li class="category-heading">Laboratorio
                         <li>
 
-                        <li class="nav-item"><a class="nav-link" href="">Generar Orden de Laboratorio</a></li>
-                        <li class="nav-item"><a class="nav-link" href="">Listar órdenes</a></li>
-                        <li class="nav-item"><a class="nav-link" href="recepcion-generar-campana-brucella.php">Generar
+                        <li class="nav-item"><a class="nav-link" href="{{ route('orders.create')}}">Generar Orden de Laboratorio</a></li>
+                        {{-- <li class="nav-item"><a class="nav-link" href="">Listar órdenes</a></li> --}}
+                        {{-- <li class="nav-item"><a class="nav-link" href="recepcion-generar-campana-brucella.php">Generar
                                 orden de Campaña Brucella</a></li>
                         <li class="nav-item"><a class="nav-link" href="recepcion-comprobante-de-venta.php">Comprobante
-                                de venta</a></li>
+                                de venta</a></li> --}}
                     </ul>
                 </div>
             </li>
