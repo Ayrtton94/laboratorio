@@ -17,15 +17,9 @@ class OrderRequest extends FormRequest
         return [
 //            'series' => 'required',
             'date_of_issue'=> 'required',
-//            'time_of_issue'=> 'required',
-
             'customer_id',
-//            'customer',
             'tporden_id' => 'required',
-            'responsable_id' => 'required',
-//            'documento_referencia',
-
-
+            'responsable_id' => 'required'
         ];
     }
 }
