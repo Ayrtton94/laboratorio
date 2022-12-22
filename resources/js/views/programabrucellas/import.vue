@@ -33,7 +33,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <a class="donwload-format text-left mt-2" href="/formats/attendance.xlsx" target="_new">
+                                    <a class="donwload-format text-left mt-2" href="/formats/programabrucellas.xlsx" target="_new">
                                         <vue-feather type="download" class="fs-vue-feather-18 mt-3"></vue-feather> Formato
                                     </a>
                                 </div>
