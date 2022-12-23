@@ -220,6 +220,8 @@ Auth::routes();
 		Route::get('/send/{order}', 'send');
 		Route::post('/email', 'email');
 		Route::get('/table/{table}', 'table');
+		Route::get('/evaluacion/{recordId}', 'evaluacionData');
+		Route::put('/status_paid/{id}', 'updatePayment');
 		Route::get('/items', 'items');
 		Route::delete('/{order}', 'destroy');
 		Route::get('/imprimir/{order}/{format}', 'imprimir');

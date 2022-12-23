@@ -45,7 +45,9 @@ class LaboratorioOrder extends Model
         'legends',
         'filename',
 		'type_document_fact',
-		'tipo'
+		'tipo',
+		'status_paid',
+		'status_order'
 
     ];
 

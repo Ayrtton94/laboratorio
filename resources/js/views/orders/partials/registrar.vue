@@ -1,5 +1,5 @@
 <template>
-	<el-dialog :title="titleDialog" model-value="showDialogEvaluarOrder" class="mt-2" @close="closeModal" width="85%">			
+	<el-dialog :title="titleDialog" model-value="showDialogEvaluarOrder" class="mt-2" @close="closeModalResult" width="85%">			
 		<div class="modal-body p-0">
 			<form id="signupForm" autocomplete="off" @submit.prevent="submit">
 				<div class="row">
@@ -48,74 +48,78 @@
 								</el-descriptions>
 							</div>
 						</div>
-						<div class="row">
-							<div class="col-md-6">
-								<div class="form-group">
-									<label class="control-label">(*)Estado</label>
-									<el-select v-model="form.status_test" class="w-100" filterable>
-										<el-option v-for="option in statustest" :key="option.id" :label="option.nombre"  :value="option.id"></el-option>
-									</el-select>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label class="control-label">(*)Observación</label>
-									<el-input v-model="form.comentario" type="textarea" autosize style="height: 70px !important"></el-input>								
-								</div>
-							</div>
-						</div>
 					</div>
 					<div class="col-6">
 						<div class="row">
-							<div class="table-responsive">
-								<h5># Cant Muestras</h5>
-								<table class="table table-bordered">
-									<thead class="table-primary">
-										<tr>
-											<th width="5px">#</th>
-											<th class="text-center font-weight-bold" width="60px">GRUPO</th>
-											<th class="text-center font-weight-bold" width="60px">MUESTRA</th>
-										</tr>
+							<div class="table-responsive bg-white text-black">
+								<table class="table  bg-white text-black ">
+									<thead>
+									<tr>
+										<th></th>
+										<th>Muestra</th>
+										<th>Resultado</th>
+										<th>Lote Num</th>
+										<th>F. Vencimiento</th>
+									</tr>
 									</thead>
 									<tbody>
-										<tr v-for="(row, index) in this.tableDataGrupo" :key="index">
-											<td>{{ index + 1 }}</td>
-											<td>{{ row.grupo }}</td>
-											<td>{{ row.muestra }}</td>
-										</tr>		
 										<tr>
-											<td colspan="1" class="font-weight-bold text-center">Registros: 1</td>
-											<td colspan="1" class="font-weight-bold text-center">Aceptadas: 0</td>
-											<td colspan="1" class="font-weight-bold text-center">Rechazadas: 0</td>
-										</tr>								
-									</tbody>
-								</table>
-							</div>
-						</div>
-						<hr>
-						<div class="row">
-							<div class="table-responsive">
-								<h5>Lista de pruebas</h5>
-								<table class="table table-bordered">
-									<thead class="table-primary">
-										<tr>
-											<th width="5px">#</th>
-											<th class="text-center font-weight-bold" width="60px">PRUEBA</th>
-											<th class="text-center font-weight-bold" width="60px">MATRIZ</th>
+											<td>
+												<div class="form-check form-check-inline">
+													<input type="checkbox" name="skill_check" class="form-check-input" id="checkInline1" checked="checked">
+												</div>
+											</td>
+											<td>
+											<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+											01 - Ver
+											</button>
+											<!-- Modal -->
+											<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+											<div class="modal-dialog">
+												<div class="modal-content bg-white text-black">
+													<div class="modal-header">
+														<h5 class="modal-title" id="exampleModalLabel">Detalle de Prueba</h5>
+														<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
+													</div>
+												<div class="modal-body">
+													
+													<div class="table-responsive bg-white text-black">
+														<table class="table  bg-white text-black ">
+															<thead>
+																<th>Prueba</th>
+																<th>Muestra</th>
+																<th>Matriz</th>
+															</thead>
+															<tbody>
+																<tr>
+																	<td>Detección de anticuerpos frente a Brucella abortus mediante la tecnica de elisa indirecta en leche fresca de bovino* </td>
+																	<td>Leche fresca de bovino</td>
+																	<td>Cuerpos, tejidos y fluidos biologicos animales </td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+											</div>
+											</div>
+											</td>
+											<td>
+												<select class="form-select bg-white text-black" name="age_select" id="ageSelect">
+													<option >----</option>
+													<option >POSITIVO</option>
+													<option selected="">NEGATIVO</option>
+												</select>
+											</td>
+											<td><input class="form-control" type="" name="" value="AA221"></td>
+											<td><input class="form-control" type="" name="" value="05/11/2022"></td>
 										</tr>
-									</thead>
-									<tbody>
-										<tr v-for="(row, index) in this.tableDataPruebas" :key="index">
-											<td>{{ index + 1 }}</td>
-											<td>{{ row.prueba }}</td>
-											<td>{{ row.matriz }}</td>
-										</tr>										
 									</tbody>
 								</table>
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button @click.prevent="closeModal" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+							<button @click.prevent="closeModalResult" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
 							<button type="submit" class="btn btn-sm btn-success">
 								<span>Registrar</span>
 							</button>
@@ -132,7 +136,7 @@
 		props: ['showDialogEvaluarOrder', 'recordId'],
 		data(){
 			return {
-				titleDialog: 'EVALUACIÓN DE ORDEN DE LABORATORIO',
+				titleDialog: 'REGISTRAR RESULTADOS DEL LABORATORIO',
 				resource: 'pruebas',
 				tableData:[
 					{"id": "1", "item": "LECHE FRESCA DE BOVINO", "presentacion": "TUBO DE PLÁSTICO", "capacidad": "Aprox 10ML"}
@@ -151,24 +155,17 @@
 			}
 		},
 		created(){
-			// this.tables();
-			
+			this.tables();
 		},
 		methods:{
-			getData(){
-				axios.get(`/orders/evaluacion`, this.recordId)
-				.then(res => {
-					console.log(res);
-				})
-			},
 			initForm(){
 				this.form = {
 					status_test: null,
 					comentario: null
 				}
 			},
-			closeModal(){
-				this.$emit('closeModal');
+			closeModalResult(){
+				this.$emit('closeModalResult');
 			},
 			tables(){
 				axios.get(`/${this.resource}/tables`)
