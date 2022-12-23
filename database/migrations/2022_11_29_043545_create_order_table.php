@@ -83,7 +83,7 @@ class CreateOrderTable extends Migration
 				$table->string('currency_type_id', 4)->nullable();
                 $table->unsignedInteger('tporden_id')->nullable();
 				$table->unsignedInteger('responsable_id')->nullable();
-				$table->string('documento_referencia')->nullable();
+				$table->string('referencia')->nullable();
 				$table->decimal('total_value', 12, 2)->default(0);
 				$table->decimal('total_igv', 12, 2)->default(0);
 				$table->decimal('total', 12, 2);

@@ -68,7 +68,7 @@
             </div>
         </div>
     </div>
-   <evaluar-order v-if="showDialogEvaluarOrder" :form="form" :errors="errors" @closeModal="closeModal" @saveAppt="saveAppt"/>
+   <evaluar-order v-if="showDialogEvaluarOrder" @closeModal="closeModal"/>
    <payment v-if="showDialogPayment" :form="form" :errors="errors" @closeModalPayment="closeModalPayment" @saveAppt="saveAppt"/>
    <modal-options v-if="showDialogOptions" :recordId="recordId" @showClose="showClose" :showError="false"/>
 </template>
@@ -113,9 +113,8 @@ export default {
         clickCreate(){
             this.showDialog = true;
         },
-		evaluateOrder(info){
+		evaluateOrder(){
 			this.showDialogEvaluarOrder = true;
-            this.getDataMoal(info);
 		},
 		modoPayment(info){
 			this.showDialogPayment = true;
@@ -123,7 +122,6 @@ export default {
 		},
         closeModal(){
             this.showDialogEvaluarOrder = false;
-            this.initForm();
         },
 		getDataMoalPayment(info){
             this.form.id = info.id

@@ -428,7 +428,7 @@ export default {
                 currency_type_id: 'PEN',
                 tporden_id: null,
                 responsable_id: null,
-                documento_referencia: null,
+                referencia: null,
 
                 total_value: 0,
                 total_igv: 0,
