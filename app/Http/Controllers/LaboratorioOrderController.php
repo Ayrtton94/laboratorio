@@ -313,4 +313,27 @@ class LaboratorioOrderController extends Controller
 			return $pdf->stream();
         }
     }
+
+	public function evaluacionData($id)
+	{
+		$records = LaboratorioOrder::with('items')->find($id);
+		
+		return new OrderLaboratorioCollection($records);
+	}
+
+	public function updatePayment($id,Request $request)
+	{
+		
+		$records = LaboratorioOrder::where('id', $id)->first();
+		
+		if($records){
+			$records->update([
+				'status_paid' => $request->input('payment_id')
+			]);
+		}
+		return [
+            'success' => true,
+            'message' => 'Datos Actualizados'
+        ];
+	}
 }

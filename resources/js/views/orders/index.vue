@@ -55,8 +55,9 @@
 												<a class="dropdown-item btn" :href="`/${resource}/imprimir/${row.id}/a4`" target="_blank"> <vue-feather type="printer" class="fs-vue-feather-14"></vue-feather> Imprimir</a>
 												<a v-if="row.estado!=0" @click="clickDelete(row.id)" class="dropdown-item btn"> <vue-feather type="delete" class="fs-vue-feather-14"></vue-feather> Eliminar</a>
 												<a class="dropdown-item btn" v-if="row.estado==0" @click="clickRestore(row.id)"><vue-feather type="rotate-cw" class="fs-vue-feather-14"></vue-feather></a>
-												<a v-if="row.estado!=0" @click.prevent="evaluateOrder(row)" class="dropdown-item btn"><vue-feather type="archive" class="fs-vue-feather-14"></vue-feather> Evaluar Orden</a>		
-												<a v-if="row.estado!=0" @click.prevent="modoPayment(row)" class="dropdown-item btn"> <vue-feather type="credit-card" class="fs-vue-feather-14"></vue-feather> Forma de Pago</a>
+												<a v-if="row.estado!=0" @click.prevent="evaluateOrder(row.id)" class="dropdown-item btn"><vue-feather type="archive" class="fs-vue-feather-14"></vue-feather> Evaluar Orden</a>
+												<a v-if="row.estado!=0" @click.prevent="registrarResultOrder(row)" class="dropdown-item btn"><vue-feather type="archive" class="fs-vue-feather-14"></vue-feather> + Resultados</a>		
+												<a v-if="row.estado!=0" @click.prevent="modoPayment(row.id)" class="dropdown-item btn"> <vue-feather type="credit-card" class="fs-vue-feather-14"></vue-feather> Forma de Pago</a>
 											</div>
 										</div>
 									</td>
@@ -69,13 +70,15 @@
         </div>
     </div>
    <evaluar-order v-if="showDialogEvaluarOrder" @closeModal="closeModal"/>
-   <payment v-if="showDialogPayment" :form="form" :errors="errors" @closeModalPayment="closeModalPayment" @saveAppt="saveAppt"/>
+   <payment v-if="showDialogPayment" :recordId="recordId" @closeModalPayment="closeModalPayment"/>
    <modal-options v-if="showDialogOptions" :recordId="recordId" @showClose="showClose" :showError="false"/>
+   <registrar-order v-if="showDialogRegistrarResult" :recordId="recordId" @closeModalResult="closeModalResult" :showError="false"/>
 </template>
 <script>
     import { deletable } from "../../mixins/deletable"
 	import DataTable from '../../components/DataTableOrder'
 	import EvaluarOrder from "../orders/partials/evaluar.vue"
+	import RegistrarOrder from "../orders/partials/registrar.vue"
 	import Payment from "../orders/partials/payment.vue"
 	import ModalOptions from "./partials/options.vue"
 
@@ -83,7 +86,7 @@ export default {
     mixins: [deletable],
     components: {
 		DataTable,
-        EvaluarOrder, Payment, ModalOptions
+        EvaluarOrder, Payment, ModalOptions, RegistrarOrder
     },
     data(){
         return {
@@ -91,6 +94,7 @@ export default {
             records: [],
             showDialog: false,
 			showDialogEvaluarOrder :false,
+			showDialogRegistrarResult: false,
 			showDialogPayment: false,
 			showDialogOptions: false,
             form: {},
@@ -98,41 +102,34 @@ export default {
         }
     },
     created() {
-        // this.emitter.on('reloadData', () => {
-        //     this.getData();
-        // });
-        // this.getData();
     },
     methods: {
-        // getData(){
-        //     axios.get(`/${this.resource}/records`)
-        //         .then(res => {
-        //             this.records = res.data.data
-        //         })
-        // },
         clickCreate(){
             this.showDialog = true;
         },
-		evaluateOrder(){
+		evaluateOrder(recordId = null){
+			this.recordId = recordId;
 			this.showDialogEvaluarOrder = true;
 		},
-		modoPayment(info){
+		registrarResultOrder(recordId = null){
+			this.recordId = recordId
+			this.showDialogRegistrarResult = true
+		},
+		modoPayment(recordId = null){
+			this.recordId = recordId
 			this.showDialogPayment = true;
-            this.getDataMoalPayment(info);
 		},
         closeModal(){
             this.showDialogEvaluarOrder = false;
         },
-		getDataMoalPayment(info){
-            this.form.id = info.id
-            this.form.status_paid = info.status_paid
-        },
 		closeModalPayment(){
             this.showDialogPayment = false;
-            this.initForm();
         },
 		showClose(){
 			this.showDialogOptions = false;
+		},
+		closeModalResult(){
+			this.showDialogRegistrarResult = false;
 		},
         clickDelete(id) {
             this.destroy(`/${this.resource}/${id}`).then(() =>
