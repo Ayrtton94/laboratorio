@@ -38,7 +38,7 @@ class CatalogSeeder extends Seeder
 
 		Person::create([
             'name' => 'CLIENTES VARIOS',
-            'identity_document_type_id'=> 1,
+            'identity_document_id'=> 1,
             'number'=>'00000000',
             'type' =>'customers',
             'country_id'=> 'PE'
