@@ -33,9 +33,7 @@
 				form: {}
 			}
 		},
-		created(){
-			console.log(this.recordId);
-		},
+		
 		methods:{
 			initForm(){
 				this.form = {
@@ -44,15 +42,18 @@
 			},
 			closeModalPayment(){
 				this.$emit('closeModalPayment');
-				// this.initForm();
 			},
 			submit(){
-				
 				axios.put(`/${this.resource}/status_paid/${this.recordId}`, this.form)
 				.then(response => {
-					console.log(response);
-                    // this.form = response.data.data;
-                    // this.titleDialog = 'Orden de Laboratorio: '+this.form.number;
+					this.$swal({
+						icon: 'success',
+						title: response.data.message,
+						showConfirmButton: false,
+						timer: 1500
+					})
+					this.emitter.emit('reloadData')
+					this.closeModalPayment();
                 });
 			},
 		}

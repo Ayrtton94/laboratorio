@@ -206,15 +206,16 @@
                                             <td class="text-center">{{ getNameLaboratorio(row.prueba_id) }}</td>
                                             <td class="text-center">{{ row.quantity }}</td>
                                             <td class="text-center">{{ getPruebaPrice(row.prueba_id) }}</td>
-                                            <td class="text-center">{{ getTotal(row.prueba_id) }}</td>
+                                            <td class="text-center">{{ row.price_total * row.quantity }}</td>
                                             <td class="text-center">{{ getPruebaTime(row.prueba_id) }}</td>
                                             <td class="text-center">{{ getPruebaCondition(row.condicion) }}</td>
                                             <td class="text-center">{{ row.date_of_muestra }}</td>
                                             <td class="text-center">{{ row.date_of_recepcion }}</td>
                                             <td class="text-center">{{ row.date_of_result }}</td>
                                             <td class="text-center">{{ row.temperatura }}</td>
-                                            <td class="text-center"></td>
-
+                                            <td class="text-center">
+												<button type="button" class="btn waves-effect waves-light btn-sm btn-danger" @click="clickRemoveItem(index)">x</button>
+											</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -227,17 +228,13 @@
                         </div>
 
                         <div class=" col-12 col-sm-12 float-right">
-
                             <h5 class="text-right"><b>TOTAL: </b>{{ total_pagar }}</h5>
-
                         </div>
 
                         <div class=" col-12 col-sm-12 float-right">
-
                             <button  type="submit" class="btn btn-sm btn-success">
                                 <span>Registrar</span>
                             </button>
-
                         </div>
                     </div>
 
@@ -305,6 +302,7 @@ export default {
                     this.matrices = response.data.matrices
                     this.muestras = response.data.muestras
                     this.pruebas = response.data.pruebas
+					this.pruebasTemp = response.data.pruebas
                     this.especies = response.data.especies
                     this.subespecies = response.data.subespecies
                     this.presentaciones = response.data.presentaciones
@@ -356,14 +354,14 @@ export default {
             return '';
         },
         getPruebaPrice(id){
-            let itemPrueba = _.find(this.pruebas, {id: id})
+            let itemPrueba = _.find(this.pruebasTemp, {id: id})
             if(itemPrueba) return itemPrueba.price;
             return '';
         },
         getTotal(id){
 
-            let itemTotal = _.find(this.pruebas, {id: id})
-            if(itemTotal) return itemTotal.price * this.form.quantity;
+            let itemTotal = _.find(this.pruebasTemp, {id: id})
+            if(itemTotal) return itemTotal.price;
             return '';
         },
         initForm() {
@@ -395,6 +393,21 @@ export default {
                 tipo: null
             }
         },
+		clearData(){
+			this.form.quantity = '';
+			this.form.matriz_id = null;
+			this.form.muestra_id = null;
+			this.form.prueba_id = '';
+			this.form.especie_id = null;
+			this.form.subespecie_id = null;
+			this.form.presentacion_id = null;
+			this.form.observacion = '';
+			this.form.date_of_muestra = null;
+			this.form.tiempo_entrega = null;
+			this.form.date_of_recepcion = null;
+			this.form.date_of_result = null;
+			this.form.temperatura = '';
+		},
 		reloadDataCustomers(customer_id) {
 			axios.get(`/${this.resource}/table/customers`).then((response) => {
 				this.customers = response.data
@@ -431,8 +444,9 @@ export default {
                 date_of_result: this.form.date_of_result,
                 temperatura: this.form.temperatura
             });
-
+			
             this.calculateTotal()
+			this.clearData();
         },
 		queryDocumentApi(){
            this.queryDocument()
@@ -458,9 +472,13 @@ export default {
 
             axios.post(`/${this.resource}`, this.form)
                 .then(async response => {
-                    console.log(response.data)
                     if (response.data.success) {
-                        this.resetForm();
+						this.$swal({
+							icon: 'success',
+							title: response.data.message,
+							showConfirmButton: false,
+							timer: 1500
+						})
                         this.close();
                     }
                     else {
@@ -482,6 +500,10 @@ export default {
         close() {
             location.href = '/orders'
         },
+		clickRemoveItem(index){
+			this.form.tests.splice(index, 1)
+			this.calculateTotal()
+		}
     },
     computed :{
         total_pagar(){
