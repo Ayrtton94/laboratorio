@@ -207,9 +207,6 @@ class LaboratorioOrderController extends Controller
             $serieDocument->update([
                 'number'=> $orderLaboratorio->number + 1
             ]);
-
-
-
         });
 
             return [
@@ -333,7 +330,7 @@ class LaboratorioOrderController extends Controller
 		}
 		return [
             'success' => true,
-            'message' => 'Datos Actualizados'
+            'message' => 'Pago Actualizado'
         ];
 	}
 }
