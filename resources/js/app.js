@@ -63,6 +63,7 @@ import ordersinvoice from './views/orders/invoice.vue'
 import ordersedit from './views/orders/edit.vue'
 
 import schedules from './views/Schedule/index.vue'
+
 import programabrucellas from './views/programabrucellas/index.vue'
 import programabrucellasform from './views/programabrucellas/form.vue'
 
@@ -143,5 +144,6 @@ app.component('orders-edit', ordersedit);
 
 //HORARIO
 app.component('programabrucellas', programabrucellas);
+app.component('schedules', schedules);
 
 app.mount('#app')
