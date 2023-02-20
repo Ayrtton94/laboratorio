@@ -35,89 +35,140 @@
 									<small class="form-control-feedback text-danger" v-if="errors.number" v-text="errors.number[0]"></small>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-4 col-md-4">
-								<div class="form-group">
-									<label class="control-label">
-										<span v-if="this.form.type=='staff'">Nombres</span>
-										<span v-else>Nombre</span>
-									</label>
-									<el-input v-model="form.name" type="text" placeholder="Nombre"/>
-									<small class="form-control-feedback text-danger" v-if="errors.name" v-text="errors.name[0]"></small>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-4 col-md-4" v-if="this.form.type=='staff'">
-								<div class="form-group">
-									<label class="control-label">Apellido Paterno</label>
-									<el-input v-model="form.ap_lastname" type="text" placeholder="Apellido Paterno"/>
-									<small class="form-control-feedback text-danger" v-if="errors.ap_lastname" v-text="errors.ap_lastname[0]"></small>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-4 col-md-4" v-if="this.form.type=='staff'">
-								<div class="form-group">
-									<label class="control-label">Apellido Materno</label>
-									<el-input v-model="form.am_lastname" type="text" placeholder="Apellido Materno"/>
-									<small class="form-control-feedback text-danger" v-if="errors.am_lastname" v-text="errors.am_lastname[0]"></small>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-4 col-md-4">
-								<div class="form-group">
-									<label class="control-label">Telefono</label>
-									<el-input v-model="form.telephone" type="text" placeholder="Telefono"/>
-									<small class="form-control-feedback text-danger" v-if="errors.telephone" v-text="errors.telephone[0]"></small>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-4 col-md-4" v-if="this.form.type=='staff'">
-								<div class="form-group">
-									<label class="control-label">Teléfono adicional</label>
-									<el-input v-model="form.additional_phone" type="text" placeholder="Telefono Adicional"/>
-									<small class="form-control-feedback text-danger" v-if="errors.additional_phone" v-text="errors.additional_phone[0]"></small>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-4 col-md-4">
-								<div class="form-group">
-									<label class="control-label">Email</label>
-									<el-input v-model="form.email" type="email" placeholder="Email"/>
-									<small class="form-control-feedback text-danger" v-if="errors.email" v-text="errors.email[0]"></small>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-4 col-md-4">
-								<div class="form-group">
-									<label class="control-label">Dirección</label>
-									<el-input v-model="form.address" type="text" placeholder="Dirección"/>
-									<small class="form-control-feedback text-danger" v-if="errors.address" v-text="errors.address[0]"></small>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-4 col-md-4" v-if="this.form.type=='staff'">
-								<div class="form-group">
-									<label class="control-label">Referencia</label>
-									<el-input v-model="form.reference_address" type="text" placeholder="Referencia"/>
-									<small class="form-control-feedback text-danger" v-if="errors.reference_address" v-text="errors.reference_address[0]"></small>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-4 col-md-4">
-								<label class="control-label">Departamento</label>
-								<div class="form-group">
-									<el-select v-model="form.department_id" filterable clearable @change="filterProvince" placeholder="Seleccione">
-										<el-option v-for="option in all_departments" :key="option.id" :value="option.id" :label="option.description" />
-									</el-select>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-4 col-md-4">
-								<label class="control-label">Provincia</label>
-								<div class="form-group">
-									<el-select v-model="form.province_id" filterable clearable @change="filterDistrict" placeholder="Seleccione">
-										<el-option v-for="option in provinces" :key="option.id" :value="option.id" :label="option.description" />
-									</el-select>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-4 col-md-4">
-								<label class="control-label">Distrito</label>
-								<div class="form-group">
-									<el-select v-model="form.district_id" filterable clearable placeholder="Seleccione">
-										<el-option v-for="option in districts" :key="option.id" :value="option.id" :label="option.description" />
-									</el-select>
-								</div>
-							</div>
+							<table class="table">
+								<tbody>
+									<tr>
+										<td>
+											<div>
+												<label>
+													<span v-if="this.form.type=='staff'">Nombres</span>
+													<span v-else>Nombre</span>
+												</label>
+												<div class="form-group">
+													<el-input v-model="form.name" type="text" placeholder="Nombre"/>
+													<small class="form-control-feedback text-danger" v-if="errors.name" v-text="errors.name[0]"></small>
+												</div>
+												
+											</div>
+										</td>
+										<td>
+											<div v-if="this.form.type=='staff'">
+												<label class="control-label">Apellido Paterno</label>
+												<div class="form-group">
+													<el-input v-model="form.ap_lastname" type="text" placeholder="Apellido Paterno"/>
+													<small class="form-control-feedback text-danger" v-if="errors.ap_lastname" v-text="errors.ap_lastname[0]"></small>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div v-if="this.form.type=='staff'">
+												<label class="control-label">Apellido Materno</label>
+												<div class="form-group">
+													<el-input v-model="form.am_lastname" type="text" placeholder="Apellido Materno"/>
+													<small class="form-control-feedback text-danger" v-if="errors.am_lastname" v-text="errors.am_lastname[0]"></small>
+												</div>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
+							<table class="table">
+								<tbody>
+									<tr>
+										<td>
+											<div>
+												<label class="control-label">Departamento</label>
+												<div class="form-group">
+													<el-select v-model="form.department_id" filterable clearable @change="filterProvince" placeholder="Seleccione">
+														<el-option v-for="option in all_departments" :key="option.id" :value="option.id" :label="option.description" />
+													</el-select>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div>
+												<label class="control-label">Provincia</label>
+												<div class="form-group">
+													<el-select v-model="form.province_id" filterable clearable @change="filterDistrict" placeholder="Seleccione">
+														<el-option v-for="option in provinces" :key="option.id" :value="option.id" :label="option.description" />
+													</el-select>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div>
+												<label class="control-label">Distrito</label>
+												<div class="form-group">
+													<el-select v-model="form.district_id" filterable clearable placeholder="Seleccione">
+														<el-option v-for="option in districts" :key="option.id" :value="option.id" :label="option.description" />
+													</el-select>
+												</div>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<table class="table">
+								<tbody>
+									<tr>
+										<td>
+											<div>
+												<label class="control-label">Dirección</label>
+												<div class="form-group">
+													<el-input v-model="form.address" type="text" placeholder="Dirección"/>
+													<small class="form-control-feedback text-danger" v-if="errors.address" v-text="errors.address[0]"></small>
+												</div>												
+											</div>
+										</td>
+										<td>
+											<div v-if="this.form.type=='staff'">
+												<label class="control-label">Referencia</label>
+												<div class="form-group">
+													<el-input v-model="form.reference_address" type="text" placeholder="Referencia"/>
+													<small class="form-control-feedback text-danger" v-if="errors.reference_address" v-text="errors.reference_address[0]"></small>
+												</div>												
+											</div>
+										</td>
+									</tr>									
+								</tbody>
+							</table>
+							<table class="table">
+								<tbody>
+									<tr>
+										<td>
+											<div>
+												<label class="control-label">Telefono</label>
+												<div class="form-group">
+													<el-input v-model="form.telephone" type="text" placeholder="Telefono"/>
+													<small class="form-control-feedback text-danger" v-if="errors.telephone" v-text="errors.telephone[0]"></small>
+												</div>
+												
+											</div>
+										</td>
+										<td>
+											<div>
+												<label class="control-label">Teléfono adicional</label>
+												<div class="form-group">
+													<el-input v-model="form.additional_phone" type="text" placeholder="Telefono Adicional"/>
+													<small class="form-control-feedback text-danger" v-if="errors.additional_phone" v-text="errors.additional_phone[0]"></small>
+												</div>												
+											</div>
+										</td>
+										<td>
+											<div>
+												<label class="control-label">Email</label>
+												<div class="form-group">
+													<el-input v-model="form.email" type="email" placeholder="Email"/>
+													<small class="form-control-feedback text-danger" v-if="errors.email" v-text="errors.email[0]"></small>
+												</div>												
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>										
+							
+							
 							<div class="col-xs-12 col-sm-4 col-md-4" v-if="this.form.type=='staff'">
 								<label class="control-label">Areas</label>
 								<div class="form-group">
@@ -258,3 +309,10 @@
 		}
 	}
 </script>
+
+<style scoped>
+    .table th, .table td { 
+        border-top: none !important;
+        border-left: none !important;
+    }
+</style>

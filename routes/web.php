@@ -250,3 +250,5 @@ Auth::routes();
         Route::delete('/{id}', 'destroy');
     });
 
+
+	

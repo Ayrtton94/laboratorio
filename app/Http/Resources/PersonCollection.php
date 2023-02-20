@@ -23,6 +23,7 @@ class PersonCollection extends ResourceCollection
 				'identity_document_id' => $row->identity_document_id,
                 'number' => $row->number,
                 'name' => $row->name,
+				'telephone'=>$row->telephone,
 				'ap_lastname' => $row->ap_lastname,
 				'am_lastname' => $row->am_lastname,
 				'name_full' => $row->type=='staff' ? $row->name.' '.$row->ap_lastname.' '. $row->am_lastname : '',
