@@ -80,5 +80,9 @@
     .table th, .table td { 
         border-top: none !important;
         border-left: none !important;
+
+		border-right: none !important;
+		border-below: none !important;
+
     }
 </style>

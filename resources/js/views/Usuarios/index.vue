@@ -15,7 +15,8 @@
 						<tr>
 							<th class="pt-0">#</th>
 							<th class="pt-0">Nombre</th>
-							<th class="pt-0">Tipo de usuario</th>                        
+							<th class="pt-0">Tipo de usuario</th>   
+							<th class="pt-0">Tipo de persona</th>                     
 							<th class="pt-0">Estado</th>
 							<th class="pt-0"></th>
 						</tr>
@@ -25,6 +26,7 @@
 								<td>{{ index + 1}}</td>
 								<td>{{ row.name }}</td>
 								<td>{{ row.role_name }}</td>
+								<td>{{ row.person }}</td>
 								<td>
 									<span v-if="row.status==1" class="badge bg-success">Activo</span>
 									<span v-else class="badge bg-danger">Eliminado</span>
@@ -76,6 +78,7 @@
 			initForm(){
 				this.form = {
 					id: null,
+					person: null,
 					name : null,
 					email: null,
 					password: null,
@@ -98,6 +101,7 @@
 			},
 			getDataModal(info){
 				this.form.id = info.id
+				this.form.person = info.person
 				this.form.name = info.name
 				this.form.email = info.email
 				this.form.password = info.password

@@ -27,7 +27,7 @@ class UsuarioController extends Controller
 	public function records()
 	{
 		$users = DB::table('users')
-		->select('users.id','users.name','users.last_name','users.email','roles.name as role_name','users.status as status')
+		->select('users.id','users.name','users.last_name','users.email','roles.name as role_name','users.status as status','users.person')
 		->join('model_has_roles', function($query){
 			$query->on('users.id', '=', 'model_has_roles.model_id');
 		})
@@ -40,8 +40,10 @@ class UsuarioController extends Controller
 		$this->validate($request, [
 			'name' => 'required',
 			'email' => 'required',
-			'password' => 'required',
+			'email' => 'required',
+			'person' => 'required',
 			'rol' => 'required'
+
 		]);
 
 		$input = $request->all();
@@ -61,6 +63,7 @@ class UsuarioController extends Controller
 		$this->validate($request,[
 			'name' => 'required',
 			'email' => 'required',
+			'person' => 'required',
 			'rol' => 'required'
 		]);
 		$input = $request->all();

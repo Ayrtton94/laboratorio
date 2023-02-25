@@ -16,6 +16,7 @@ class UserRequest extends FormRequest
     {
         return [
 			'rol' => 'required',
+            'person'=>'required',
 			'name' => 'required',
             'email' => 'required'
         ];
@@ -24,6 +25,7 @@ class UserRequest extends FormRequest
 	public function messages(){
 		return [
 			'rol.required' => 'Rol requerido',
+            'person.required' => 'Tipo requerido',
 			'name.required' => 'Nombre obligatorio',
 			'email.required' => 'Campo obligatorio'
 		];

@@ -14,39 +14,62 @@
 				<div class="modal-body">
 					<form id="signupForm" autocomplete="off" @submit.prevent="submit">
 						<div class="row">
-							<div class="col-xs-12 col-sm-6 col-md-6">
-								<label class="control-label">Tipo Usuario</label>
-								<div class="form-group">
-									<el-select v-model="form.rol" placeholder="Tipo usuario">
-										<el-option v-for="option in roles" :value="option.name" :key="option.id" :label="option.name"/>
-									</el-select>
-									<small class="form-control-feedback text-danger" v-if="errors.rol" v-text="errors.rol[0]"></small>
-								</div>
-							</div>
-							
-							<div class="col-xs-12 col-sm-6 col-md-6">
-								<div class="form-group">
-									<label class="control-label">(*)Nombre</label>
-									<input v-model="form.name" class="form-control" type="text" placeholder="Nombre Usuario">
-									<small class="form-control-feedback text-danger" v-if="errors.name" v-text="errors.name[0]"></small>
-								</div>
-							</div>
-
-							<div class="col-xs-12 col-sm-6 col-md-6">
-								<div class="form-group">
-									<label class="control-label">Usuario</label>
-									<input id="email" v-model="form.email"  class="form-control" name="email" type="email" placeholder="Email">
-									<small class="form-control-feedback text-danger" v-if="errors.email" v-text="errors.email[0]"></small>
-								</div>
-							</div>
-
-							<div class="col-xs-12 col-sm-6 col-md-6">
-								<div class="form-group">
-									<label class="control-label">Contraseña</label>
-									<input id="password" v-model="form.password"  class="form-control" name="password" type="Password" placeholder="Password">
-									<small class="form-control-feedback text-danger" v-if="errors.password" v-text="errors.password[0]"></small>
-								</div>
-							</div>
+							<table class="table">
+								<tbody>
+									<tr>
+										<td align="center">
+											<input type="radio" id="1" value="Personal" v-model="form.person"  class="form-check-input"/>
+											<label for="one">Personal</label>
+										</td>
+										<td align="center">
+											<input type="radio" id="2" value="Invitado" v-model="form.person"  class="form-check-input"/>
+									<label for="two">Invitado</label>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<table class="table">
+								<tbody>
+									<tr>
+										<td>
+											<label class="control-label">Tipo Usuario</label>
+											<div class="form-group">
+												<el-select v-model="form.rol" placeholder="Tipo usuario">
+													<el-option v-for="option in roles" :value="option.name" :key="option.id" :label="option.name"/>
+												</el-select>
+												<small class="form-control-feedback text-danger" v-if="errors.rol" v-text="errors.rol[0]"></small>
+											</div>
+										</td>
+										<td>
+											<label class="control-label">(*)Nombre</label>
+											<div class="form-group">
+												<input v-model="form.name" class="form-control" type="text" placeholder="Nombre Usuario">
+												<small class="form-control-feedback text-danger" v-if="errors.name" v-text="errors.name[0]"></small>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<table class="table">
+								<tbody>
+									<tr>
+										<td>										
+											<label class="control-label">Usuario</label>
+											<div class="form-group">
+												<input id="email" v-model="form.email"  class="form-control" name="email" type="email" placeholder="Email">
+												<small class="form-control-feedback text-danger" v-if="errors.email" v-text="errors.email[0]"></small>
+											</div>
+										</td>
+										<td>											
+											<label class="control-label">Contraseña</label>
+											<div class="form-group">
+												<input id="password" v-model="form.password"  class="form-control" name="password" type="Password" placeholder="Password">
+												<small class="form-control-feedback text-danger" v-if="errors.password" v-text="errors.password[0]"></small>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
 						<div class="modal-footer">
 							<button @click.prevent="closeModal"  type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
@@ -101,3 +124,13 @@
 		}
 	}
 </script>
+<style scoped>
+    .table th, .table td { 
+        border-top: none !important;
+        border-left: none !important;
+
+		border-right: none !important;
+		border-block: none !important;
+
+    }
+</style>

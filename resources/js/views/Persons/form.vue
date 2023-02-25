@@ -16,25 +16,32 @@
 				<div class="modal-body">
 					<form id="signupForm" autocomplete="off" @submit.prevent="submit">
 						<div class="row">
-							<div class="col-xs-12 col-sm-6 col-md-6">
-								<label class="control-label">Tipo Documento</label>
-								<div class="form-group">
-									<el-select v-model="form.identity_document_id" placeholder="Tipo Documento" >
-										<el-option v-for="option in identity_document_types" :value="option.id" :key="option.id" :label="option.description"/>
-									</el-select>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-6 col-md-6">
-								<div class="form-group">
-									<label class="control-label">Documento</label>
-									<el-input v-model="form.number" placeholder="Documento" :maxlength="maxlength">
-										<template #append>
-											<el-button @click.prevent="searchDocument">Buscar</el-button>
-										</template>
-									</el-input>
-									<small class="form-control-feedback text-danger" v-if="errors.number" v-text="errors.number[0]"></small>
-								</div>
-							</div>
+
+							<table class="table">
+								<tbody>
+									<tr>
+										<td>
+											<label class="control-label">Tipo Documento</label>
+											<div class="form-group">
+												<el-select v-model="form.identity_document_id" placeholder="Tipo Documento" >
+													<el-option v-for="option in identity_document_types" :value="option.id" :key="option.id" :label="option.description"/>
+												</el-select>
+											</div>
+										</td>
+										<td>											
+												<label class="control-label">Documento</label>
+												<div class="form-group">
+													<el-input v-model="form.number" placeholder="Documento" :maxlength="maxlength">
+														<template #append>
+															<el-button @click.prevent="searchDocument">Buscar</el-button>
+														</template>
+													</el-input>
+													<small class="form-control-feedback text-danger" v-if="errors.number" v-text="errors.number[0]"></small>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
 							<table class="table">
 								<tbody>
 									<tr>
@@ -166,52 +173,36 @@
 										</td>
 									</tr>
 								</tbody>
-							</table>										
+							</table>
 							
-							
-							<div class="col-xs-12 col-sm-4 col-md-4" v-if="this.form.type=='staff'">
-								<label class="control-label">Areas</label>
-								<div class="form-group">
-									<el-select v-model="form.area_id" filterable clearable placeholder="Seleccione">
-										<el-option v-for="option in areas" :key="option.id" :value="option.id" :label="option.name" />
-									</el-select>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-4 col-md-4" v-if="this.form.type=='staff'">
-								<label class="control-label">Horario</label>
-								<div class="form-group">
-									<el-select v-model="form.schedule_id" filterable clearable placeholder="Seleccione">
-										<el-option v-for="option in schedules" :key="option.id" :value="option.id" :label="option.description" />
-									</el-select>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-4 col-md-4" v-if="this.form.type=='staff'">
-								<el-checkbox v-model="form.user_account">Cuenta de usuario</el-checkbox>
-							</div>
-							<div class="col-xs-12 col-sm-4 col-md-4" v-if="this.form.type=='staff' && this.form.user_account">
-								<label class="control-label">Perfil</label>
-								<div class="form-group">
-									<el-select v-model="form.rol" placeholder="Tipo usuario" >
-										<el-option v-for="option in roles" :value="option.name" :key="option.id" :label="option.name"/>
-									</el-select>
-									<small class="form-control-feedback text-danger" v-if="errors.rol" v-text="errors.rol[0]"></small>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-4 col-md-4" v-if="this.form.type=='staff' && this.form.user_account">
-								<div class="form-group">
-									<label class="control-label">Usuario</label>
-									<el-input v-model="form.username" type="email" placeholder="Email"/>
-									<small class="form-control-feedback text-danger" v-if="errors.username" v-text="errors.username[0]"></small>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-4 col-md-4" v-if="this.form.type=='staff' && this.form.user_account">
-								<div class="form-group">
-									<label class="control-label">Contraseña</label>
-									<el-input v-model="form.userpassword" type="password" placeholder="Contraseña"/>
-									<small class="form-control-feedback text-danger" v-if="errors.userpassword" v-text="errors.userpassword[0]"></small>
-								</div>
-							</div>
+							<table class="table">
+								<tbody>
+									<tr>
+										<td>
+											<div v-if="this.form.type=='staff'">
+												<label class="control-label">Areas</label>
+												<div class="form-group">
+													<el-select v-model="form.area_id" filterable clearable placeholder="Seleccione">
+														<el-option v-for="option in areas" :key="option.id" :value="option.id" :label="option.name" />
+													</el-select>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div v-if="this.form.type=='staff'">
+												<label class="control-label">Horario</label>
+												<div class="form-group">
+													<el-select v-model="form.schedule_id" filterable clearable placeholder="Seleccione">
+														<el-option v-for="option in schedules" :key="option.id" :value="option.id" :label="option.description" />
+													</el-select>
+												</div>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>																
 						</div>
+						
 						<div class="modal-footer">
 							<button @click.prevent="closeModal"  type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
 							<button @click.prevent="store(form)" type="submit" class="btn btn-sm btn-success">
