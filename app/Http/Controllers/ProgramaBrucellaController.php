@@ -57,13 +57,13 @@ class ProgramaBrucellaController extends Controller
         return compact('muestras','suppliers');
     }
 
-	public function store(ProgramaBrucellaRequest $request)
+	public function store(Request $request)
 	{
 		try {
-
             $id = $request->input('id');
             $programbruce = ProgramaBrucella::firstOrNew(['id' => $id]);
             $programbruce->fill($request->all());
+            $programbruce->id_user = auth()->id();
             $programbruce->save();
 
             return [

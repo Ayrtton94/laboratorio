@@ -15,7 +15,7 @@
                 <data-table :resource="resource+`/${this.type}`" :show-eliminados="true">
 					<template v-slot:heading>
 						<th class="pt-0">#</th>
-						<th class="pt-0">Tipo Doc</th>
+						<th class="pt-0">Tipo Doc qui?</th> 
 						<th class="pt-0">Número</th>
 						<th class="pt-0">Nombre</th>
 						<th class="pt-0">Email</th>
@@ -112,6 +112,7 @@
 				},
 				this.errors = {}
 			},
+			
             clickCreate() {
 				this.form.type = this.type
 				this.form.identity_document_id = 1
@@ -145,7 +146,7 @@
 				this.form.area_id = info.area_id
 				this.form.schedule_id = info.schedule_id
 			},
-			saveAppt(form){
+			saveAppt(form){ 
 				axios.post(`/${this.resource}`, form)
 				.then(res => {
 					if(res.status == 200) {
@@ -166,6 +167,8 @@
 					}
 				})
 			},
+
+
             clickDelete(id) {
                 this.destroy(`/${this.resource}/${id}`).then(() =>
 				this.emitter.emit('reloadData')

@@ -64,6 +64,10 @@ import ordersedit from './views/orders/edit.vue'
 
 import schedules from './views/Schedule/index.vue'
 
+import cliente from './views/Cliente/index.vue'
+
+import company from './views/Company/index.vue'
+
 import programabrucellas from './views/programabrucellas/index.vue'
 import programabrucellasform from './views/programabrucellas/form.vue'
 
@@ -127,6 +131,12 @@ app.component('pruebas-create', pruebasform)
 
 //AREA
 app.component('areas', areas)
+
+//CLIENTE
+app.component('cliente', cliente)
+
+//company
+app.component('company', company)
 
 //TIPO DE ORDEN
 app.component('tipodeorden', tipodeorden)

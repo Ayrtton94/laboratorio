@@ -4,7 +4,7 @@
         <div class="form-group">
             <label class="control-label" :class="width && ! classes ? 'text-white': ''" v-if="showLabel">
                 Cliente
-                <a href="#" class="text-info font-weight-bold m-0 p-0" @click.prevent="newPerson">[+ Nuevo]</a>
+                <a href="#" class="text-info font-weight-bold m-0 p-0" @click.prevent="newPerson">[+ Nuevo2]</a>
 
                 <small class="text-success font-weight-bold m-0 p-0"
                        v-if="customerSelect && Object.keys(customerSelect).length > 0 "></small>
@@ -66,7 +66,7 @@ export default {
     methods: {
         loadItems(query) {
             if (query && query.length > 2) {
-                axios.post(`/search/${this.resource}/customers`, {search: query})
+                axios.post(`/search/persons/customers`, {search: query})
                     .then(({data}) => {
 
                         this.persons = data;

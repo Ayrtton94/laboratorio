@@ -9,7 +9,7 @@
 							<el-option v-for="option in status_paid" :key="option.id" :label="option.nombre"  :value="option.id"></el-option>
 						</el-select>
 						<!-- <small class="form-control-feedback text-danger" v-if="errors.payment_id" v-text="errors.payment_id[0]"></small> -->
-					</div>
+					</div>					
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 	export default {
 		props: ['showDialogPayment', 'recordId'],
 		data(){
@@ -37,14 +38,14 @@
 		methods:{
 			initForm(){
 				this.form = {
-					payment_id: 1
+					payment_id: 1,
 				};
 			},
 			closeModalPayment(){
 				this.$emit('closeModalPayment');
 			},
-			submit(){
-				axios.put(`/${this.resource}/status_paid/${this.recordId}`, this.form)
+			submit(){				
+				axios.post(`/orders/status_paid/${this.recordId}`, this.form)
 				.then(response => {
 					this.$swal({
 						icon: 'success',

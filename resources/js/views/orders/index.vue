@@ -3,14 +3,14 @@
         <div class="col-lg-12 col-xl-12 stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-baseline mb-4">
+                    <div class="d-flex justify-content-between align-items-baseline mb-10">
                         <h6 class="card-title mb-0">GESTIÓN DE ORDENES DE LABORATORIOS</h6>
                         <div class="dropdown">
                             <a :href="`/${resource}/crear`" class="btn btn-success btn-sm  mt-2 mr-2"><i class="fa fa-plus-circle"></i> Nuevo</a>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12"></div>
+                        <div class="col-md-30"></div>
                     </div>
                     <div class="table-responsive">
                         <data-table :resource="resource">

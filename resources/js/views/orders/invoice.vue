@@ -132,14 +132,6 @@
                             </div>
                         </div>
                         <div class="col-lg-2">
-                            <div class="form-group" :class="{'has-danger': errors.observacion}">
-                                <label class="control-label">Observación</label>
-                                <el-input v-model="form.observacion"></el-input>
-                                <small class="form-control-feedback" v-if="errors.observacion" v-text="errors.observacion[0]"></small>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-2">
                             <div class="form-group" :class="{'has-danger': errors.date_of_muestra}">
                                 <label class="control-label">(*)Fecha de Muestra</label>
                                 <el-date-picker v-model="form.date_of_muestra" type="date" value-format="YYYY-MM-DD" :clearable="false"></el-date-picker>
@@ -167,6 +159,13 @@
                                 <small class="form-control-feedback" v-if="errors.temperatura" v-text="errors.temperatura[0]"></small>
                             </div>
                         </div>
+                        <div>
+                            <div class="form-group" :class="{'has-danger': errors.observacion}">
+                                <label class="control-label">Observación</label>
+                                <el-input v-model="form.observacion"></el-input>
+                                <small class="form-control-feedback" v-if="errors.observacion" v-text="errors.observacion[0]"></small>
+                            </div>
+                        </div>                        
                     </div>
 
                     <div class="row mt-2">
@@ -234,8 +233,11 @@
                         <div class=" col-12 col-sm-12 float-right">
                             <button  type="submit" class="btn btn-sm btn-success">
                                 <span>Registrar</span>
-                            </button>
+                            </button>                         
                         </div>
+                        <div class=" col-12 col-sm-12 float-right">
+                            <span><a class="btn btn-sm btn-danger" :href="`/${resource}`">Salir</a></span>                         
+                        </div>                        
                     </div>
 
                 </form>
@@ -465,38 +467,33 @@ export default {
 
         },
         async submit() {
-
-            this.loading_submit = true
-
+            this.loading_submit = true;
             this.calculateTotal();
-
             axios.post(`/${this.resource}`, this.form)
                 .then(async response => {
                     if (response.data.success) {
-						this.$swal({
-							icon: 'success',
-							title: response.data.message,
-							showConfirmButton: false,
-							timer: 1500
-						})
-                        this.close();
+                        this.$swal({
+                            icon: 'success',
+                            title: response.data.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        window.location.reload(); // aquí se recarga la página
                     }
                     else {
                         this.$message.error(response.data.message);
                         this.loading_submit = false;
                     }
                 }).catch(error => {
-
-                if (error.response.status === 422) {
-                    this.errors = error.response.data;
-                }
-                else {
-                    this.$message.error(error.response.data.message);
-                }
-                this.loading_submit = false;
-            });
-
-        },
+                    if (error.response.status === 422) {
+                        this.errors = error.response.data;
+                    }
+                    else {
+                        this.$message.error(error.response.data.message);
+                    }
+                    this.loading_submit = false;
+                });
+            },
         close() {
             location.href = '/orders'
         },

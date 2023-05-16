@@ -209,11 +209,12 @@ class LaboratorioOrderController extends Controller
             ]);
         });
 
-            return [
-                'success' => true,
-                'message'=> "Orden Generada Correctamente",
-                'id'=> $orderLaboratorio,
-            ];
+        return response()->json([
+            'success' => true,
+            'message'=> "Orden Generada Correctamente",
+            'id'=> $orderLaboratorio,
+        ]);
+        
     }
 
     public function update(OrderRequest $request, $order_id)
@@ -320,12 +321,12 @@ class LaboratorioOrderController extends Controller
 
 	public function updatePayment($id,Request $request)
 	{
-		
 		$records = LaboratorioOrder::where('id', $id)->first();
 		
 		if($records){
 			$records->update([
-				'status_paid' => $request->input('payment_id')
+				'status_paid' => $request->input('payment_id'),
+                'payment_end' => today()
 			]);
 		}
 		return [

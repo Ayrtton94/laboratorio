@@ -20,6 +20,9 @@ class ProgramaBrucella extends Model
         'v_produccion',
 		't_hato',
 		'accion',
+		'status_paid',
+		'id_user',
+		'code',
 		'asignar_modulo'
 	];
 

@@ -13,6 +13,14 @@
 				</div>
 				<div class="modal-body">
 					<form id="signupForm" autocomplete="off" @submit.prevent="submit">
+						
+						<div class="form-group">
+							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Code</label>
+							<div class="col-md-12 col-sm-12 col-xs-12">
+								<input id="code" v-model="form.code" class="form-control" name="code" type="text" placeholder="Descripción">
+								<small class="form-control-feedback text-danger" v-if="errors.code" v-text="errors.code[0]"></small>
+							</div>
+						</div>
 
 						<div class="form-group">
 							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Muestras</label>
@@ -26,7 +34,7 @@
 						<div class="form-group">
 							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Ruta</label>
 							<div class="col-md-12 col-sm-12 col-xs-12">
-								<input id="ruta" v-model="form.ruta" class="form-control" name="ruta" type="text" placeholder="Descripción">
+								<input id="ruta" v-model="form.ruta" class="form-control" name="ruta" type="number" placeholder="Descripción">
 								<small class="form-control-feedback text-danger" v-if="errors.ruta" v-text="errors.ruta[0]"></small>
 							</div>
 						</div>
@@ -42,7 +50,7 @@
 						<div class="form-group">
 							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Peso</label>
 							<div class="col-md-12 col-sm-12 col-xs-12">
-								<input id="peso" v-model="form.peso" class="form-control" name="peso" type="text" placeholder="Descripción">
+								<input id="peso" v-model="form.peso" class="form-control" name="peso" type="number" placeholder="Descripción"> 
 								<small class="form-control-feedback text-danger" v-if="errors.peso" v-text="errors.price[0]"></small>
 							</div>
 						</div>
@@ -51,20 +59,20 @@
 						<div class="form-group">
 							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Parcela</label>
 							<div class="col-md-12 col-sm-12 col-xs-12">
-								<input id="parcela" v-model="form.parcela" class="form-control" name="parcela" type="text" placeholder="Descripción">
+								<input id="parcela" v-model="form.parcela" class="form-control" name="parcela" type="number" placeholder="Descripción">
 							</div>
 						</div>
                         <div class="form-group">
                             <label class="control-label col-md-12 col-sm-12 col-xs-12">(*)V. Producción</label>
                             <div class="col-md-12 col-sm-12 col-xs-12">
-                                <input id="v_produccion" v-model="form.v_produccion" class="form-control" name="v_produccion" type="text" placeholder="Descripción">
+                                <input id="v_produccion" v-model="form.v_produccion" class="form-control" name="v_produccion" type="number" placeholder="Descripción">
                                 <small class="form-control-feedback text-danger" v-if="errors.v_produccion" v-text="errors.v_produccion[0]"></small>
                             </div>
                         </div>
 						<div class="form-group">
 							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Tiempo de Entrega</label>
 							<div class="col-md-12 col-sm-12 col-xs-12">
-								<input id="t_hato" v-model="form.t_hato" class="form-control" name="t_hato" type="text" placeholder="Descripción">
+								<input id="t_hato" v-model="form.t_hato" class="form-control" name="t_hato" type="number" placeholder="Descripción">
 								<small class="form-control-feedback text-danger" v-if="errors.time_entrega" v-text="errors.time_entrega[0]"></small>
 							</div>
 						</div>
@@ -86,6 +94,16 @@
                                 <small class="form-control-feedback text-danger" v-if="errors.asignar_modulo" v-text="errors.asignar_modulo[0]"></small>
                             </div>
                         </div>
+
+						<div class="form-group">
+                            <label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Tipo de pago</label>
+								<div class="col-md-12 col-sm-12 col-xs-12">
+								<el-select v-model="form.status_paid" class="w-100" filterable>
+									<el-option v-for="option in status_paid" :key="option.id" :label="option.nombre"  :value="option.id"></el-option>
+								</el-select>
+                       			 </div>
+						</div>
+
 						<div class="modal-footer">
 							<button @click.prevent="closeModal" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
 							<button @click.prevent="store(form)" type="submit" class="btn btn-sm btn-success">
@@ -127,6 +145,10 @@
                     {"id": 5, "name": "Ninguno" }
 
                 ],
+				status_paid: [
+                    {"id": "1", "nombre": "EFECTIVO"},
+                    {"id": "2", "nombre": "DEPOSITO"},
+                ]
 			}
 		},
 		created(){

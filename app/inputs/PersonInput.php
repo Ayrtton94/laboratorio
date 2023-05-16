@@ -2,7 +2,7 @@
 
 namespace App\Inputs;
 
-use App\Models\Person as PersonModel;
+use App\Models\Customer_brucela as PersonModel;
 
 class PersonInput
 {

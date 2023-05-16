@@ -54,9 +54,6 @@
                             <a href="{{route('usuarios')}}" class="nav-link {{ Route::is('usuarios')?'active':''}}">Usuario</a>
                         </li>
                         @endverifypermissions
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('persons.index', ['type'=> 'customers'])}}">Cliente</a>
-                        </li>
                         <li class="nav-item"><a class="nav-link" href="{{route('tipodeorden.index')}}">Tipo de Órden</a>
                         </li>
                         <li class="nav-item">
@@ -75,11 +72,15 @@
                         <li class="nav-item"><a class="nav-link" href="{{route('laboratorios')}}">Laboratorio</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{route('metodos')}}">Metodo</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{route('pruebas')}}">Prueba</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{route('customer.index', ['type'=> 'customers'])}}">Cliente</a></li>
                         <li class="category-heading">Empresas y Proveedores
                         <li>
-                        <li class="nav-item"><a class="nav-link" href="gestion-empresas-acopiadoras.php">Empresas
-                                acopiadoras de leche</a></li>
-                        <li class="nav-item"><a class="nav-link" href="gestion-clientes.php">Clientes</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{route('company')}}">Empresas
+                                acopiadoras de leche</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('persons.index', ['type'=> 'suppliers'])}}">Proveedor</a>
+                        </li>
 
                     </ul>
                 </div>

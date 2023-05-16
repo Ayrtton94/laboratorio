@@ -15,20 +15,27 @@ class CreateOrderTable extends Migration
 		if (!Schema::hasTable('companies')) {
 			Schema::create('companies', function (Blueprint $table) {
 				$table->id();
-				$table->string('identity_document_type_id', 2);
+				$table->string('identity_document_id', 2);
 				$table->string('number');
 				$table->string('name');
-				$table->string('trade_name')->nullable();
-				$table->char('soap_type_id',2)->nullable();
-				$table->string('soap_username')->nullable();
-				$table->string('soap_password')->nullable();
-				$table->string('certificate')->nullable();
-				$table->string('address')->nullable();
+				$table->string('email')->nullable();
 				$table->string('telephone')->nullable();
-				$table->string('phone')->nullable();
-				$table->timestamps();
 
-				$table->foreign('identity_document_type_id')->references('id')->on('cat_identity_document_types');
+				$table->string('ruc')->nullable();
+				$table->string('business_name')->nullable();
+				$table->boolean('status')->default(1);
+
+				$table->string('address')->nullable();
+				$table->char('department_id', 2)->nullable();
+				$table->char('province_id', 4)->nullable();
+				$table->char('district_id', 6)->nullable();
+				
+				$table->timestamps();
+				
+				$table->foreign('identity_document_id')->references('id')->on('cat_identity_document_types');
+				$table->foreign('department_id')->references('id')->on('departments');
+				$table->foreign('province_id')->references('id')->on('provinces');
+				$table->foreign('district_id')->references('id')->on('districts');
 				// $table->foreign('soap_type_id')->references('id')->on('soap_types');
 			});
 		}
@@ -93,6 +100,9 @@ class CreateOrderTable extends Migration
 				$table->boolean('estado')->default(1);
 				$table->string('type_document_fact',3)->nullable();
 				$table->tinyInteger('status_paid')->default(0);
+				$table->string('days')->nullable();
+				$table->date('payment_end')->nullable();
+
 				$table->tinyInteger('status_order')->default(0);
 				$table->text('comentario')->nullable();
 				$table->smallInteger('tipo')->default(1)->nullable();
@@ -138,13 +148,16 @@ class CreateOrderTable extends Migration
 		if (!Schema::hasTable('programa_brucellas')) {
 			Schema::create('programa_brucellas', function (Blueprint $table) {
 				$table->id();
-				$table->unsignedBigInteger('muestra_id');
+				$table->unsignedBigInteger('muestra_id');				
 				$table->string('ruta');
+				$table->string('id_user')->nullable();
+				$table->string('code')->nullable();
 				$table->unsignedBigInteger('supplier_id');
 				$table->decimal('peso',10,2);
 				$table->decimal('parcela',10,2);
                 $table->decimal('v_produccion',10,2);
 				$table->decimal('t_hato',10,2);
+				$table->tinyInteger('status_paid')->default(0);
 				$table->tinyInteger('accion')->default(0);
 				$table->tinyInteger('asignar_modulo');
 				$table->timestamps();

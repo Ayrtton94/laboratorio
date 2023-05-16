@@ -26,7 +26,7 @@ class CatalogSeeder extends Seeder
      */
     public function run()
     {
-		Company::create([
+		/*Company::create([
 			'identity_document_type_id' => '6',
             'number' => '20136268041',
             'name' => 'Laboratorio Veterinario del Sur',
@@ -34,7 +34,7 @@ class CatalogSeeder extends Seeder
 			'address' => 'Av. Alfonso Ugarte 500-A Zona Industrial, Arequipa',
 			'telephone' => '054-213677',
 			'phone' => '978404610'
-		]);
+		]);*/
 
 		Person::create([
             'name' => 'SIN DOCUMENTO',

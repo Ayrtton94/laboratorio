@@ -9,6 +9,7 @@ use App\Http\Controllers\MatrizController;
 use App\Http\Controllers\MetodoController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\PruebaController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EspecieController;
 use App\Http\Controllers\MuestraController;
 use App\Http\Controllers\UsuarioController;
@@ -20,6 +21,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\SubEspecieController;
 use App\Http\Controllers\LaboratorioController;
 use App\Http\Controllers\PresentacionController;
+use App\Http\Controllers\CustomerBrucelaController;
 use App\Http\Controllers\LaboratorioOrderController;
 use App\Http\Controllers\ProgramaBrucellaController;
 
@@ -190,6 +192,34 @@ Auth::routes();
 		Route::delete('{id}', 'destroy');
 	});
 
+	//CLIENTE, CLIENTE BRUCELA
+	Route::controller(CustomerBrucelaController::class)->prefix('customers')->group(function(){
+        Route::get('{type}', 'index')->name('customer.index');
+        Route::get('restore/{id}', 'restore');
+		Route::get('columns', 'columns');
+		Route::get('tables', 'tables');
+		Route::get('table/{table}', 'table');
+		Route::get('{type}/records', 'records');
+        Route::get('record/{id}', 'record');
+		Route::post('', 'store');
+		Route::delete('{id}', 'destroy');
+    });
+
+	//REGISTRO DE EMPRESAS
+	Route::controller(CompanyController::class)->prefix('company')->group(function(){
+        Route::get('', 'index')->name('company');
+        Route::get('restore/{id}', 'restore');
+		Route::get('columns', 'columns');
+		Route::get('tables', 'tables');
+		Route::get('table/{table}', 'table');
+		Route::get('{type}/records', 'records');
+        Route::get('record/{id}', 'record');
+		Route::post('', 'store');
+		Route::delete('{id}', 'destroy');
+		Route::get('/records', 'records');
+    });
+
+
 	// PROGRAMA BRUCELLAS
 	Route::controller(ProgramaBrucellaController::class)->prefix('programabrucellas')->group(function(){
 		Route::get('restore/{id}', 'restore');
@@ -221,7 +251,7 @@ Auth::routes();
 		Route::post('/email', 'email');
 		Route::get('/table/{table}', 'table');
 		Route::get('/evaluacion/{recordId}', 'evaluacionData');
-		Route::put('/status_paid/{id}', 'updatePayment');
+		Route::post('/status_paid/{id}', 'updatePayment');
 		Route::get('/items', 'items');
 		Route::delete('/{order}', 'destroy');
 		Route::get('/imprimir/{order}/{format}', 'imprimir');
@@ -250,6 +280,7 @@ Auth::routes();
         Route::delete('/{id}', 'destroy');
     });
 
+	
 	
 
 	

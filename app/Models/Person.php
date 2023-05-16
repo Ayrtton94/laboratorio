@@ -5,9 +5,11 @@ namespace App\Models;
 use App\Models\Country;
 use App\Models\District;
 use App\Models\Province;
+
 use App\Models\Attendance;
 use App\Models\Department;
 use App\Models\IdentityDocument;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

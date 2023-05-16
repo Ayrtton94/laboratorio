@@ -21,6 +21,7 @@
                   <thead>
                     <tr>
 						<th class="pt-0">#</th>
+						<th class="pt-0">Code</th>
 						<th class="pt-0"> Muestra</th>
 						<th class="pt-0"> Ruta</th>
 						<th class="pt-0"> Proveedor</th>
@@ -36,6 +37,7 @@
                   <tbody>
 					<tr v-for="(row, index) in records" :key="index">
 						<td>{{ index + 1 }}</td>
+						<td>{{ row.code }}</td>
 						<td>{{ row.muestra.description }}</td>
 						<td>{{ row.ruta }}</td>
 						<td>{{ row.supplier.name }}</td>
@@ -128,6 +130,8 @@
                     v_produccion: null,
                     t_hato: null,
                     accion: null,
+					status_paid: 1,
+					code: null,
                     asignar_modulo: null
 				},
 				this.errors = {}
@@ -154,6 +158,8 @@
 				this.form.parcela = info.parcela
                 this.form.v_produccion = info.v_produccion
 				this.form.t_hato = info.t_hato
+				this.form.status_paid = info.status_paid
+				this.form.code = info.code
 				this.form.accion = info.accion
 				this.form.asignar_modulo = info.asignar_modulo
 			},

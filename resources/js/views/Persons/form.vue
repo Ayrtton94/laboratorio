@@ -16,7 +16,6 @@
 				<div class="modal-body">
 					<form id="signupForm" autocomplete="off" @submit.prevent="submit">
 						<div class="row">
-
 							<table class="table">
 								<tbody>
 									<tr>
@@ -231,12 +230,14 @@
 			return {
 				resource: 'persons',
 				title: null,
+				
 				departments: [],
 				provinces: [],
 				districts: [],
 				all_departments: [],
                 all_provinces: [],
                 all_districts: [],
+				
 				identity_document_types: [],
 				roles: [],
 				schedules: [],
@@ -260,6 +261,7 @@
 					this.all_districts = res.data.districts
 				})
 			},
+
 			getRoles(){
 				axios.get(`/roles/records`)
 				.then(response => {
@@ -278,6 +280,7 @@
 					this.areas = response.data.areas
 				})
 			},
+
 			store(form){
 				this.$emit('saveAppt',form);
 				this.$emit('uploadImage');

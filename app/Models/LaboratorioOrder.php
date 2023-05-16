@@ -47,6 +47,8 @@ class LaboratorioOrder extends Model
 		'type_document_fact',
 		'tipo',
 		'status_paid',
+        'payment_end',
+        'days',
 		'status_order'
 
     ];

@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Resources\PersonResource;
 use App\Models\User;
 use App\Models\Person;
+
 use App\Models\Country;
 use App\Models\District;
 use App\Models\Province;
 use App\Models\Department;
+use App\Models\Customer_brucela;
+
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Models\IdentityDocument;
