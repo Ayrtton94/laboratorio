@@ -21,9 +21,9 @@ use App\Models\Laboratorio;
 use App\Models\presentacion;
 use Illuminate\Http\Request;
 use App\Models\Establishment;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\IdentityDocument;
 use App\Models\LaboratorioOrder;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\OrderRequest;
 use App\Http\Resources\OrderResource;
@@ -31,6 +31,7 @@ use App\Models\Catalogs\CurrencyType;
 use App\Models\Catalogs\DocumentType;
 use App\Models\LaboratorioOrderDetail;
 use App\Models\Catalogs\IdentityDocumentType;
+use App\Http\Resources\OrderLaboratorioResource;
 use App\Http\Resources\OrderLaboratorioCollection;
 
 class LaboratorioOrderController extends Controller
@@ -313,11 +314,17 @@ class LaboratorioOrderController extends Controller
     }
 
 	public function evaluacionData($id)
-	{
-		$records = LaboratorioOrder::with('items')->find($id);
-		
-		return new OrderLaboratorioCollection($records);
-	}
+{
+    $record = LaboratorioOrder::with('items')->find($id);
+
+    if (!$record) {
+        return response()->json(['message' => 'Registro no encontrado'], 404);
+    }
+
+    $transformedRecord = new OrderLaboratorioResource($record);
+
+    return response()->json($transformedRecord);
+}
 
 	public function updatePayment($id,Request $request)
 	{
@@ -334,4 +341,22 @@ class LaboratorioOrderController extends Controller
             'message' => 'Pago Actualizado'
         ];
 	}
+
+    public function updateSorder($id, Request $request)
+{
+    $data = $request->only(['status_test', 'comentario']);
+    
+    $records = LaboratorioOrder::where('id', $id)->first();
+    
+    if ($records) {
+        $records->update($data);
+    }
+    
+    return [
+        'success' => true,
+        'message' => 'Pago Actualizado'
+    ];
+}
+
+
 }

@@ -49,7 +49,8 @@ class LaboratorioOrder extends Model
 		'status_paid',
         'payment_end',
         'days',
-		'status_order'
+		'status_order',
+        'comentario'
 
     ];
 

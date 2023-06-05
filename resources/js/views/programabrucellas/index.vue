@@ -7,10 +7,6 @@
                 <h6 class="card-title mb-0">GESTIÓN DE PROGRAMA BRUCELLAS</h6>
                   <div class="dropdown">
 					<button @click.prevent="clickCreate()" type="button" class="btn btn-sm btn-success btn-icon-text text-light mx-1">Nueva </button>
-                    <el-button @click.prevent="clickImport()" type="success">
-                      <vue-feather type="upload" class="fs-vue-feather-18"></vue-feather>
-                      Importar
-                    </el-button>
                 </div>
               </div>
               <div class="row">

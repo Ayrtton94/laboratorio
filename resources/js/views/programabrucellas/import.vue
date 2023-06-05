@@ -8,7 +8,24 @@
                             <div class="row">
                                 <div class="col-md-12 mt-4">
                                     <div class="form-group text-center" :class="{'has-danger': errors.file}">
-                                        <input type="file" ref="fileInput" @change="handleFileUpload" accept=".xlsx, .xls, .csv">
+                                        <el-upload
+                                            ref="upload"
+                                            :data="{'type': type}"
+                                            :headers="headers"
+                                            action="/programabrucellas/import"
+                                            :show-file-list="true"
+                                            :auto-upload="false"
+                                            :multiple="false"
+                                            :on-error="errorUpload"
+                                            :limit="1"
+                                            :on-success="successUpload">
+
+                                            <template #trigger>
+                                                <el-button type="success" class="bg-import">
+                                                    <vue-feather type="upload" class="fs-vue-feather-14"></vue-feather> Importar Excel
+                                                </el-button>
+                                            </template>
+                                        </el-upload>
                                         <small class="form-control-feedback" v-if="errors.file" v-text="errors.file[0]"></small>
                                     </div>
                                 </div>
@@ -23,8 +40,9 @@
                                 <div class="col-md-6">
                                     <div class="form-actions text-right mt-2">
                                         <el-button type="danger" @click.prevent="closeModalImport"><vue-feather type="slash" class="fs-vue-feather-18"></vue-feather></el-button>
-                                        <button @click="importData">Importar</button>
+                                        <el-button class="ml-3" type="success" native-type="submit" :loading="loading_submit">
                                             <vue-feather type="navigation" class="fs-vue-feather-18"></vue-feather>
+                                        </el-button>
                                     </div>
                                 </div>
                             </div>
@@ -62,41 +80,10 @@ export default {
         create() {
             this.titleDialog = 'Importar Datos Programa Brucella'
         },
-        handleFileUpload(event) {
-            this.file = event.target.files[0];
-        },
-        create() {
-            this.titleDialog = 'Importar Datos Programa Brucella'
-        },
-        async importData() {
-            const formData = new FormData();
-            formData.append('file', this.file);
-
-            try {
-                const response = await axios.post('/programabrucellas/import', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-                });
-
-                if(res.status == 200) {
-						this.$swal({
-							icon: 'success',
-							title: res.data.message,
-							showConfirmButton: false,
-							timer: 1500
-						})
-						this.emitter.emit('reloadData');
-						this.closeModal();
-					}
-
-            } catch (error) {
-                if(error.response.status === 422){
-						this.errors = error.response.data.errors
-					}else{
-						console.log(error);
-					}
-            }
+        async submit() {
+            this.loading_submit = true
+            await this.$refs.upload.submit()
+            this.loading_submit = false
         },
         closeModalImport() {
             this.$emit('closeModalImport');

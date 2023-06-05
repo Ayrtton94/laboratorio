@@ -14,6 +14,7 @@ use App\Http\Controllers\EspecieController;
 use App\Http\Controllers\MuestraController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\ImprimierController;
 use App\Http\Controllers\TipoOrdenController;
 use App\Http\Controllers\ApiServiceController;
 use App\Http\Controllers\AttendanceController;
@@ -234,6 +235,10 @@ Auth::routes();
 		Route::delete('/{id}', 'destroy');
 	});
 
+	Route::get('importar', [ImprimierController::class,'index'])->name('importar.index');
+	Route::post('import/programabrucellas', [ImprimierController::class, 'ImportProductEcxel']);
+
+
 	// LABORATORIO ORDERS
 	Route::controller(LaboratorioOrderController::class)->prefix('orders')->group(function(){
 		Route::get('', 'index')->name('orders.index');
@@ -252,10 +257,13 @@ Auth::routes();
 		Route::get('/table/{table}', 'table');
 		Route::get('/evaluacion/{recordId}', 'evaluacionData');
 		Route::post('/status_paid/{id}', 'updatePayment');
+		Route::post('/status_order/{id}', 'updateSorder');
 		Route::get('/items', 'items');
 		Route::delete('/{order}', 'destroy');
 		Route::get('/imprimir/{order}/{format}', 'imprimir');
 	});
+
+	Route::get('orders/eva/{id}', [LaboratorioOrderController::class, 'evaData']);
 
 	// ASISTENCIAS
 	Route::controller(AttendanceController::class)->prefix('attendance')->group(function(){

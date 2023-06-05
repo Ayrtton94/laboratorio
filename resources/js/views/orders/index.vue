@@ -56,7 +56,7 @@
 												<a v-if="row.estado!=0" @click="clickDelete(row.id)" class="dropdown-item btn"> <vue-feather type="delete" class="fs-vue-feather-14"></vue-feather> Eliminar</a>
 												<a class="dropdown-item btn" v-if="row.estado==0" @click="clickRestore(row.id)"><vue-feather type="rotate-cw" class="fs-vue-feather-14"></vue-feather></a>
 												<a v-if="row.estado!=0" @click.prevent="evaluateOrder(row.id)" class="dropdown-item btn"><vue-feather type="archive" class="fs-vue-feather-14"></vue-feather> Evaluar Orden</a>
-												<a v-if="row.estado!=0" @click.prevent="registrarResultOrder(row)" class="dropdown-item btn"><vue-feather type="archive" class="fs-vue-feather-14"></vue-feather> + Resultados</a>		
+												<a v-if="row.estado!=0" @click.prevent="registrarResultOrder(row.id)" class="dropdown-item btn"><vue-feather type="archive" class="fs-vue-feather-14"></vue-feather> + Resultados</a>		
 												<a v-if="row.estado!=0" @click.prevent="modoPayment(row.id)" class="dropdown-item btn"> <vue-feather type="credit-card" class="fs-vue-feather-14"></vue-feather> Forma de Pago</a>
 											</div>
 										</div>
@@ -69,7 +69,7 @@
             </div>
         </div>
     </div>
-   <evaluar-order v-if="showDialogEvaluarOrder" @closeModal="closeModal"/>
+   <evaluar-order v-if="showDialogEvaluarOrder" :recordId="recordId" @closeModal="closeModal"/>
    <payment v-if="showDialogPayment" :recordId="recordId" @closeModalPayment="closeModalPayment"/>
    <modal-options v-if="showDialogOptions" :recordId="recordId" @showClose="showClose" :showError="false"/>
    <registrar-order v-if="showDialogRegistrarResult" :recordId="recordId" @closeModalResult="closeModalResult" :showError="false"/>
@@ -108,12 +108,12 @@ export default {
             this.showDialog = true;
         },
 		evaluateOrder(recordId = null){
-			this.recordId = recordId;
+			this.recordId = recordId
 			this.showDialogEvaluarOrder = true;
 		},
 		registrarResultOrder(recordId = null){
 			this.recordId = recordId
-			this.showDialogRegistrarResult = true
+			this.showDialogRegistrarResult = true;
 		},
 		modoPayment(recordId = null){
 			this.recordId = recordId

@@ -6,35 +6,40 @@
 					<div class="col-6">
 						<div class="row">
 							<div class="col-md-12">
+								<el-descriptions title="Detalle de Orden" direction="vertical" :column="6" size="small" border>
+									<el-descriptions-item label="F. recepcción" size="small">{{  pruebas.date_of_recepcion }}</el-descriptions-item>
+									<el-descriptions-item label="Número de orden" size="small">{{ pruebas.number }}</el-descriptions-item>
+								</el-descriptions>
+								<hr class="mt-0 mb-2">
 								<el-descriptions title="Detalle de prueba" direction="vertical" :column="6" size="small" border>
-									<el-descriptions-item label="F. recepcción" size="small">10/11/2022 - 12:40</el-descriptions-item>
-									<el-descriptions-item label="Temperatura Cº:" size="small">5°</el-descriptions-item>
+									<el-descriptions-item label="F. recepcción" size="small">{{  pruebas.date_of_recepcion }}</el-descriptions-item>
+									<el-descriptions-item label="Temperatura Cº:" size="small">{{ pruebas.temperatura }}</el-descriptions-item>
 								</el-descriptions>
 								<el-descriptions direction="vertical" :column="6" size="small" border>
-									<el-descriptions-item label="F. Muestreo:" size="small">10/11/2022 - 12:40</el-descriptions-item>
-									<el-descriptions-item label="Muestreado por:" size="small">CAROLINA TORRES FERNANDEZ RIVERA</el-descriptions-item>
+									<el-descriptions-item label="F. Muestreo:" size="small">{{ pruebas.date_of_muestra }}</el-descriptions-item>
+									<el-descriptions-item label="Muestreado por:" size="small"></el-descriptions-item>
 								</el-descriptions>
 								<el-descriptions direction="vertical" :column="6" size="small" border>
-									<el-descriptions-item label="F. Entrega:" size="small">14/11/2022 - 12:40</el-descriptions-item>
-									<el-descriptions-item label="Recepción:" size="small">JUANA MARY TEJADA ALARCON</el-descriptions-item>
+									<el-descriptions-item label="F. Entrega:" size="small">{{ pruebas.date_of_resultado }}</el-descriptions-item>
+									<el-descriptions-item label="Recepción:" size="small">{{ pruebas.responsable_id }}</el-descriptions-item>
 								</el-descriptions>
 								<hr class="mt-0 mb-2">
 								<el-descriptions direction="vertical" :column="4" size="small" border>
-									<el-descriptions-item label="Producto declarado:" size="small">LECHE FRESCA DE BOVINO</el-descriptions-item>
-									<el-descriptions-item label="Presentación" size="small">TUBO DE PLÁSTICO</el-descriptions-item>
-									<el-descriptions-item label="Capacidad" size="small">Aprox 10ML</el-descriptions-item>
+									<el-descriptions-item label="Producto declarado:" size="small">{{ pruebas.muestra_id }}</el-descriptions-item>
+									<el-descriptions-item label="Presentación" size="small">{{ pruebas.matriz_id }}</el-descriptions-item>
+									<el-descriptions-item label="Capacidad" size="small">{{ pruebas.quantity }}</el-descriptions-item>
 								</el-descriptions>
 								<hr class="mt-0 mb-2">
 								<h5>Datos de la Prueba</h5>
 								
 								<el-descriptions direction="vertical" size="small" border >
 									<el-descriptions-item label="Prueba/Ensayo:">
-										Detección de anticuerpos frente a Brucella abortus mediante la tecnica de elisa indirecta en leche fresca de bovino*
+										{{ pruebas.prueba_id }}
 									</el-descriptions-item>
 								</el-descriptions>
 								<el-descriptions direction="vertical" size="small" border>
 									<el-descriptions-item label="Norma /referencia:">
-										LVS-LIM-01 versión 02.(Basado en Guía Brucella abortus Antibody test kit /Bovine Milk) (validado) - 2020
+										{{ pruebas.referencia }}
 									</el-descriptions-item>
 								</el-descriptions>
 
@@ -44,7 +49,7 @@
 									<el-descriptions-item label="Inf. oficial:">SI</el-descriptions-item>
 								</el-descriptions>
 								<el-descriptions direction="vertical" size="small" border>
-									<el-descriptions-item :span="3" label="Observaciones">CONTRATO 2022</el-descriptions-item>
+									<el-descriptions-item :span="3" label="Observaciones">{{ pruebas.observacion }}</el-descriptions-item>
 								</el-descriptions>
 							</div>
 						</div>
@@ -147,26 +152,45 @@
 				tableDataGrupo:[
                     {"id": "1", "grupo": "GRUPO", "muestra": "MUESTRA"}                   
                 ],
+				pruebas: [],
 				form: {}
 			}
 		},
 		created(){
 			// this.tables();
+			this.getData();
 			
 		},
 		methods:{
-			getData(){
-				axios.get(`/orders/evaluacion`, this.recordId)
-				.then(res => {
-					console.log(res);
-				})
-			},
 			initForm(){
 				this.form = {
 					status_test: null,
 					comentario: null
 				}
 			},
+
+			submit(){				
+				axios.post(`/orders/status_order/${this.recordId}`, this.form)
+				.then(response => {
+					this.$swal({
+						icon: 'success',
+						title: response.data.message,
+						showConfirmButton: false,
+						timer: 1500
+					})
+					this.emitter.emit('reloadData')
+					this.closeModal();
+                });
+			},
+
+			getData(){
+				axios.get(`/orders/evaluacion/${this.recordId}`)
+				.then(response => {
+					this.pruebas = response.data;
+					console.log(this.pruebas)
+				})
+
+			},			
 			closeModal(){
 				this.$emit('closeModal');
 			},

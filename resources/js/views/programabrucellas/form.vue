@@ -146,6 +146,7 @@
 
                 ],
 				status_paid: [
+					{"id": "0", "nombre": "PENDIENTE"},
                     {"id": "1", "nombre": "EFECTIVO"},
                     {"id": "2", "nombre": "DEPOSITO"},
                 ]
