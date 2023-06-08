@@ -213,8 +213,9 @@
                                         <td class="text-center">{{ row.date_of_recepcion }}</td>
                                         <td class="text-center">{{ row.date_of_result }}</td>
                                         <td class="text-center">{{ row.temperatura }}</td>
-                                        <td class="text-center"></td>
-
+                                        <td class="text-center">
+												<button type="button" class="btn waves-effect waves-light btn-sm btn-danger" @click="clickRemoveItem(index)">x</button>
+										</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -480,6 +481,10 @@ export default {
 
             this.calculateTotal()
         },
+        clickRemoveItem(index){
+			this.form.tests.splice(index, 1)
+			this.calculateTotal()
+		},
         queryDocumentApi(){
             this.queryDocument()
         },

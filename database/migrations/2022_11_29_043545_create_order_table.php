@@ -137,6 +137,11 @@ class CreateOrderTable extends Migration
 					$table->decimal('total_igv', 12, 2);
 					$table->decimal('total_value', 12, 2);
 					$table->decimal('total', 12, 2);
+					
+					$table->string('age_select')->nullable();
+					$table->string('lote')->nullable();
+					$table->string('datef')->nullable();
+
 					$table->json('attributes')->nullable();
 					$table->boolean('estado')->default(1);
 

@@ -176,6 +176,7 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
+                                            <th class="text-center font-weight-bold">MATRIZ</th>
                                             <th class="text-center font-weight-bold">MUESTRA</th>
                                             <th class="text-center font-weight-bold">ENSAYO</th>
                                             <th class="text-center font-weight-bold">ESPECIE</th>
@@ -197,6 +198,7 @@
                                     <tbody >
                                         <tr v-for="(row, index) in form.tests" :key="index">
                                             <td>{{ index + 1 }}</td>
+                                            <td class="text-center">{{ getNameMatrices(row.matriz_id) }}</td>
                                             <td class="text-center">{{ getNameMuestra(row.muestra_id) }}</td>
                                             <td class="text-center">{{ getNamePrueba(row.prueba_id) }}</td>
                                             <td class="text-center">{{ getNameEspecie(row.especie_id) }}</td>
@@ -319,6 +321,11 @@ export default {
 
                 })
         },
+        getNameMatrices(id){
+            let itemMatris = _.find(this.matrices, {id: id})
+            if(itemMatris) return itemMatris.description;
+            return '';
+        },
         getNameMuestra(id){
             let itemMuestra = _.find(this.muestras, {id: id})
             if(itemMuestra) return itemMuestra.description;
@@ -397,8 +404,8 @@ export default {
         },
 		clearData(){
 			this.form.quantity = '';
-			this.form.matriz_id = null;
-			this.form.muestra_id = null;
+			this.form.matriz_id = '';
+			this.form.muestra_id = '';
 			this.form.prueba_id = '';
 			this.form.especie_id = null;
 			this.form.subespecie_id = null;
@@ -431,6 +438,7 @@ export default {
             this.form.tests.push({
                 codigo: this.form.codigo,
                 muestra_id: this.form.muestra_id,
+                matriz_id: this.form.matriz_id,
                 prueba_id: this.form.prueba_id,
                 especie_id: this.form.especie_id,
                 observacion: this.form.observacion,
@@ -446,8 +454,7 @@ export default {
                 date_of_result: this.form.date_of_result,
                 temperatura: this.form.temperatura
             });
-			
-            this.calculateTotal()
+			this.calculateTotal();
 			this.clearData();
         },
 		queryDocumentApi(){

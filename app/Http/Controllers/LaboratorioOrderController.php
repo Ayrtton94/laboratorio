@@ -183,7 +183,7 @@ class LaboratorioOrderController extends Controller
                     LaboratorioOrderDetail::query()->create(
                         [
                         'laboratorio_order_id' => $orderLaboratorio->id,
-                        'matriz_id' => $test['muestra_id']??null,
+                        'matriz_id' => $test['matriz_id']??null,
                         'muestra_id' => $test['muestra_id']??null,
                         'prueba_id' => $test['prueba_id']??null,
                         'especie_id' => $test['especie_id']??null,
@@ -358,5 +358,107 @@ class LaboratorioOrderController extends Controller
     ];
 }
 
+    public function updateResultado($id, Request $request)
+{
+    $records = LaboratorioOrderDetail::where('id', $id)->first();
+
+    if($records){
+        $records->update([
+            'age_select' => $request->input('age_select'),
+            'lote' => $request->input('lote'),
+            'datef' => $request->input('datef'),
+        ]);
+    }
+    return [
+        'success' => true,
+        'message' => 'Resultado Actualizado'
+    ];
+}
+
+public function pruebalav($id)
+{
+    $records = LaboratorioOrderDetail::select('prueba_id', 'matriz_id')->where('laboratorio_order_id', $id)->get();
+    $detalle = [];    
+    
+    foreach ($records as $record) {
+          
+        $pruebas = Prueba::where('id', $record->prueba_id)->get();
+        $matrizes = Matriz::where('id', $record->matriz_id)->get();
+        
+        foreach ($pruebas as $prueba) {
+            foreach($matrizes as $matrize){
+                $detalle[] = [
+                    'prueba' => $prueba->name,
+                    'matriz' => $matrize->description              
+                ];               
+            }            
+        }
+    }    
+    return response()->json($detalle, 200);
+}
+
+
+
+
+public function lisprmimu($id)
+{
+    $records = LaboratorioOrderDetail::select('prueba_id', 'matriz_id','muestra_id')->where('id', $id)->get();
+    $detalle = [];    
+    
+    foreach ($records as $record) {
+          
+        $pruebas = Prueba::where('id', $record->prueba_id)->get();
+        $matrizes = Matriz::where('id', $record->matriz_id)->get();
+        $muestras = Muestra::where('id', $record->muestra_id)->get();
+        
+        foreach ($pruebas as $prueba) {
+            foreach($matrizes as $matrize){
+                foreach($muestras as $muestra){
+                    $detalle[] = [
+                        'prueba' => $prueba->name,
+                        'matriz' => $matrize->description,
+                        'muestar'=> $muestra->description,              
+                    ];
+                }                
+            }            
+        }
+    }    
+    return response()->json($detalle, 200);
+}
+public function detalle($id)
+{
+    $records = LaboratorioOrderDetail::select('id')->where('laboratorio_order_id', $id)->get();  
+    return response()->json($records, 200);
+}
+
+public function dato_detalle($id)
+{
+    $records = LaboratorioOrderDetail::where('id', $id)->get(); 
+    $detalle = [];
+    foreach($records as $record){
+        $pruebas = Prueba::where('id', $record->prueba_id)->get();
+        $matrizes = Matriz::where('id', $record->matriz_id)->get();
+        $muestras = Muestra::where('id', $record->muestra_id)->get();
+
+        foreach ($pruebas as $prueba) {
+            foreach($matrizes as $matrize){
+                foreach($muestras as $muestra){
+                    $detalle[] = [
+                        'date_of_muestra' => $record->date_of_muestra,
+                        'date_of_recepcion' => $record->date_of_recepcion,
+                        'date_of_resultado' => $record->date_of_resultado,
+                        'temperatura' => $record->temperatura,
+                        'quantity' => $record->quantity,
+                        'observacion' => $record->observacion,
+                        'prueba' => $prueba->name,
+                        'matriz' => $matrize->description,
+                        'muestar'=> $muestra->description,              
+                    ];
+                }                
+            }            
+        }
+    }   
+    return response()->json($detalle, 200);
+}
 
 }

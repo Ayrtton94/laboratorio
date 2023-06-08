@@ -146,9 +146,7 @@
                     {"id": "1", "nombre": "Aceptada"},
                     {"id": "2", "nombre": "Rechazada"},
                 ],
-				tableDataPruebas:[
-                    {"id": "1", "prueba": "Detección de anticuerpos frente a Brucella abortus mediante la tecnica de elisa indirecta en leche fresca de bovino*", "matriz": "Cuerpos, tejidos y fluidos biologicos animales"},
-                ],
+				tableDataPruebas:[],
 				tableDataGrupo:[
                     {"id": "1", "grupo": "GRUPO", "muestra": "MUESTRA"}                   
                 ],
@@ -159,6 +157,7 @@
 		created(){
 			// this.tables();
 			this.getData();
+			this.getprueba();
 			
 		},
 		methods:{
@@ -190,7 +189,18 @@
 					console.log(this.pruebas)
 				})
 
-			},			
+			},	
+
+			getprueba(){
+				axios.get(`/orders/prueva_order/${this.recordId}`)
+				.then(response => {
+					this.tableDataPruebas = response.data;
+					console.log(this.tableDataPruebas)
+				})
+
+			},	
+			
+			
 			closeModal(){
 				this.$emit('closeModal');
 			},

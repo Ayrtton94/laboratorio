@@ -30,6 +30,9 @@ class LaboratorioOrderDetail extends Model
 		'total_igv',
 		'total_value',
 		'total',
+		'age_select',
+		'lote',
+		'datef',
 		'attributes'
     ];
 

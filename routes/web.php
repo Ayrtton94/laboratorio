@@ -258,6 +258,13 @@ Auth::routes();
 		Route::get('/evaluacion/{recordId}', 'evaluacionData');
 		Route::post('/status_paid/{id}', 'updatePayment');
 		Route::post('/status_order/{id}', 'updateSorder');
+		Route::post('/resultado_order/{id}', 'updateResultado');
+		
+		Route::get('/prueva_order/{id}', 'pruebalav');
+		Route::get('/list_prueba/{id}', 'lisprmimu');
+		Route::get('/detalle/{id}', 'detalle');
+		Route::get('/dato_detalle/{id}', 'dato_detalle');
+
 		Route::get('/items', 'items');
 		Route::delete('/{order}', 'destroy');
 		Route::get('/imprimir/{order}/{format}', 'imprimir');
