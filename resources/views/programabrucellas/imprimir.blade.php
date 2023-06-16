@@ -13,6 +13,11 @@
                         <div class="row">
                             <div class="cold-md-4"></div>
                             <div class="cold-md-6">
+                                <div class="col-md-6">
+                                    <a class="donwload-format text-left mt-2" href="/formats/programabrucellas.xlsx" target="_new">
+                                        <vue-feather type="download" class="fs-vue-feather-18 mt-3"></vue-feather> Formato
+                                    </a>
+                                </div>
                                 <div class="row">
                                     <form action="{{ url('import/programabrucellas') }}" method="POST" enctype="multipart/form-data">
                                         @csrf

@@ -80,6 +80,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('persons.index', ['type'=> 'suppliers'])}}">Proveedor</a>
+                            <a class="nav-link" href="{{route('importar_proveedor.index')}}">Importar Proveedor</a>
                         </li>
 
                     </ul>
@@ -97,11 +98,11 @@
                     <ul class="submenu-item">
                         <li class="category-heading">Gestión excel Padrón Brucella</li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('programabrucellas') }}">Preparar Padrón programa Brucellas</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('importar.index')}}">Importar</a></li>
                         <li class="category-heading">Laboratorio
                         <li>
-
                         <li class="nav-item"><a class="nav-link" href="{{ route('orders.create')}}">Generar Orden de Laboratorio</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('importar.index')}}">Importar</a></li>
+                        
                         {{-- <li class="nav-item"><a class="nav-link" href="">Listar órdenes</a></li> --}}
                         {{-- <li class="nav-item"><a class="nav-link" href="recepcion-generar-campana-brucella.php">Generar
                                 orden de Campaña Brucella</a></li>

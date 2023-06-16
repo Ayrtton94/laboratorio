@@ -57,7 +57,7 @@
 							<div class="col-md-6">
 								<div class="form-group">
 									<label class="control-label">(*)Estado</label>
-									<el-select v-model="form.status_test" class="w-100" filterable>
+									<el-select v-model="form.status_order" class="w-100" filterable>
 										<el-option v-for="option in statustest" :key="option.id" :label="option.nombre"  :value="option.id"></el-option>
 									</el-select>
 								</div>
@@ -71,7 +71,7 @@
 						</div>
 					</div>
 					<div class="col-6">
-						<div class="row">
+						<div class="row" hidden>
 							<div class="table-responsive">
 								<h5># Cant Muestras</h5>
 								<table class="table table-bordered">

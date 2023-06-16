@@ -34,7 +34,7 @@
 						<div class="form-group">
 							<label class="control-label col-md-12 col-sm-12 col-xs-12">(*)Ruta</label>
 							<div class="col-md-12 col-sm-12 col-xs-12">
-								<input id="ruta" v-model="form.ruta" class="form-control" name="ruta" type="number" placeholder="Descripción">
+								<input id="ruta" v-model="form.ruta" class="form-control" name="ruta" type="text" placeholder="Descripción">
 								<small class="form-control-feedback text-danger" v-if="errors.ruta" v-text="errors.ruta[0]"></small>
 							</div>
 						</div>

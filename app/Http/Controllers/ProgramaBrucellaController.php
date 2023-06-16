@@ -44,7 +44,7 @@ class ProgramaBrucellaController extends Controller
 	public function tables()
     {
         $muestras = Muestra::orderBy('description')->get();
-        $suppliers = Person::whereType('suppliers')->without('country', 'department', 'province', 'district')->limit(5)->get()->transform(function ($row) {
+        $suppliers = Person::whereType('suppliers')->without('country', 'department', 'province', 'district')->get()->transform(function ($row) {
             return [
                 'id' => $row->id,
                 'description' => $row->number . ' - ' . $row->name,

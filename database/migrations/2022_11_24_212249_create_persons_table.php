@@ -21,6 +21,14 @@ class CreatePersonsTable extends Migration
             $table->string('name');
 			$table->string('ap_lastname')->nullable();
 			$table->string('am_lastname')->nullable();
+
+            ///suppliers
+            $table->string('empresa')->nullable();
+            $table->string('codigo')->nullable();
+            $table->string('ruta')->nullable();
+            $table->string('porongo')->nullable();
+            $table->string('ancho')->nullable();
+
             
 			$table->char('country_id', 2)->nullable();
 			$table->char('department_id', 2)->nullable();

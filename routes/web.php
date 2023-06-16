@@ -22,6 +22,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\SubEspecieController;
 use App\Http\Controllers\LaboratorioController;
 use App\Http\Controllers\PresentacionController;
+use App\Http\Controllers\ImportSupplierController;
 use App\Http\Controllers\CustomerBrucelaController;
 use App\Http\Controllers\LaboratorioOrderController;
 use App\Http\Controllers\ProgramaBrucellaController;
@@ -295,6 +296,9 @@ Auth::routes();
         Route::delete('/{id}', 'destroy');
     });
 
+	//IMPORTAR PROVEEDOR
+	Route::get('importar_proveedor', [ImportSupplierController::class,'index'])->name('importar_proveedor.index');
+	Route::post('import/proveedor', [ImportSupplierController::class, 'ImportProovedorEcxel']);
 	
 	
 

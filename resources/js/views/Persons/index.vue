@@ -109,6 +109,11 @@
 					user_account: false,
 					area_id: null,
 					schedule_id: null,
+					empresa: null,
+					codigo: null,
+					ruta: null,
+					porongo: null,
+					ancho: null,
 				},
 				this.errors = {}
 			},
@@ -145,6 +150,13 @@
 				this.form.userpassword = info.userpassword
 				this.form.area_id = info.area_id
 				this.form.schedule_id = info.schedule_id
+
+				this.form.empresa = info.empresa
+				this.form.codigo = info.codigo
+				this.form.ruta = info.ruta
+				this.form.porongo = info.porongo
+				this.form.ancho = info.ancho
+
 			},
 			saveAppt(form){ 
 				axios.post(`/${this.resource}`, form)

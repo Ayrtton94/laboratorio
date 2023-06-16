@@ -53,8 +53,7 @@
 												<div class="form-group">
 													<el-input v-model="form.name" type="text" placeholder="Nombre"/>
 													<small class="form-control-feedback text-danger" v-if="errors.name" v-text="errors.name[0]"></small>
-												</div>
-												
+												</div>												
 											</div>
 										</td>
 										<td>
@@ -65,6 +64,15 @@
 													<small class="form-control-feedback text-danger" v-if="errors.ap_lastname" v-text="errors.ap_lastname[0]"></small>
 												</div>
 											</div>
+
+											<div v-if="this.form.type=='suppliers'">
+												<label class="control-label">Empresa</label>
+												<div class="form-group">
+													<el-input v-model="form.empresa" type="text" placeholder="Empresa"/>
+													<small class="form-control-feedback text-danger" v-if="errors.empresa" v-text="errors.empresa[0]"></small>
+												</div>
+											</div>
+
 										</td>
 										<td>
 											<div v-if="this.form.type=='staff'">
@@ -72,6 +80,14 @@
 												<div class="form-group">
 													<el-input v-model="form.am_lastname" type="text" placeholder="Apellido Materno"/>
 													<small class="form-control-feedback text-danger" v-if="errors.am_lastname" v-text="errors.am_lastname[0]"></small>
+												</div>
+											</div>
+
+											<div v-if="this.form.type=='suppliers'">
+												<label class="control-label">Codigo</label>
+												<div class="form-group">
+													<el-input v-model="form.codigo" type="text" placeholder="Apellido Materno"/>
+													<small class="form-control-feedback text-danger" v-if="errors.codigo" v-text="errors.codigo[0]"></small>
 												</div>
 											</div>
 										</td>
@@ -186,6 +202,14 @@
 													</el-select>
 												</div>
 											</div>
+											
+											<div v-if="this.form.type=='suppliers'">
+												<label class="control-label">Ruta</label>
+												<div class="form-group">
+													<el-input v-model="form.ruta" type="text" placeholder="Ruta"/>
+													<small class="form-control-feedback text-danger" v-if="errors.ruta" v-text="errors.ruta[0]"></small>
+												</div>
+											</div>
 										</td>
 										<td>
 											<div v-if="this.form.type=='staff'">
@@ -194,6 +218,23 @@
 													<el-select v-model="form.schedule_id" filterable clearable placeholder="Seleccione">
 														<el-option v-for="option in schedules" :key="option.id" :value="option.id" :label="option.description" />
 													</el-select>
+												</div>
+											</div>
+
+											<div v-if="this.form.type=='suppliers'">
+												<label class="control-label">Porongo</label>
+												<div class="form-group">
+													<el-input v-model="form.porongo" type="text" placeholder="Porongo"/>
+													<small class="form-control-feedback text-danger" v-if="errors.porongo" v-text="errors.porongo[0]"></small>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div v-if="this.form.type=='suppliers'">
+												<label class="control-label">Ancho</label>
+												<div class="form-group">
+													<el-input v-model="form.ancho" type="text" placeholder="Ancho"/>
+													<small class="form-control-feedback text-danger" v-if="errors.ancho" v-text="errors.ancho[0]"></small>
 												</div>
 											</div>
 										</td>

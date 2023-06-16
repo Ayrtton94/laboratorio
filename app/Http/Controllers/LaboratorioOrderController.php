@@ -344,12 +344,14 @@ class LaboratorioOrderController extends Controller
 
     public function updateSorder($id, Request $request)
 {
-    $data = $request->only(['status_test', 'comentario']);
-    
+       
     $records = LaboratorioOrder::where('id', $id)->first();
     
     if ($records) {
-        $records->update($data);
+        $records->update([
+            'status_order' => $request->input('status_order'),
+            'comentario' => $request->input('comentario'),
+        ]);
     }
     
     return [

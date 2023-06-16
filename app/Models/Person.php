@@ -42,6 +42,11 @@ class Person extends Model
 		'signature',
 		'user_account',
 		'area_id',
+        'empresa',
+        'codigo',
+        'ruta',
+        'porongo',
+        'ancho',
 		'schedule_id'
     ];
 
