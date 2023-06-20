@@ -236,10 +236,7 @@
                             <button  type="submit" class="btn btn-sm btn-success">
                                 <span>Registrar</span>
                             </button>                         
-                        </div>
-                        <div class=" col-12 col-sm-12 float-right">
-                            <span><a class="btn btn-sm btn-danger" :href="`/${resource}`">Salir</a></span>                         
-                        </div>                        
+                        </div>                     
                     </div>
 
                 </form>
@@ -299,7 +296,6 @@ export default {
         getDataTables(){
             axios.get(`/${this.resource}/tables`)
                 .then(response => {
-
                     this.identity_document_types = response.data.identity_document_types
                     this.serieDocument = response.data.serieDocument
                     this.tpordenes = response.data.tpordenes
@@ -318,7 +314,6 @@ export default {
 					this.all_departments = response.data.departments
 					this.all_provinces = response.data.provinces
 					this.all_districts = response.data.districts
-
                 })
         },
         getNameMatrices(id){

@@ -138,6 +138,7 @@
                 </a>
                 <div class="submenu">
                     <ul class="submenu-item">
+                        <li class="nav-item"><a class="nav-link" href="{{ route('laboratoriobrucellas.index') }}">Lavoratorio Bucella</a></li>
                         <li class="category-heading">Órdenes de laboratorio</li>
                         <li class="nav-item"><a class="nav-link" href="">Resumen</a></li>
                     </ul>

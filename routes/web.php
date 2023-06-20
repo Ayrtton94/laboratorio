@@ -26,6 +26,7 @@ use App\Http\Controllers\ImportSupplierController;
 use App\Http\Controllers\CustomerBrucelaController;
 use App\Http\Controllers\LaboratorioOrderController;
 use App\Http\Controllers\ProgramaBrucellaController;
+use App\Http\Controllers\LaboratorioBrucellaController;
 
 
 Route::get('/', function () {
@@ -299,6 +300,16 @@ Auth::routes();
 	//IMPORTAR PROVEEDOR
 	Route::get('importar_proveedor', [ImportSupplierController::class,'index'])->name('importar_proveedor.index');
 	Route::post('import/proveedor', [ImportSupplierController::class, 'ImportProovedorEcxel']);
+
+	// LAVORATORIO BRUCELLAS
+	Route::controller(LaboratorioBrucellaController::class)->prefix('laboratoriobrucellas')->group(function(){
+		Route::get('', 'index')->name('laboratoriobrucellas.index');
+		Route::get('/crear', 'create')->name('laboratoriobrucellas.create');
+		Route::get('tables', 'tables');
+		Route::get('/table/{table}', 'table');
+		Route::post('', 'store');
+		Route::delete('/{id}', 'destroy');
+	});
 	
 	
 

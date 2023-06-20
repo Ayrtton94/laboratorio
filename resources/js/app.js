@@ -71,6 +71,9 @@ import company from './views/Company/index.vue'
 import programabrucellas from './views/programabrucellas/index.vue'
 import programabrucellasform from './views/programabrucellas/form.vue'
 
+import brucellalav from './views/Laboratorio_brucella/index.vue'
+import brucellalavform from './views/Laboratorio_brucella/form.vue'
+
 const emitter = mitt()
 const app = createApp({})
 
@@ -155,5 +158,10 @@ app.component('orders-edit', ordersedit);
 //HORARIO
 app.component('programabrucellas', programabrucellas);
 app.component('schedules', schedules);
+
+//BRUCELLA_LAVORATORIO
+app.component('brucellalav', brucellalav);
+app.component('brucellalavform', brucellalavform);
+
 
 app.mount('#app')
