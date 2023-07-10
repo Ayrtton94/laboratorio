@@ -308,6 +308,7 @@ Auth::routes();
 		Route::get('tables', 'tables');
 		Route::get('/table/{table}', 'table');
 		Route::post('', 'store');
+		Route::post('/importar', 'importar');
 		Route::delete('/{id}', 'destroy');
 	});
 	

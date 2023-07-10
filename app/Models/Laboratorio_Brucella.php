@@ -14,6 +14,10 @@ class Laboratorio_Brucella extends Model
         'customer_id',
         'responsable_id',
         'referencia',
-        'compani_id'
+        'temperatura',
+        'date_of_muestra',
+        'date_of_recepcion',
+        'date_of_resultado',
+        'observacion'
 	];
 }

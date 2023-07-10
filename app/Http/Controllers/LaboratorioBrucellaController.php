@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Person;
 use App\Models\Serie;
 use App\Models\Laboratorio_Brucella;
+use App\Models\Laboratorio_detalles_brucellas;
 use App\Models\Catalogs\DocumentType;
 use App\Models\Catalogs\IdentityDocumentType;
 use Illuminate\Http\Request;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class LaboratorioBrucellaController extends Controller
 {
@@ -39,7 +41,36 @@ class LaboratorioBrucellaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $Laboratorio_Brucella = Laboratorio_Brucella::create($request->all());
+    
+        foreach ($request['data'] as $index => $test) {
+            $datos = [
+                'laboratorio_brucellas_id' => $Laboratorio_Brucella->id,
+                'ruta' => $test[0] ?? null,
+                'codigo' => $test[1] ?? null,
+                'nombre' => $test[2] ?? null,
+                'peso' => $test[3] ?? null,
+                'v_prodccion' => $test[4] ?? null,
+                't_hato' => $test[5] ?? null,
+                'estado' => $test[6] ?? null,
+            ];
+    
+            if (isset($request['dato1'][$index])) {
+                $datos['dato1'] = $request['dato1'][$index];
+            }
+    
+            if (isset($request['dato2'][$index])) {
+                $datos['dato2'] = $request['dato2'][$index];
+            }
+    
+            Laboratorio_detalles_brucellas::create($datos);
+        }
+    
+        return response()->json([
+            'success' => true,
+            'message' => "Generada Correctamente",
+            'id' => $Laboratorio_Brucella->id,
+        ]);
     }
 
     /**
@@ -125,5 +156,25 @@ class LaboratorioBrucellaController extends Controller
             return $customers;
         }
         return [];
+    }
+
+    public function importar(Request $request)
+    {
+        $file = $request->file('excel_file');
+
+        // Validar que se haya subido un archivo válido
+        $request->validate([
+            'excel_file' => 'required|mimes:xls,xlsx'
+        ]);
+    
+        // Cargar el archivo de Excel
+        $spreadsheet = IOFactory::load($file->getRealPath());
+    
+        // Obtener los datos de la hoja activa del archivo
+        $sheet = $spreadsheet->getActiveSheet();
+        $data = $sheet->toArray();
+    
+        // Retornar los datos en formato JSON
+        return response()->json($data);
     }
 }

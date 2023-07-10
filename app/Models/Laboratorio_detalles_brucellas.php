@@ -9,11 +9,15 @@ class Laboratorio_detalles_brucellas extends Model
 {
     protected $table = "laboratorio_detalles_brucellas";
 	protected $fillable = [
-		'brucellas_id',
-        'temperatura',
-        'date_of_muestra',
-        'date_of_recepcion',
-        'date_of_resultado',
-        'observacion'
+		'laboratorio_brucellas_id',
+        'ruta',
+        'codigo',
+        'nombre',
+        'peso',
+        'v_prodccion',
+        't_hato',
+        'estado',
+        'dato1',
+        'dato2'
 	];
 }

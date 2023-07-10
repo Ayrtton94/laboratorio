@@ -1,6 +1,6 @@
 <template>
-    <div class="container-fluid m-0 pb-0 mt-1">
-        <div class="card mb-0 w-100">
+    <div class="container-fluid">
+        <div class="card">
             <div class="page-header d-flex bd-highlight">
 				<div class="ml-4 mt-2 p-2 flex-grow-1">
 					<h4>Nueva Orden de Laboratorio Brucella</h4>
@@ -24,6 +24,16 @@
                                 <label class="control-label">Fecha de Emisión</label>
                                 <el-date-picker v-model="form.date_of_issue" type="date" value-format="YYYY-MM-DD" :clearable="false"></el-date-picker>
                                 <small class="form-control-feedback" v-if="errors.date_of_issue" v-text="errors.date_of_issue[0]"></small>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-3 col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">Ingresa tu excel</label>
+                                <form>
+                                        <div class="cold-md-2">
+                                            <input class="form-control" type="file" @change="handleFileUpload" required>
+                                        </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -75,10 +85,10 @@
                             </div>
                         </div>
                         <div class="col-lg-3">
-                            <div class="form-group" :class="{'has-danger': errors.date_of_result}">
+                            <div class="form-group" :class="{'has-danger': errors.date_of_resultado}">
                                 <label class="control-label">(*)Fecha de Resultados</label>
-                                <el-date-picker v-model="form.date_of_result" type="date" value-format="YYYY-MM-DD" :clearable="false"></el-date-picker>
-                                <small class="form-control-feedback" v-if="errors.date_of_result" v-text="errors.date_of_result[0]"></small>
+                                <el-date-picker v-model="form.date_of_resultado" type="date" value-format="YYYY-MM-DD" :clearable="false"></el-date-picker>
+                                <small class="form-control-feedback" v-if="errors.date_of_resultado" v-text="errors.date_of_resultado[0]"></small>
                             </div>
                         </div>
                         <div>
@@ -89,65 +99,61 @@
                             </div>
                         </div>   
                     </div>
-                    <div class="row">                        
-                        <div class="col-lg-5">
-                            <h4>Muestra</h4>
-                            <br>
-                            <table class="table responsive">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Número</th>
-                                        <th># Registro</th>
-                                        <th>Reg.Error</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-lg-5">
-                            <h4>Detalles de muestras</h4>
-                            <br>
-                            <table class="table responsive">
-                                <thead>
-                                    <tr>
-                                        <th>Ruta</th>
-                                        <th>Código</th>
-                                        <th>Nombre</th>
-                                        <th>Peso</th>
-                                        <th>Vacas en Prodcción</th>
-                                        <th>Tamaño Hato</th>
-                                        <th>Estado</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class=" col-12 col-sm-12 float-right">
-                            <button  type="submit" class="btn btn-sm btn-success">
-                                <span>Registrar</span>
-                            </button>                         
-                        </div>
-                        <div class=" col-12 col-sm-12 float-right">
-                            <span><a class="btn btn-sm btn-danger" :href="`/${resource}`">Salir</a></span>                         
-                        </div>
-
+                    <div class="row responsive">                        
+                    <div class="col-lg-3">
+                        <h4>Muestra</h4>
+                        <br>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                <th>Número</th>
+                                <th># Registro</th>
+                                <th>Reg.Error</th>
+                                </tr>
+                            </thead>
+                            <tbody v-if="Array.isArray(form.data)">
+                                <tr v-for="(row, index) in form.data" :key="index + 1">
+                                    <td>{{ index + 1 }}</td>
+                                    <td><input class="form-control" type="text" v-model="form.dato1[index]"></td>
+                                    <td><input class="form-control" type="text" v-model="form.dato2[index]"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-lg-9">
+                        <h4>Detalles de muestras</h4>
+                        <br>
+                        <table class="table responsive">
+                        <thead>
+                            <tr>
+                                <th>Ruta</th>
+                                <th>Código</th>
+                                <th>Nombre</th>
+                                <th>Peso</th>
+                                <th>Vacas en Producción</th>
+                                <th>Total Hato</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(row, index) in form.data" :key="index">                                
+                                <td><input class="form-control" type="text" v-model="row[2]"></td>
+                                <td><input class="form-control" type="text" v-model="row[1]"></td>
+                                <td><input class="form-control" type="text" v-model="row[4]"></td>
+                                <td><input class="form-control" type="text" v-model="row[5]"></td>
+                                <td><input class="form-control" type="text" v-model="row[6]"></td>
+                                <td><input class="form-control" type="text" v-model="row[7]"></td>
+                            </tr>
+                        </tbody>
+                        </table>
+                    </div>
+                    <div class="col-12 col-sm-12 float-right">
+                        <button type="submit" class="btn btn-sm btn-success">
+                        <span>Registrar</span>
+                        </button>                         
+                    </div>
+                    <div class="col-12 col-sm-12 float-right">
+                        <span><a class="btn btn-sm btn-danger" :href="`/${resource}`">Salir</a></span>                         
+                    </div>
                     </div>
                 </form>
             </div>
@@ -169,7 +175,9 @@ export default {
             all_customers: [],
 			customers: [],
             errors: {},
-            form: {},
+            form: {
+                data: [],
+            },
         }
 
     },
@@ -178,21 +186,47 @@ export default {
         this.initForm()
     },
     methods: {
+        setData(responseData) {
+            this.data = responseData;
+        },
+        handleFileUpload(event) {
+            const file = event.target.files[0];
+            const formData = new FormData();
+            formData.append('excel_file', file);
+
+            // Enviar el archivo al servidor Laravel
+            axios.post(`/${this.resource}/importar`, formData, {
+                headers: {
+                'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then(response => {
+                // Actualizar los datos en la instancia de Vue
+                this.form.data = response.data; // Asignar los datos al arreglo 'data'
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        },
+
         initForm() {
-            this.errors = {}
+            this.errors = {};
             this.form = {
-                tests: [],
+                data: [],
                 series_id: null,
                 date_of_issue: moment().format('YYYY-MM-DD'),
                 customer_id: null,
                 responsable_id: null,
-                referencia: null,  
+                referencia: null,
                 temperatura: null,
                 date_of_muestra: null,
                 date_of_recepcion: null,
-                date_of_result: null,
-                observacion: null
-            }
+                date_of_resultado: null,
+                observacion: null,
+                dato1: [], // Inicializar como arreglo vacío
+                dato2: [] // Inicializar como arreglo vacío
+            };
         },
 
         getDataTables(){
@@ -224,7 +258,31 @@ export default {
 		},
 
         async submit() {
-            console.log('retroceder nunca, rendirce jamas')
+            this.loading_submit = true;
+            axios.post(`/${this.resource}`, this.form)
+                .then(async response => {
+                    if (response.data.success) {
+                        this.$swal({
+                            icon: 'success',
+                            title: response.data.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        window.location.reload(); // aquí se recarga la página
+                    }
+                    else {
+                        this.$message.error(response.data.message);
+                        this.loading_submit = false;
+                    }
+                }).catch(error => {
+                    if (error.response.status === 422) {
+                        this.errors = error.response.data;
+                    }
+                    else {
+                        this.$message.error(error.response.data.message);
+                    }
+                    this.loading_submit = false;
+                });
         },
     },
 }

@@ -20,27 +20,30 @@ class CreateLaboratorioBrucellasTable extends Migration
             $table->string('customer_id')->nullable();
             $table->string('responsable_id')->nullable();
             $table->string('referencia')->nullable();
-            $table->string('compani_id')->nullable();
+            $table->string('temperatura')->nullable(); 
+            $table->date('date_of_muestra')->nullable();
+			$table->date('date_of_recepcion')->nullable();
+		    $table->date('date_of_resultado')->nullable();
+            $table->string('observacion')->nullable();   
             $table->softDeletes();
             $table->timestamps();
         });
 
         Schema::create('laboratorio_detalles_brucellas', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('brucellas_id'); 
-            $table->string('temperatura')->nullable(); 
-            $table->date('date_of_muestra');
-			$table->date('date_of_recepcion');
-		    $table->date('date_of_resultado');
-            $table->string('observacion')->nullable();         
+            $table->id();  
+            $table->string('laboratorio_brucellas_id');  
+            $table->string('ruta')->nullable();
+            $table->string('codigo')->nullable();
+            $table->string('nombre')->nullable();
+            $table->string('peso')->nullable();
+            $table->string('v_prodccion')->nullable();
+            $table->string('t_hato')->nullable();   
+            $table->string('estado')->nullable();
+            $table->string('dato1')->nullable();
+            $table->string('dato2')->nullable();
             $table->softDeletes();
             $table->timestamps();
-        
-            // Clave foránea a la tabla de guides
-            $table->foreign('brucellas_id')
-                  ->references('id')
-                  ->on('laboratorio_brucellas')
-                  ->onDelete('cascade');
+
         });
     }
 

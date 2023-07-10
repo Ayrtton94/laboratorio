@@ -178,33 +178,34 @@ class LaboratorioOrderController extends Controller
             $request['number'] = $serieDocument->number;
             $orderLaboratorio = LaboratorioOrder::create($request->all()+['user_id'=>auth()->id()]);
 
-            if(count($request['tests']) > 0){
+            if (count($request['tests']) > 0) {
                 foreach ($request['tests'] as $test) {
-                    LaboratorioOrderDetail::query()->create(
-                        [
-                        'laboratorio_order_id' => $orderLaboratorio->id,
-                        'matriz_id' => $test['matriz_id']??null,
-                        'muestra_id' => $test['muestra_id']??null,
-                        'prueba_id' => $test['prueba_id']??null,
-                        'especie_id' => $test['especie_id']??null,
-                        'subespecie_id' => $test['especie_id']??null,
-                        'presentacion_id' => $test['presentacion_id']??null,
-                        'quantity' => $test['quantity'],
-                        'observacion' => $test['observacion']??null,
-                        'date_of_muestra' => $test['date_of_muestra'],
-                        'date_of_recepcion' => $test['date_of_recepcion'],
-                        'date_of_resultado' => $test['date_of_result'],
-                        'temperatura' => $test['temperatura'] ??0,
-                        'unit_value' => 0,
-                        'unit_price' => 0,
-                        'total_igv' => 0,
-                        'total_value' => 0,
-                        'total' => $test['price_total'],
-                        'attributes' => null
-                    ]
-                    );
+                    for ($i = 0; $i < $test['quantity']; $i++) {
+                        LaboratorioOrderDetail::query()->create([
+                            'laboratorio_order_id' => $orderLaboratorio->id,
+                            'matriz_id' => $test['matriz_id'] ?? null,
+                            'muestra_id' => $test['muestra_id'] ?? null,
+                            'prueba_id' => $test['prueba_id'] ?? null,
+                            'especie_id' => $test['especie_id'] ?? null,
+                            'subespecie_id' => $test['especie_id'] ?? null,
+                            'presentacion_id' => $test['presentacion_id'] ?? null,
+                            'quantity' => 1,
+                            'observacion' => $test['observacion'] ?? null,
+                            'date_of_muestra' => $test['date_of_muestra'],
+                            'date_of_recepcion' => $test['date_of_recepcion'],
+                            'date_of_resultado' => $test['date_of_result'],
+                            'temperatura' => $test['temperatura'] ?? 0,
+                            'unit_value' => 0,
+                            'unit_price' => 0,
+                            'total_igv' => 0,
+                            'total_value' => 0,
+                            'total' => $test['price_total'],
+                            'attributes' => null
+                        ]);
+                    }
                 }
             }
+            
             $serieDocument->update([
                 'number'=> $orderLaboratorio->number + 1
             ]);
