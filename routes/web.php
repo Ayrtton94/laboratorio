@@ -307,9 +307,11 @@ Auth::routes();
 		Route::get('/crear', 'create')->name('laboratoriobrucellas.create');
 		Route::get('tables', 'tables');
 		Route::get('/table/{table}', 'table');
+		Route::get('/records', 'records');
 		Route::post('', 'store');
 		Route::post('/importar', 'importar');
 		Route::delete('/{id}', 'destroy');
+		Route::get('restore/{id}', 'restore');
 	});
 	
 	

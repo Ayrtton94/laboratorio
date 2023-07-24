@@ -113,10 +113,31 @@ class LaboratorioBrucellaController extends Controller
      * @param  \App\Models\Laboratorio_Brucella  $laboratorio_Brucella
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Laboratorio_Brucella $laboratorio_Brucella)
+    public function destroy($id)
     {
-        //
-    }
+        $record = Laboratorio_Brucella::findOrFail($id);
+        $record->update([
+			'status' => 0
+		]);
+
+        return [
+            'success' => true,
+            'message' => 'Eliminada con éxito'
+        ];
+	}
+
+	public function restore($id)
+    {
+        $record = Laboratorio_Brucella::findOrFail($id);
+        $record->update([
+			'status' => 1
+		]);
+
+        return [
+            'success' => true,
+            'message' => 'Resturada con éxito'
+        ];
+	}
 
     public function tables()
     {
@@ -177,4 +198,9 @@ class LaboratorioBrucellaController extends Controller
         // Retornar los datos en formato JSON
         return response()->json($data);
     }
+    public function records()
+    {        
+		$data = Laboratorio_Brucella::all();
+		return response()->json($data, 200);
+	}
 }

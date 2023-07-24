@@ -24,7 +24,8 @@ class CreateLaboratorioBrucellasTable extends Migration
             $table->date('date_of_muestra')->nullable();
 			$table->date('date_of_recepcion')->nullable();
 		    $table->date('date_of_resultado')->nullable();
-            $table->string('observacion')->nullable();   
+            $table->string('observacion')->nullable();
+            $table->boolean('status')->default(1);   
             $table->softDeletes();
             $table->timestamps();
         });
